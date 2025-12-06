@@ -11,14 +11,14 @@ export const revalidate = 60;
 export async function generateStaticParams() {
     const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`);
     return posts.map((post: any) => ({
-        slug: post.slug,
+        slug: post.slug.startsWith('/blog/') ? post.slug.replace('/blog/', '') : post.slug,
     }));
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await client.fetch(
-        `*[_type == "post" && slug.current == $slug][0]{
+        `*[_type == "post" && (slug.current == $slug || slug.current == "/blog/" + $slug)][0]{
     title,
     publishedAt,
     "slug": slug,

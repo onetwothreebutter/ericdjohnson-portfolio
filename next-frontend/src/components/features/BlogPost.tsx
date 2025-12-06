@@ -43,7 +43,28 @@ export default function BlogPost({ post }: BlogPostProps) {
             )}
 
             <div className="prose prose-lg max-w-none text-gray-700">
-                <PortableText value={body} />
+                <PortableText
+                    value={body}
+                    components={{
+                        types: {
+                            image: ({ value }: any) => {
+                                if (!value?.asset?._ref) {
+                                    return null;
+                                }
+                                return (
+                                    <div className="relative w-full h-[400px] my-8 not-prose rounded-lg overflow-hidden">
+                                        <Image
+                                            src={urlFor(value).width(800).url()}
+                                            alt={value.alt || 'Blog Post Image'}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                );
+                            },
+                        },
+                    }}
+                />
             </div>
 
             <div className="mt-8">
