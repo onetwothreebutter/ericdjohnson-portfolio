@@ -4,7 +4,7 @@ Welcome to the repository for Eric Johnson's personal portfolio website. This pr
 
 ## 🚀 Tech Stack
 
-This project is a monorepo containing both the frontend application and the backend content management system.
+This project contains the frontend application for the portfolio.
 
 ### Frontend (`/next-frontend`)
 *   **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
@@ -14,15 +14,12 @@ This project is a monorepo containing both the frontend application and the back
 *   **Animations**: [GSAP](https://gsap.com/)
 *   **Icons**: React Icons
 
-### Backend (`/backend`)
-*   **CMS**: [Sanity.io](https://www.sanity.io/)
-*   **Language**: TypeScript
+
 
 ## 📂 Project Structure
 
 ```
 .
-├── backend/          # Sanity Studio configuration and schemas
 └── next-frontend/    # Next.js frontend application
 ```
 
@@ -53,14 +50,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     yarn install
     ```
 
-3.  **Install dependencies for the Backend:**
 
-    ```bash
-    cd ../backend
-    npm install
-    # or
-    yarn install
-    ```
 
 ### Environment Variables
 
@@ -82,18 +72,12 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-**Backend (Sanity Studio):**
 
-```bash
-cd backend
-npm run dev
-```
-Open [http://localhost:3333](http://localhost:3333) to access the Sanity Studio.
 
 ## 🚀 Deployment
 
 *   **Frontend**: Deployed on [Netlify](https://www.netlify.com/).
-*   **Backend**: Sanity Studio is hosted by Sanity or can be deployed to any static host.
+
 
 ## 📄 License
 
