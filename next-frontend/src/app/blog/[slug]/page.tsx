@@ -15,7 +15,8 @@ export async function generateStaticParams() {
     }));
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const post = await client.fetch(
         `*[_type == "post" && slug.current == $slug][0]{
     title,
@@ -26,7 +27,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     "author": author->name,
     "categories": categories[]->title
   }`,
-        { slug: params.slug }
+        { slug }
     );
 
     if (!post) {
