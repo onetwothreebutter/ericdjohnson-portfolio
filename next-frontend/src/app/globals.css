@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+    --font-brandon: var(--font-brandon);
+    --color-brand-red: #CD6258;
+}
