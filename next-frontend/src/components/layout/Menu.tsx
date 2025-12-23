@@ -6,9 +6,8 @@ import clsx from "clsx";
 
 const menuItems = [
     { href: "/work-ive-done", label: "Work", sub: "i've done", mobileLabel: "Work" },
-    { href: "/skills-i-have", label: "Skills", sub: "i have", mobileLabel: "Skills" },
+    { href: "/how-i-work", label: "How", sub: "i work", mobileLabel: "How" },
     { href: "/who-i-am", label: "Who", sub: "i am", mobileLabel: "Bio" },
-    { href: "/what-im-looking-for", label: "What", sub: "i'm looking for", mobileLabel: "Goals" },
     { href: "/contact-me", label: "Resume", sub: "& contact info", mobileLabel: "Resume" },
 ];
 
