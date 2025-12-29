@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, useVideoTexture } from "@react-three/drei";
+import { Text, useVideoTexture, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 
 
@@ -15,11 +15,12 @@ export default function ContentCube() {
 
     // Video URLs - using public domain/sample videos
     const videos = [
-        "/EditionsWinter2025_1000px.mp4",
-        "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "/EditionsWinter2025-1-1-aspect-1200px.mp4",
+        "/All-Editions-1200px.mp4",
         "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+
+        "/Editions-Winter2024-1200px.mp4",
     ];
 
     // Navigation State
@@ -154,7 +155,6 @@ export default function ContentCube() {
     return (
         <mesh ref={meshRef}>
             <boxGeometry args={[4, 4, 4]} />
-
             {/* Right (+x) */}
             <VideoMaterial url={videos[0]} attach="material-0" rotation={faceRotations[0]} />
             {/* Left (-x) */}
@@ -164,7 +164,7 @@ export default function ContentCube() {
             {/* Bottom (-y) */}
             <VideoMaterial url={videos[3]} attach="material-3" rotation={faceRotations[3]} />
             {/* Front (+z) */}
-            <meshStandardMaterial attach="material-4" color="white" transparent opacity={0.9}>
+            <meshStandardMaterial attach="material-4" color="white">
             </meshStandardMaterial>
             {/* Back (-z) */}
             <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} />
@@ -173,26 +173,26 @@ export default function ContentCube() {
             <group position={[0, 0, 2.01]}>
                 <Text
                     font="/fonts/brandonprinted-one-webfont.woff"
-                    fontSize={0.5}
+                    fontSize={0.7}
                     color="black"
                     anchorX="center"
                     anchorY="bottom"
-                    position={[0, 0.2, 0]}
+                    position={[0, -0.15, 0]}
                 >
-                    Eric Johnson
+                    Eric{"\n"}Johnson
                 </Text>
                 <Text
                     font="/fonts/brandonprinted-one-webfont.woff"
-                    fontSize={0.25}
+                    fontSize={0.2}
                     color="#1f2937"
                     anchorX="center"
                     anchorY="top"
-                    position={[0, 0, 0]}
-                    textAlign="center"
+                    position={[0, -0.5, 0]}
+                    textAlign="right"
                     maxWidth={3.5}
                     lineHeight={1.5}
                 >
-                    Senior Frontend Developer & Vanquisher{"\n"}of Boring Websites
+                    Senior Frontend Developer & Vanquisher of Boring Websites
                 </Text>
             </group>
         </mesh>
@@ -216,6 +216,7 @@ const VideoFadeMaterial = shaderMaterial(
     {
         uTexture: new THREE.Texture(),
         uAspect: 1.0, // Video Aspect Ratio (Width / Height)
+        uUVScale: 1.0, // Scale factor for UVs (e.g. 4.0 for a 4x4 box)
     },
     // Vertex Shader
     `
@@ -229,17 +230,14 @@ const VideoFadeMaterial = shaderMaterial(
     `
     uniform sampler2D uTexture;
     uniform float uAspect;
+    uniform float uUVScale;
     varying vec2 vUv;
 
-    // Rounded Box SDF for 2D (visualize box 0..1)
-    float sdBox( in vec2 p, in vec2 b ) {
-        vec2 d = abs(p)-b;
-        return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
-    }
-
     void main() {
-        vec2 uv = vUv - 0.5;
-
+        // Normalize UVs if they are scaled (e.g. world units)
+        vec2 normalizedUv = vUv / uUVScale;
+        vec2 uv = normalizedUv - 0.5;
+        
         // --- Aspect Ratio Correction (Contain) ---
         // If uAspect > 1 (Wide): Scale Y up (so texture repeats/clamps sooner).
         // If uAspect < 1 (Tall): Scale X up.
@@ -252,43 +250,11 @@ const VideoFadeMaterial = shaderMaterial(
         
         uv = uv * scale + 0.5;
 
-        // --- Sampling & Masking ---
-        // Check bounds 0..1
-        if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
-            // Outside video area -> Black
-            gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-        } else {
-            vec4 texColor = texture2D(uTexture, uv);
-            
-            // --- SDF Fade ---
-            // Distance from center of VIDEO UVs (0.5, 0.5)
-            // Box size is 0.5 (half extend of 0..1)
-            // We want to fade the last 5-10% of the video edges.
-            
-            // Re-center for SDF
-            vec2 p = uv - 0.5;
-            // Box half-size
-            vec2 b = vec2(0.48); // Start fading slightly before edge (0.5)
-            
-            // SDF Calculation
-            // d < 0 inside, d > 0 outside.
-            // closer to 0 means closer to edge.
-            // We want 1.0 at center, 0.0 at edge.
-            
-            // Let's us smoothstep on simple edge distance
-            vec2 dist = abs(uv - 0.5);
-            // 0.5 is edge. 
-            // We want to start fading at 0.4 (internal) -> 1.0 opacity
-            // End fading at 0.5 (edge) -> 0.0 opacity
-            
-            float feather = 0.1; // 10% fade
-            float maskX = smoothstep(0.5, 0.5 - feather, dist.x);
-            float maskY = smoothstep(0.5, 0.5 - feather, dist.y);
-            
-            float mask = maskX * maskY;
-
-            gl_FragColor = vec4(texColor.rgb * mask, 1.0);
-        }
+        // --- Sampling ---
+        // REMOVED manual bounds check to allow smearing on rounded edges (if any)
+        // Standard box will just map 0-1 perfectly.
+        vec4 texColor = texture2D(uTexture, uv);
+        gl_FragColor = vec4(texColor.rgb, 1.0);
     }
     `
 );
@@ -306,16 +272,6 @@ declare global {
 
 function VideoMaterial({ url, attach, rotation = 0 }: VideoMaterialProps) {
     const texture = useVideoTexture(url);
-    const [aspect, setAspect] = useState(1);
-
-    useEffect(() => {
-        if (texture?.image) {
-            const { videoWidth, videoHeight } = texture.image;
-            if (videoWidth && videoHeight) {
-                setAspect(videoWidth / videoHeight);
-            }
-        }
-    }, [texture, url]);
 
     useEffect(() => {
         if (texture) {
@@ -330,7 +286,8 @@ function VideoMaterial({ url, attach, rotation = 0 }: VideoMaterialProps) {
         <videoFadeMaterial
             attach={attach}
             uTexture={texture}
-            uAspect={aspect}
+            uAspect={1.0} // Force 1.0 to stretch/fill the square face
+            uUVScale={1.0} // BoxGeometry UVs are 0..1 per face
             toneMapped={false}
         />
     );
