@@ -19,6 +19,12 @@ export default function ShadersPage() {
                 <Link href="/shaders/example" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Example Shader
                 </Link>
+                <Link href="/shaders/imaginary" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Imaginary
+                </Link>
+                <Link href="/shaders/vertical-lines" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Vertical Lines
+                </Link>
             </div>
 
             <ShaderGallery />

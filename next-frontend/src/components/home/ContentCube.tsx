@@ -156,18 +156,18 @@ export default function ContentCube() {
         <mesh ref={meshRef}>
             <boxGeometry args={[4, 4, 4]} />
             {/* Right (+x) */}
-            <VideoMaterial url={videos[0]} attach="material-0" rotation={faceRotations[0]} />
+            <VideoMaterial url={videos[0]} attach="material-0" rotation={faceRotations[0]} isActive={currentFace === 0} />
             {/* Left (-x) */}
-            <VideoMaterial url={videos[1]} attach="material-1" rotation={faceRotations[1]} />
+            <VideoMaterial url={videos[1]} attach="material-1" rotation={faceRotations[1]} isActive={currentFace === 1} />
             {/* Top (+y) */}
-            <VideoMaterial url={videos[2]} attach="material-2" rotation={faceRotations[2]} />
+            <VideoMaterial url={videos[2]} attach="material-2" rotation={faceRotations[2]} isActive={currentFace === 2} />
             {/* Bottom (-y) */}
-            <VideoMaterial url={videos[3]} attach="material-3" rotation={faceRotations[3]} />
+            <VideoMaterial url={videos[3]} attach="material-3" rotation={faceRotations[3]} isActive={currentFace === 3} />
             {/* Front (+z) */}
             <meshStandardMaterial attach="material-4" color="white">
             </meshStandardMaterial>
             {/* Back (-z) */}
-            <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} />
+            <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} isActive={currentFace === 5} />
 
             {/* Front Face Content */}
             <group position={[0, 0, 2.01]}>
@@ -203,6 +203,7 @@ interface VideoMaterialProps {
     url: string;
     attach: string;
     rotation?: number;
+    isActive?: boolean;
 }
 
 import { shaderMaterial } from "@react-three/drei";
@@ -270,7 +271,7 @@ declare global {
     }
 }
 
-function VideoMaterial({ url, attach, rotation = 0 }: VideoMaterialProps) {
+function VideoMaterial({ url, attach, rotation = 0, isActive = false }: VideoMaterialProps) {
     const texture = useVideoTexture(url);
 
     useEffect(() => {
@@ -280,6 +281,15 @@ function VideoMaterial({ url, attach, rotation = 0 }: VideoMaterialProps) {
             // No manual repeat/offset needed - Shader handles it via uAspect
         }
     }, [texture, rotation]);
+
+    useEffect(() => {
+        if (isActive && texture && texture.image) {
+            const video = texture.image as HTMLVideoElement;
+            video.currentTime = 0;
+            // video.play() is usually handled by useVideoTexture but safe to ensure
+            video.play().catch(() => { });
+        }
+    }, [isActive, texture]);
 
     return (
         // @ts-ignore

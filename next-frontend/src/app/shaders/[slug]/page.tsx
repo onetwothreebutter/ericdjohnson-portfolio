@@ -4,6 +4,8 @@ import { ShaderCanvas } from '@/components/shaders/ShaderCanvas';
 import { ExampleShader } from '@/components/shaders/ExampleShader';
 import { PowerfulTriangle } from '@/components/shaders/PowerfulTriangle';
 import { SDFLine } from '@/components/shaders/SDFLine';
+import { ImaginaryShader } from '@/components/shaders/ImaginaryShader';
+import { VerticalLines } from '@/components/shaders/VerticalLines';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -27,6 +29,12 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'example':
             ShaderComponent = ExampleShader;
+            break;
+        case 'imaginary':
+            ShaderComponent = ImaginaryShader;
+            break;
+        case 'vertical-lines':
+            ShaderComponent = VerticalLines;
             break;
         default:
             return notFound();

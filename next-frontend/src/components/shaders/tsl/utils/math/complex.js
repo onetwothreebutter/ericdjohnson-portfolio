@@ -1,5 +1,5 @@
 import { Fn, PI, vec2, mul, add, atan, length, select, log, cos, sin, div, pow } from 'three/tsl'
-import { cosh, sinh } from '@/tsl/utils/color/tonemapping'
+import { cosh, sinh } from '../color/tonemapping'
 
 /**
  * Complex division: (a / b) for complex numbers a, b (vec2)

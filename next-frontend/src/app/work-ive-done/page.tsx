@@ -30,39 +30,58 @@ export default function WorkIveDonePage() {
             </section>
 
             {/* Work Tiles */}
-            <section className="flex flex-wrap max-w-7xl mx-auto border-l border-gray-200">
-                <WorkTile
-                    link="web-animations"
-                    svg={<NewtonsCradle />}
-                    heading="Web Animation"
-                    description="I love bringing the web to life!"
-                />
-                <WorkTile
-                    link="ui-components"
-                    heading="UI Components"
-                    description="My fun, reusable interface elements"
-                />
-                <WorkTile
-                    link="ux-design"
-                    heading="UX Design"
-                    description="A couple of examples of UX improvement ideas"
-                />
-                <WorkTile
-                    link="product-design"
-                    heading="Product Design"
-                    description="Some of my bright ideas"
-                />
-                <WorkTile
-                    link="visual-design"
-                    heading="Visual Design"
-                    description="Stickers, t-shirts, and logos I've designed"
-                />
-                <WorkTile
-                    link="writing"
-                    heading="Writing"
-                    description="Good writing makes good code"
-                />
-            </section>
+            <div className="max-w-3xl mx-auto px-6 space-y-12 pt-20">
+                <section>
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Shopify Editions</h2>
+                    <p className="text-gray-700 leading-relaxed">
+                        The work I’m most proud of is helping create and build the Shopify Editions websites. I’ve worked on most of them and they’re always headspinning, imagination-stretching, feats of engineering.
+                    </p>
+                    <p className="text-gray-700 leading-relaxed">
+                        Here's my favorites:
+                    </p>
+
+                    <h3>Shopify Winter '24 Edition</h3>
+                    <p className="text-gray-700 leading-relaxed">
+                        I was the lead developer on the Shopify Winter '24 Edition hero. I was responsible for the entire frontend and backend of the website.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Pairing</h2>
+                    <p className="text-gray-700 leading-relaxed mb-6">
+                        Pairing on a screen sharing app (Tuple is my preferred) really helps cut down the communication barrier
+                        and get a problem solved quickly with understanding and input from both sides, whether it be a dev issue
+                        or a question of a design implementation.
+
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">AI</h2>
+                    <p className="text-gray-700 leading-relaxed">
+                        I use Cursor (both the chat and the autocomplete) and Claude Code.
+                        I try new models when they’re released but so far Claude Sonnet/Opus
+                        are my main gotos. I use both few-shot prompts to build something a bit
+                        bigger (ie, a new component) or focused questions/prompts to address
+                        bugs. I’ve started a prompt library so I can keep track of what
+                        prompts work well, and so I can try them out to evaluate new models.
+
+                        Lately, I’ve been experimenting with AI agents to build features, and
+                        I've refactored this website using Google Antigravity.
+
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Artistic</h2>
+                    <p className="text-gray-700 leading-relaxed">
+                        I love visual art and design. I enjoy creating unique and engaging visual
+                        experiences for both the web and other mediums. My hobby business is
+                        designing concrete sculptures and other art pieces using Blender and my
+                        Elegoo 3D printer.
+                    </p>
+                </section>
+            </div>
         </div>
     );
 }

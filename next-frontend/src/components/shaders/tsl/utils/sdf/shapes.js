@@ -110,6 +110,20 @@ export const sdLine = Fn(([p]) => {
 })
 
 /**
+ * Returns a segment SDF based on a given point and two endpoints.
+ * @param {vec2} p - The point coordinates (vec2).
+ * @param {vec2} a - The start point of the segment (vec2).
+ * @param {vec2} b - The end point of the segment (vec2).
+ * @returns {number} The signed distance from the segment.
+ */
+export const sdSegment = Fn(([p, a, b]) => {
+  const pa = p.sub(a)
+  const ba = b.sub(a)
+  const h = clamp(dot(pa, ba).div(dot(ba, ba)), 0.0, 1.0)
+  return length(pa.sub(ba.mul(h)))
+})
+
+/**
  * Returns a ring SDF based on a given uv and radius.
  * @param {Array} _uv - The UV coordinates (vec2).
  * @param {number} [s=0.4] - The radius of the ring.
