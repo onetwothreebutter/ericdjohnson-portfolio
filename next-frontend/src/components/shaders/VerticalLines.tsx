@@ -6,9 +6,49 @@ import { extend, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import { cosinePalette } from './tsl/utils/color/cosine_palette';
+import { perlinNoise3d } from './tsl/noise/perlin_noise_3d';
 import { useControls } from 'leva';
 
-export function VerticalLines() {
+const palettes = {
+    'Cool Blue': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [1.0, 1.0, 1.0],
+        d: [0.263, 0.416, 0.557]
+    },
+    'Rainbow': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [1.0, 1.0, 1.0],
+        d: [0.0, 0.33, 0.67]
+    },
+    'Neon Heat': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [1.0, 1.0, 1.0],
+        d: [0.3, 0.2, 0.2]
+    },
+    'Cyberpunk': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [2.0, 1.0, 0.0],
+        d: [0.5, 0.2, 0.25]
+    },
+    'Black & White': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [1.0, 1.0, 1.0],
+        d: [0.0, 0.1, 0.2] // slight tint to avoid pure gray for visual interest, standard B&W is often a=0.5,b=0.5,c=1,d=0 for full cycle gray
+    },
+    'Golden': {
+        a: [0.5, 0.5, 0.5],
+        b: [0.5, 0.5, 0.5],
+        c: [1.0, 1.0, 0.5],
+        d: [0.8, 0.9, 0.3]
+    }
+};
+
+export function VerticalLines(props: any) {
     const meshRef = useRef<THREE.Mesh>(null);
     const { viewport } = useThree();
 
@@ -18,19 +58,66 @@ export function VerticalLines() {
         c: { value: new THREE.Vector3(1.0, 1.0, 1.0) },
         d: { value: new THREE.Vector3(0.263, 0.416, 0.557) }, // Cool blue palette default
         params: { value: new THREE.Vector3(0.1, 100.0, 0) }, // x = thickness, y = count
+        noisePositionParams: { value: new THREE.Vector3(1.0, 0.1, 0.0) }, // x = scale, y = strength
+        noiseColorParams: { value: new THREE.Vector3(1.0, 0.1, 0.0) }, // x = scale, y = strength
+        bloomParams: { value: new THREE.Vector3(0.5, 3.0, 0) }, // x = strength, y = radius
     }), []);
 
-    const controls = useControls({
+    const [controls, set] = useControls(() => ({
         mode: { value: 'Glow', options: ['Glow', 'Solid', 'Dashed'] },
-        count: { value: 100, min: 1, max: 500, step: 1, onChange: (v: number) => uniforms.params.value.setY(v) },
-        thickness: { value: 0.1, min: 0.0, max: 1.0, step: 0.001, onChange: (v: number) => uniforms.params.value.setX(v) },
+        count: { value: 65, min: 1, max: 500, step: 1, onChange: (v: number) => uniforms.params.value.setY(v) },
+        thickness: { value: 0.2, min: 0.0, max: 1.0, step: 0.001, onChange: (v: number) => uniforms.params.value.setX(v) },
+
+        spacingNoiseScale: { value: 1.0, min: 0.1, max: 10.0, step: 0.1, onChange: (v: number) => uniforms.noisePositionParams.value.setX(v) },
+        spacingNoiseStrength: { value: 0.1, min: 0.0, max: 1.0, step: 0.001, onChange: (v: number) => uniforms.noisePositionParams.value.setY(v) },
+
+        colorNoiseScale: { value: 1.0, min: 0.1, max: 10.0, step: 0.1, onChange: (v: number) => uniforms.noiseColorParams.value.setX(v) },
+        colorNoiseStrength: { value: 0.5, min: 0.0, max: 2.0, step: 0.01, onChange: (v: number) => uniforms.noiseColorParams.value.setY(v) },
+
+        bloomStrength: { value: 0.5, min: 0.0, max: 2.0, step: 0.01, onChange: (v: number) => uniforms.bloomParams.value.setX(v) },
+        bloomRadius: { value: 3.0, min: 1.0, max: 10.0, step: 0.1, onChange: (v: number) => uniforms.bloomParams.value.setY(v) },
+        palette: {
+            value: 'Cool Blue',
+            options: Object.keys(palettes),
+            onChange: (v: string) => {
+                const p = palettes[v as keyof typeof palettes];
+                if (p) {
+                    set({ a: p.a, b: p.b, c: p.c, d: p.d });
+                    uniforms.a.value.set(...(p.a as any));
+                    uniforms.b.value.set(...(p.b as any));
+                    uniforms.c.value.set(...(p.c as any));
+                    uniforms.d.value.set(...(p.d as any));
+                }
+            }
+        },
         a: { value: [0.5, 0.5, 0.5], onChange: (v: [number, number, number]) => uniforms.a.value.set(...v) },
         b: { value: [0.5, 0.5, 0.5], onChange: (v: [number, number, number]) => uniforms.b.value.set(...v) },
         c: { value: [1.0, 1.0, 1.0], onChange: (v: [number, number, number]) => uniforms.c.value.set(...v) },
         d: { value: [0.263, 0.416, 0.557], onChange: (v: [number, number, number]) => uniforms.d.value.set(...v) },
-    });
+    }));
 
-    const { mode, count, thickness } = controls as any;
+    const { mode, count, thickness, spacingNoiseScale, spacingNoiseStrength, colorNoiseScale, colorNoiseStrength, bloomStrength, bloomRadius } = controls as any;
+
+    const { camera } = useThree();
+    const { width, height } = useMemo(() => {
+        const z = (props.position?.[2] ?? (Array.isArray(props.position) ? props.position[2] : 0)) || 0;
+        const cam = camera as THREE.PerspectiveCamera;
+        // Basic safe-guard, though normally we use PerspectiveCamera
+        if (!cam.isPerspectiveCamera) return viewport;
+
+        // Vector pointing from camera to the plane
+        // Assuming plane is at world (0,0,z) and camera at (0,0,camZ)
+        // Correct distance calculation simply:
+        const distance = Math.abs(cam.position.z - z);
+        const fov = (cam.fov * Math.PI) / 180;
+        const h = 2 * Math.tan(fov / 2) * distance;
+
+        // Use aspect ratio from viewport to determine width
+        // viewport.width / viewport.height is the aspect ratio
+        const w = h * (viewport.width / viewport.height);
+
+        return { width: w, height: h };
+    }, [camera, props.position, viewport]);
 
     const material = useMemo(() => {
         const aNode = uniform(uniforms.a.value);
@@ -38,15 +125,34 @@ export function VerticalLines() {
         const cNode = uniform(uniforms.c.value);
         const dNode = uniform(uniforms.d.value);
         const paramsNode = uniform(uniforms.params.value);
+        const noisePositionParamsNode = uniform(uniforms.noisePositionParams.value);
+        const noiseColorParamsNode = uniform(uniforms.noiseColorParams.value);
+        const bloomParamsNode = uniform(uniforms.bloomParams.value);
+
         const thicknessNode = paramsNode.x;
         const countNode = paramsNode.y;
+
+        const noiseScaleNode = noisePositionParamsNode.x;
+        const noisePosStrengthNode = noisePositionParamsNode.y;
+
+        const colorNoiseScaleNode = noiseColorParamsNode.x;
+        const colorNoiseStrengthNode = noiseColorParamsNode.y;
+
+        const bloomStrengthNode = bloomParamsNode.x;
+        const bloomRadiusNode = bloomParamsNode.y;
 
         const main = Fn(() => {
             const uvNode = uv();
 
+            // Spacing from noise (spacingNoiseScale)
+            const noiseVal = (perlinNoise3d as any)(vec3(uvNode.x.mul(noiseScaleNode), 0.0, 0.0));
+            // Distort the UV x coordinate.
+            // We want to effectively stretch/compress space.
+            const distortedX = uvNode.x.add(noiseVal.mul(noisePosStrengthNode));
+
             // Domain repetition
             // x goes from 0 to count
-            const x = uvNode.x.mul(countNode);
+            const x = distortedX.mul(countNode);
             const localX = fract(x);
 
             // Distance to center (0.5)
@@ -56,19 +162,32 @@ export function VerticalLines() {
             // Also get an ID for the line to vary colors if we want
             const id = floor(x);
 
+            // Color Noise (colorNoiseScale)
+            // We can calculate a separate noise specifically for color variation
+            // Using uv.x is good, but maybe also use the 'id' of the line to make it consistent per line?
+            // Actually using distortedX or just plain uv.x is fine. Plain uv.x keeps the color field independent of the physical distortion, which might be what is requested.
+            // Let's use uv.x for the color noise field foundation.
+            const colorNoiseVal = (perlinNoise3d as any)(vec3(uvNode.x.mul(colorNoiseScaleNode), 0.0, 0.0));
+
             const finalColor = vec3(0).toVar();
 
             if (mode === 'Glow') {
                 // d is 0 at center, 0.5 at edge
                 // smoothstep(0, thickness, d) -> 0 at center, 1 at thickness
                 // invert -> 1 at center, 0 at thickness
-                const glow = float(1.0).sub(smoothstep(0.0, thicknessNode, d));
+                const core = float(1.0).sub(smoothstep(0.0, thicknessNode, d));
+
+                // Bloom layer: wider and controlled by bloom strength/radius
+                const bloomRadius = thicknessNode.mul(bloomRadiusNode);
+                const bloom = float(1.0).sub(smoothstep(0.0, bloomRadius, d)).mul(bloomStrengthNode);
 
                 // Use id to vary color slightly? Or just vertical gradient?
                 // varying palette by uv.y makes it look nice
-                const t = uvNode.y.add(time.mul(0.1));
+                // Offset palette by INDEPENDENT color noise
+                const t = uvNode.y.add(time.mul(0.1)).add(colorNoiseVal.mul(colorNoiseStrengthNode));
 
-                finalColor.assign((cosinePalette as any)(t, aNode, bNode, cNode, dNode).mul(glow));
+                // Add core and bloom
+                finalColor.assign((cosinePalette as any)(t, aNode, bNode, cNode, dNode).mul(core.add(bloom)));
 
             } else if (mode === 'Solid') {
                 // Sharp edge
@@ -77,7 +196,7 @@ export function VerticalLines() {
                 // smoothstep(thickness+aa, thickness, d) -> 1 if d < thickness
                 const solid = smoothstep(thicknessNode.add(aa), thicknessNode, d);
 
-                const t = uvNode.y.add(time.mul(0.1));
+                const t = uvNode.y.add(time.mul(0.1)).add(noiseVal.mul(colorNoiseStrengthNode));
                 finalColor.assign((cosinePalette as any)(t, aNode, bNode, cNode, dNode).mul(solid));
 
             } else if (mode === 'Dashed') {
@@ -85,22 +204,24 @@ export function VerticalLines() {
                 const solid = smoothstep(thicknessNode.add(aa), thicknessNode, d);
 
                 const dashPattern = sin(uvNode.y.mul(50.0).add(time.mul(5))).greaterThan(0);
-                const t = uvNode.y.add(time.mul(0.1));
+                const t = uvNode.y.add(time.mul(0.1)).add(noiseVal.mul(colorNoiseStrengthNode));
                 finalColor.assign(mix(vec3(0), (cosinePalette as any)(t, aNode, bNode, cNode, dNode), solid.mul(dashPattern)));
             }
 
             return finalColor;
+            // return vec3(1, 0, 0);
         });
 
         const mat = new MeshBasicNodeMaterial();
         mat.colorNode = main();
+        // mat.colorNode = vec3(1, 0, 0);
         mat.transparent = true;
         return mat;
     }, [uniforms, mode]);
 
     return (
-        <mesh ref={meshRef}>
-            <planeGeometry args={[viewport.width, viewport.height]} />
+        <mesh ref={meshRef} {...props}>
+            <planeGeometry args={[width, height]} />
             <primitive object={material} attach="material" />
         </mesh>
     );

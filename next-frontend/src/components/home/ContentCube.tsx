@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text, useVideoTexture, RoundedBox } from "@react-three/drei";
+import { Text, useVideoTexture, RoundedBox, Html } from "@react-three/drei";
 import * as THREE from "three";
 
 
@@ -170,32 +170,23 @@ export default function ContentCube() {
             <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} isActive={currentFace === 5} />
 
             {/* Front Face Content */}
-            <group position={[0, 0, 2.01]}>
-                <Text
-                    font="/fonts/brandonprinted-one-webfont.woff"
-                    fontSize={0.7}
-                    color="black"
-                    anchorX="center"
-                    anchorY="bottom"
-                    position={[0, -0.15, 0]}
-                >
-                    Eric{"\n"}Johnson
-                </Text>
-                <Text
-                    font="/fonts/brandonprinted-one-webfont.woff"
-                    fontSize={0.2}
-                    color="#1f2937"
-                    anchorX="center"
-                    anchorY="top"
-                    position={[0, -0.5, 0]}
-                    textAlign="right"
-                    maxWidth={3.5}
-                    lineHeight={1.5}
-                >
-                    Senior Frontend Developer & Vanquisher of Boring Websites
-                </Text>
-            </group>
-        </mesh>
+            <Html
+                transform
+                position={[0, 0, 2.01]}
+                rotation={[0, 0, 0]}
+                occlude={true}
+                scale={0.19}
+            >
+                <div className="flex flex-col items-center justify-center text-center select-none w-[800px] h-[800px] bg-white text-black p-10">
+                    <h1 className="text-[140px] font-black mb-8 leading-none tracking-tighter font-brandon">
+                        Eric<br />Johnson
+                    </h1>
+                    <p className="text-5xl font-bold opacity-80 max-w-2xl leading-tight font-brandon">
+                        Senior Frontend Developer & Vanquisher of Boring Websites
+                    </p>
+                </div>
+            </Html>
+        </mesh >
     );
 }
 
@@ -206,99 +197,73 @@ interface VideoMaterialProps {
     isActive?: boolean;
 }
 
-import { shaderMaterial } from "@react-three/drei";
 import { extend } from "@react-three/fiber";
 
 // --- Custom Shader Material ---
 // This shader handles:
 // 1. "Containing" the video within the UV space (preserving aspect ratio)
 // 2. Fading the edges (SDF) to avoid hard cuts or streaks 
-const VideoFadeMaterial = shaderMaterial(
-    {
-        uTexture: new THREE.Texture(),
-        uAspect: 1.0, // Video Aspect Ratio (Width / Height)
-        uUVScale: 1.0, // Scale factor for UVs (e.g. 4.0 for a 4x4 box)
-    },
-    // Vertex Shader
-    `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-    `,
-    // Fragment Shader
-    `
-    uniform sampler2D uTexture;
-    uniform float uAspect;
-    uniform float uUVScale;
-    varying vec2 vUv;
-
-    void main() {
-        // Normalize UVs if they are scaled (e.g. world units)
-        vec2 normalizedUv = vUv / uUVScale;
-        vec2 uv = normalizedUv - 0.5;
-        
-        // --- Aspect Ratio Correction (Contain) ---
-        // If uAspect > 1 (Wide): Scale Y up (so texture repeats/clamps sooner).
-        // If uAspect < 1 (Tall): Scale X up.
-        vec2 scale = vec2(1.0);
-        if (uAspect > 1.0) {
-            scale.y = uAspect;
-        } else {
-            scale.x = 1.0 / uAspect;
-        }
-        
-        uv = uv * scale + 0.5;
-
-        // --- Sampling ---
-        // REMOVED manual bounds check to allow smearing on rounded edges (if any)
-        // Standard box will just map 0-1 perfectly.
-        vec4 texColor = texture2D(uTexture, uv);
-        gl_FragColor = vec4(texColor.rgb, 1.0);
-    }
-    `
-);
-
-extend({ VideoFadeMaterial });
-
-// Add type definition for the custom material
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            videoFadeMaterial: any;
-        }
-    }
-}
+// --- Custom TSL Material ---
+import { MeshBasicNodeMaterial } from 'three/webgpu';
+import { texture, uv, uniform, vec2, float, If, Fn } from 'three/tsl';
 
 function VideoMaterial({ url, attach, rotation = 0, isActive = false }: VideoMaterialProps) {
-    const texture = useVideoTexture(url);
+    const textureMap = useVideoTexture(url);
 
+    // Ensure texture settings
     useEffect(() => {
-        if (texture) {
-            texture.center.set(0.5, 0.5);
-            texture.rotation = rotation;
-            // No manual repeat/offset needed - Shader handles it via uAspect
+        if (textureMap) {
+            textureMap.center.set(0.5, 0.5);
+            textureMap.rotation = rotation;
         }
-    }, [texture, rotation]);
+    }, [textureMap, rotation]);
 
+    // Handle playback
     useEffect(() => {
-        if (isActive && texture && texture.image) {
-            const video = texture.image as HTMLVideoElement;
+        if (isActive && textureMap && textureMap.image) {
+            const video = textureMap.image as HTMLVideoElement;
             video.currentTime = 0;
-            // video.play() is usually handled by useVideoTexture but safe to ensure
             video.play().catch(() => { });
         }
-    }, [isActive, texture]);
+    }, [isActive, textureMap]);
+
+    const material = useMemo(() => {
+        // const uTexture = uniform(textureMap); // Not needed for texture()
+        const uAspect = uniform(1.0); // Default aspect
+        const uUVScale = uniform(1.0); // Default scale
+
+        const main = Fn(() => {
+            // TSL Implementation of the previous GLSL logic
+            const vUv = uv();
+
+            // Normalize UVs
+            const normalizedUv = vUv.div(uUVScale);
+            const centeredUv = normalizedUv.sub(0.5);
+
+            // Aspect Ratio Correction
+            const scale = vec2(1.0).toVar();
+
+            If(uAspect.greaterThan(1.0), () => {
+                scale.y.assign(uAspect);
+            }).Else(() => {
+                scale.x.assign(float(1.0).div(uAspect));
+            });
+
+            const finalUv = centeredUv.mul(scale).add(0.5);
+
+            return texture(textureMap, finalUv);
+        });
+
+        const mat = new MeshBasicNodeMaterial();
+        mat.colorNode = main();
+        mat.transparent = true; // Ensure transparency logic if needed, though video is usually opaque.
+        return mat;
+    }, [textureMap]);
 
     return (
-        // @ts-ignore
-        <videoFadeMaterial
+        <primitive
+            object={material}
             attach={attach}
-            uTexture={texture}
-            uAspect={1.0} // Force 1.0 to stretch/fill the square face
-            uUVScale={1.0} // BoxGeometry UVs are 0..1 per face
-            toneMapped={false}
         />
     );
 }

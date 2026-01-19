@@ -25,6 +25,9 @@ export default function ShadersPage() {
                 <Link href="/shaders/vertical-lines" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Vertical Lines
                 </Link>
+                <Link href="/shaders/fractal-like" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Fractal Like
+                </Link>
             </div>
 
             <ShaderGallery />

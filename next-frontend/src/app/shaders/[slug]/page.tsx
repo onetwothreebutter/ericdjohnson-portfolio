@@ -6,6 +6,7 @@ import { PowerfulTriangle } from '@/components/shaders/PowerfulTriangle';
 import { SDFLine } from '@/components/shaders/SDFLine';
 import { ImaginaryShader } from '@/components/shaders/ImaginaryShader';
 import { VerticalLines } from '@/components/shaders/VerticalLines';
+import { FractalLike } from '@/components/shaders/FractalLike';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -35,6 +36,9 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'vertical-lines':
             ShaderComponent = VerticalLines;
+            break;
+        case 'fractal-like':
+            ShaderComponent = FractalLike;
             break;
         default:
             return notFound();
