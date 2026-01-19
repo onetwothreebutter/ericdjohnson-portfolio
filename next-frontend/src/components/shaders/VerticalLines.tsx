@@ -52,6 +52,10 @@ export function VerticalLines(props: any) {
     const meshRef = useRef<THREE.Mesh>(null);
     const { viewport } = useThree();
 
+    // Time tracking for smooth speed transitions
+    const accumulatedTime = useRef(0);
+    const currentSpeed = useRef(0.1);
+
     const uniforms = useMemo(() => ({
         a: { value: new THREE.Vector3(0.5, 0.5, 0.5) },
         b: { value: new THREE.Vector3(0.5, 0.5, 0.5) },
@@ -119,7 +123,12 @@ export function VerticalLines(props: any) {
         return { width: w, height: h };
     }, [camera, props.position, viewport]);
 
-    const material = useMemo(() => {
+    // We need a stable UniformNode for time to update it
+    const timeUniform = useMemo(() => uniform(0), []);
+    // Stable uniform for color noise strength to allow lerping without fighting Leva controls
+    const strengthUniform = useMemo(() => uniform(0), []);
+
+    const materialNode = useMemo(() => {
         const aNode = uniform(uniforms.a.value);
         const bNode = uniform(uniforms.b.value);
         const cNode = uniform(uniforms.c.value);
@@ -136,13 +145,17 @@ export function VerticalLines(props: any) {
         const noisePosStrengthNode = noisePositionParamsNode.y;
 
         const colorNoiseScaleNode = noiseColorParamsNode.x;
-        const colorNoiseStrengthNode = noiseColorParamsNode.y;
+        // Use our dynamic strength uniform instead of the raw uniform value
+        const colorNoiseStrengthNode = strengthUniform;
 
         const bloomStrengthNode = bloomParamsNode.x;
         const bloomRadiusNode = bloomParamsNode.y;
 
         const main = Fn(() => {
             const uvNode = uv();
+
+            // Use the STABLE time uniform
+            const timeNode = timeUniform;
 
             // Spacing from noise (spacingNoiseScale)
             const noiseVal = (perlinNoise3d as any)(vec3(uvNode.x.mul(noiseScaleNode), 0.0, 0.0));
@@ -160,7 +173,7 @@ export function VerticalLines(props: any) {
             const d = abs(localX.sub(0.5));
 
             // Also get an ID for the line to vary colors if we want
-            const id = floor(x);
+            // const id = floor(x); // Commented out as it's not used
 
             // Color Noise (colorNoiseScale)
             // We can calculate a separate noise specifically for color variation
@@ -184,7 +197,7 @@ export function VerticalLines(props: any) {
                 // Use id to vary color slightly? Or just vertical gradient?
                 // varying palette by uv.y makes it look nice
                 // Offset palette by INDEPENDENT color noise
-                const t = uvNode.y.add(time.mul(0.1)).add(colorNoiseVal.mul(colorNoiseStrengthNode));
+                const t = uvNode.y.add(timeNode).add(colorNoiseVal.mul(colorNoiseStrengthNode));
 
                 // Add core and bloom
                 finalColor.assign((cosinePalette as any)(t, aNode, bNode, cNode, dNode).mul(core.add(bloom)));
@@ -196,33 +209,49 @@ export function VerticalLines(props: any) {
                 // smoothstep(thickness+aa, thickness, d) -> 1 if d < thickness
                 const solid = smoothstep(thicknessNode.add(aa), thicknessNode, d);
 
-                const t = uvNode.y.add(time.mul(0.1)).add(noiseVal.mul(colorNoiseStrengthNode));
+                const t = uvNode.y.add(timeNode).add(noiseVal.mul(colorNoiseStrengthNode));
                 finalColor.assign((cosinePalette as any)(t, aNode, bNode, cNode, dNode).mul(solid));
 
             } else if (mode === 'Dashed') {
                 const aa = float(0.01);
                 const solid = smoothstep(thicknessNode.add(aa), thicknessNode, d);
 
-                const dashPattern = sin(uvNode.y.mul(50.0).add(time.mul(5))).greaterThan(0);
-                const t = uvNode.y.add(time.mul(0.1)).add(noiseVal.mul(colorNoiseStrengthNode));
+                const dashPattern = sin(uvNode.y.mul(50.0).add(timeNode.mul(50.0))).greaterThan(0);
+                const t = uvNode.y.add(timeNode).add(noiseVal.mul(colorNoiseStrengthNode));
                 finalColor.assign(mix(vec3(0), (cosinePalette as any)(t, aNode, bNode, cNode, dNode), solid.mul(dashPattern)));
             }
 
             return finalColor;
-            // return vec3(1, 0, 0);
         });
 
         const mat = new MeshBasicNodeMaterial();
         mat.colorNode = main();
-        // mat.colorNode = vec3(1, 0, 0);
         mat.transparent = true;
         return mat;
-    }, [uniforms, mode]);
+    }, [uniforms, mode, timeUniform, strengthUniform]); // Added strengthUniform dependency
+
+    // Update the uniform value in the frame loop
+    useFrame((state, delta) => {
+        // Smoothly interpolate speed
+        const targetSpeed = props.speedBoost ? 2.0 : 0.1;
+        currentSpeed.current = THREE.MathUtils.lerp(currentSpeed.current, targetSpeed, 0.05);
+
+        // Smoothly interpolate color noise strength
+        const baseStrength = uniforms.noiseColorParams.value.y;
+        const targetStrength = props.speedBoost ? 1.6 : baseStrength;
+        strengthUniform.value = THREE.MathUtils.lerp(strengthUniform.value as number, targetStrength, 0.05);
+
+        // Accumulate time based on current speed
+        accumulatedTime.current += delta * currentSpeed.current;
+
+        // Update the TSL Uniform Node
+        timeUniform.value = accumulatedTime.current;
+    });
 
     return (
         <mesh ref={meshRef} {...props}>
             <planeGeometry args={[width, height]} />
-            <primitive object={material} attach="material" />
+            <primitive object={materialNode} attach="material" />
         </mesh>
     );
 }

@@ -11,6 +11,7 @@ import { WebGPURenderer } from 'three/webgpu';
 
 export default function HomeScene() {
     const [frameloop, setFrameloop] = useState<'never' | 'always'>('never');
+    const [isRotating, setIsRotating] = useState(false);
 
     return (
         <div className="absolute inset-0 z-0">
@@ -31,13 +32,19 @@ export default function HomeScene() {
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 10]} />
                 <React.Suspense fallback={null}>
-                    <ContentCube />
+                    <ContentCube
+                        onRotationStart={() => {
+                            setIsRotating(true);
+                            // Reset speed after animation typically finishes (approx 500ms for rotation effect)
+                            setTimeout(() => setIsRotating(false), 500);
+                        }}
+                    />
                     {/* <mesh position={[0, 0, 0]}>
                         <boxGeometry args={[1, 1, 1]} />
                         <meshBasicMaterial color="red" />
                     </mesh> */}
                     <SceneGradient position={[0, 0, -0.9]} />
-                    <VerticalLines position={[0, 0, -1]} />
+                    <VerticalLines position={[0, 0, -1]} speedBoost={isRotating} />
                 </React.Suspense>
                 {/* Environment for nice reflections on the colored materials */}
                 <Environment preset="city" />

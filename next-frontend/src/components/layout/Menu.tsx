@@ -8,7 +8,7 @@ const menuItems = [
     { href: "/work-ive-done", label: "Work", sub: "i've done", mobileLabel: "Work" },
     { href: "/how-i-work", label: "How", sub: "i work", mobileLabel: "How" },
     { href: "/who-i-am", label: "Who", sub: "i am", mobileLabel: "Bio" },
-    { href: "/contact-me", label: "Resume", sub: "& contact info", mobileLabel: "Resume" },
+    { href: "/contact-me", label: "Contact", sub: "me", mobileLabel: "Contact" },
 ];
 
 export function DesktopMenu({ className }: { className?: string }) {

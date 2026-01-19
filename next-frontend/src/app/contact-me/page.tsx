@@ -19,7 +19,7 @@ export default function ContactMePage() {
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="relative z-10 text-center text-white">
                     <AnimatedHeading
-                        text="Resume"
+                        text="Contact"
                         className="text-5xl md:text-7xl mb-4"
                     />
                     <PhotoCredit
@@ -31,24 +31,6 @@ export default function ContactMePage() {
 
             {/* Content */}
             <div className="max-w-3xl mx-auto px-6 space-y-12">
-                <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Resume</h2>
-                    <div className="w-full h-[800px] border border-gray-200 rounded-lg overflow-hidden shadow-lg">
-                        <object
-                            data="/files/Eric-Johnson-Resume.pdf"
-                            type="application/pdf"
-                            className="w-full h-full"
-                        >
-                            <p>
-                                Your browser does not support PDFs.{" "}
-                                <a href="/files/Eric-Johnson-Resume.pdf">Download the PDF</a>.
-                            </p>
-                        </object>
-                    </div>
-                </section>
-
-                <hr className="border-gray-200" />
-
                 <section>
                     <h2 className="text-3xl font-brandon text-brand-red mb-6">Contact Info</h2>
                     <div className="space-y-6">

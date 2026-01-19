@@ -6,7 +6,12 @@ import { Text, useVideoTexture, RoundedBox, Html } from "@react-three/drei";
 import * as THREE from "three";
 
 
-export default function ContentCube() {
+
+interface ContentCubeProps {
+    onRotationStart?: () => void;
+}
+
+export default function ContentCube({ onRotationStart }: ContentCubeProps) {
     const meshRef = useRef<THREE.Mesh>(null!);
     const [isAutoRotating, setIsAutoRotating] = useState(true);
 
@@ -106,13 +111,12 @@ export default function ContentCube() {
             }
 
             if (dir !== -1) {
-                // Apply rotation in WORLD SPACE
-                // We want to rotate around World Axis 'axis'
-                // WorldRot = Axis * Angle
-                // NewQ = WorldRot * CurrentQ
                 // Determine next face
                 const nextFace = adjacency[currentFace][dir];
                 setCurrentFace(nextFace);
+
+                // Trigger rotation event for parent
+                onRotationStart?.();
 
                 // Calculate target rotation to snap to world axis
                 // We want the new face's UP to be World Y (0,1,0)
