@@ -11,6 +11,11 @@ import {
     Courier_Prime,
     Share_Tech_Mono,
     Cutive_Mono,
+    DM_Mono,
+    Fragment_Mono,
+    Azeret_Mono,
+    Spline_Sans_Mono,
+    Geist_Mono,
 } from 'next/font/google';
 import { MeshBasicNodeMaterial } from 'three/webgpu';
 import {
@@ -33,6 +38,11 @@ const inconsolata   = Inconsolata({ weight: '900',        subsets: ['latin'] });
 const courierPrime  = Courier_Prime({ weight: '700',      subsets: ['latin'] });
 const shareTechMono = Share_Tech_Mono({ weight: '400',   subsets: ['latin'] });
 const cutiveMono    = Cutive_Mono({ weight: '400',        subsets: ['latin'] });
+const dmMono        = DM_Mono({ weight: '500',            subsets: ['latin'] });
+const fragmentMono  = Fragment_Mono({ weight: '400',      subsets: ['latin'] });
+const azeretMono    = Azeret_Mono({ weight: '800',        subsets: ['latin'] });
+const splineSansMono = Spline_Sans_Mono({ weight: '700', subsets: ['latin'] });
+const geistMono     = Geist_Mono({ weight: '800',         subsets: ['latin'] });
 
 const fontMap = {
     'Space Mono':      spaceMono,
@@ -45,6 +55,11 @@ const fontMap = {
     'Courier Prime':   courierPrime,
     'Share Tech Mono': shareTechMono,
     'Cutive Mono':     cutiveMono,
+    'DM Mono':         dmMono,
+    'Fragment Mono':   fragmentMono,
+    'Azeret Mono':     azeretMono,
+    'Spline Sans Mono': splineSansMono,
+    'Geist Mono':      geistMono,
 };
 
 const palettes = {
@@ -70,18 +85,18 @@ export function LineCircle(props: any) {
     const uA = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
     const uB = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
     const uC = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
-    const uD = useMemo(() => uniform(new THREE.Vector3(0.263, 0.416, 0.557)), []);
+    const uD = useMemo(() => uniform(new THREE.Vector3(0.0, 0.33, 0.67)), []);
     const uTextColor      = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
     const uUseTextColor   = useMemo(() => uniform(0.0), []);
     const uOutlineColor   = useMemo(() => uniform(new THREE.Vector3(0.0, 0.0, 0.0)), []);
-    const uTextX        = useMemo(() => uniform(0.5), []);
-    const uTextY        = useMemo(() => uniform(0.5), []);
+    const uTextX        = useMemo(() => uniform(0.30), []);
+    const uTextY        = useMemo(() => uniform(0.85), []);
     const uTriEnabled   = useMemo(() => uniform(1.0), []);
     const uTriRotation  = useMemo(() => uniform(0.0), []);
     const uTriSize      = useMemo(() => uniform(1.0), []);
-    const uTriWidth          = useMemo(() => uniform(Math.PI / 6), []); // 30° = equilateral half-angle
-    const uCenterCircleEnabled = useMemo(() => uniform(0.0), []);
-    const uCenterCircleRadius  = useMemo(() => uniform(0.05), []);
+    const uTriWidth          = useMemo(() => uniform(45 * Math.PI / 180), []); // 45° half-angle
+    const uCenterCircleEnabled = useMemo(() => uniform(1.0), []);
+    const uCenterCircleRadius  = useMemo(() => uniform(0.04), []);
 
     const [textTexture] = useState(() => new THREE.CanvasTexture(document.createElement('canvas')));
 
@@ -93,7 +108,7 @@ export function LineCircle(props: any) {
             widthTop:  { value: 0.05, min: 0.0,  max: 1.0,  step: 0.01, label: 'Line Width Top',    onChange: (v: number) => { uWidthTop.value = v; } },
             widthBot:  { value: 0.75, min: 0.0,  max: 1.0,  step: 0.01, label: 'Line Width Bottom', onChange: (v: number) => { uWidthBot.value = v; } },
             palette: {
-                value: 'Cool Blue',
+                value: 'Rainbow',
                 options: Object.keys(palettes),
                 onChange: (v: string) => {
                     const p = palettes[v as keyof typeof palettes];
@@ -108,22 +123,22 @@ export function LineCircle(props: any) {
             a: { value: [0.5, 0.5, 0.5],       onChange: (v: [number, number, number]) => uA.value.set(...v) },
             b: { value: [0.5, 0.5, 0.5],       onChange: (v: [number, number, number]) => uB.value.set(...v) },
             c: { value: [1.0, 1.0, 1.0],       onChange: (v: [number, number, number]) => uC.value.set(...v) },
-            d: { value: [0.263, 0.416, 0.557], onChange: (v: [number, number, number]) => uD.value.set(...v) },
+            d: { value: [0.0, 0.33, 0.67],     onChange: (v: [number, number, number]) => uD.value.set(...v) },
         }),
         'Mask Settings': folder({
             triEnabled:  { value: true,  label: 'Triangle Enabled',    onChange: (v: boolean) => { uTriEnabled.value = v ? 1.0 : 0.0; } },
             triRotation: { value: 0,     label: 'Triangle Rotation',   min: 0,   max: 360,  step: 1,    onChange: (v: number) => { uTriRotation.value = v * Math.PI / 180; } },
             triSize:     { value: 1.0,   label: 'Triangle Size',       min: 0.1, max: 2.0,  step: 0.01, onChange: (v: number) => { uTriSize.value = v; } },
-            triWidth:    { value: 30,    label: 'Triangle Base Width',  min: 5,   max: 89,   step: 1,    onChange: (v: number) => { uTriWidth.value = v * Math.PI / 180; } },
-            centerCircleEnabled: { value: false, label: 'Center Circle',        onChange: (v: boolean) => { uCenterCircleEnabled.value = v ? 1.0 : 0.0; } },
-            centerCircleRadius:  { value: 0.05,  label: 'Center Circle Radius', min: 0.01, max: 0.45, step: 0.005, onChange: (v: number) => { uCenterCircleRadius.value = v; } },
+            triWidth:    { value: 45,    label: 'Triangle Base Width',  min: 5,   max: 89,   step: 1,    onChange: (v: number) => { uTriWidth.value = v * Math.PI / 180; } },
+            centerCircleEnabled: { value: true,  label: 'Center Circle',        onChange: (v: boolean) => { uCenterCircleEnabled.value = v ? 1.0 : 0.0; } },
+            centerCircleRadius:  { value: 0.04,  label: 'Center Circle Radius', min: 0.01, max: 0.45, step: 0.005, onChange: (v: number) => { uCenterCircleRadius.value = v; } },
         }),
         'Text Settings': folder({
-            text:           { value: 'HELLO',      label: 'Text' },
-            fontFamily:     { value: 'Space Mono', options: Object.keys(fontMap), label: 'Font' },
-            fontSize:       { value: 120, min: 8,   max: 300, step: 1,    label: 'Font Size' },
-            textX:          { value: 0.5, min: 0.0, max: 1.0, step: 0.01, label: 'Text X' },
-            textY:          { value: 0.5, min: 0.0, max: 1.0, step: 0.01, label: 'Text Y' },
+            text:           { value: '2001',            label: 'Text' },
+            fontFamily:     { value: 'Spline Sans Mono', options: Object.keys(fontMap), label: 'Font' },
+            fontSize:       { value: 120,  min: 8,   max: 300, step: 1,    label: 'Font Size' },
+            textX:          { value: 0.30, min: 0.0, max: 1.0, step: 0.01, label: 'Text X' },
+            textY:          { value: 0.85, min: 0.0, max: 1.0, step: 0.01, label: 'Text Y' },
             useCustomTextColor: { value: false, label: 'Custom Text Color', onChange: (v: boolean) => { uUseTextColor.value = v ? 1.0 : 0.0; } },
             textColor:      { value: '#ffffff', label: 'Text Color', onChange: (v: string) => {
                 const c = new THREE.Color(v); uTextColor.value.set(c.r, c.g, c.b);
