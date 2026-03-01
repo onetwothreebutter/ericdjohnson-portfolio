@@ -13,8 +13,11 @@ export default function ShadersPage() {
                 <Link href="/shaders/powerful-triangle" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Powerful Triangle
                 </Link>
-                <Link href="/shaders/sdf-line" className="text-white opacity-70 hover:opacity-100 transition-opacity">
-                    SDF Line
+                <Link href="/shaders/gaussian-splat" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Gaussian Splat
+                </Link>
+                <Link href="/shaders/drip-grid" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Drip Grid
                 </Link>
                 <Link href="/shaders/example" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Example Shader
@@ -27,6 +30,21 @@ export default function ShadersPage() {
                 </Link>
                 <Link href="/shaders/fractal-like" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Fractal Like
+                </Link>
+                <Link href="/shaders/kaleidoscope-fractal" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Kaleidoscope Fractal
+                </Link>
+                <Link href="/shaders/rise-shirt" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Rise Shirt
+                </Link>
+                <Link href="/shaders/rise-shirt-text" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Rise Shirt Text
+                </Link>
+                <Link href="/shaders/blank-shader" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Blank Shader
+                </Link>
+                <Link href="/shaders/line-circle" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Line Circle
                 </Link>
             </div>
 

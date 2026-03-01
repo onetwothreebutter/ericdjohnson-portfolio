@@ -23,6 +23,7 @@ import { RiseShirt } from '@/components/shaders/RiseShirt';
 import { RiseShirtText } from '@/components/shaders/RiseShirtText';
 import { BlankShader } from '@/components/shaders/BlankShader';
 import { NumberDot } from '@/components/shaders/NumberDot';
+import { LineCircle } from '@/components/shaders/LineCircle';
 
 
 import { notFound } from 'next/navigation';
@@ -105,6 +106,9 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'number-dot':
             ShaderComponent = NumberDot;
+            break;
+        case 'line-circle':
+            ShaderComponent = LineCircle;
             break;
 
         default:
