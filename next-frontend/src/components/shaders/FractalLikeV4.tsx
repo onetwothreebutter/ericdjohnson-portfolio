@@ -3,11 +3,12 @@
 
 import { MeshBasicNodeMaterial } from 'three/webgpu';
 import { useThree } from '@react-three/fiber';
-import { abs, color, time, positionLocal, sin, vec3, Fn, uv, uniform, screenSize, Loop, float, fract } from 'three/tsl';
+import { mul, pow, div, add, mix, mod, round, abs, color, time, positionLocal, sin, vec3, Fn, uv, uniform, screenSize, Loop, float, fract, step } from 'three/tsl';
 import { screenAspectUV } from './tsl/utils/function/screen_aspect_uv';
-import { sdSphere } from './tsl/utils/sdf/shapes';
+import { sdSphere, sdBox2d } from './tsl/utils/sdf/shapes';
 import { bloomEdgePattern } from './tsl/utils/function/bloom_edge_pattern';
 import { cosinePalette } from './tsl/utils/color/cosine_palette';
+import { smax, smin } from './tsl/utils/sdf/operations';
 
 import { extend, useFrame } from '@react-three/fiber';
 import { useRef, useMemo } from 'react';
@@ -17,11 +18,10 @@ import * as THREE from 'three';
 // though we usually pass the material instance or use the primitive.
 // For now, let's create the material declaratively if possible, or imperatively.
 
-export function FractalLike(props: any) {
+export function FractalLikeV4(props: any) {
     const meshRef = useRef<THREE.Mesh>(null);
 
     const main = Fn(() => {
-        const MAX_ITERAIONS = 3;
 
         // define bloom effect vars
         const freq = uniform(8.0);
@@ -44,25 +44,62 @@ export function FractalLike(props: any) {
         // final var to store the color
         const finalColor = vec3(0.0).toVar();
 
-        // iterate MAX_ITERAIONS times
-        Loop({ start: 0, end: MAX_ITERAIONS }, ({ i: _i }) => {
+        // domain repetition
+        const domainRepetitions = 3.5;
+
+        // pattern repetition
+        const patternRepetitions = 8;
+
+        const MAX_ITERATIONS = 4;
+
+        let pattern = vec3(0.0).toVar();
+        // Loop({ start: 0, end: MAX_ITERATIONS }, ({ i: _i }) => {
+        //     const i = float(_i);
+        //     const shape1 = sdBox2d(fract(_uv.mul(domainRepetitions)).sub(0.5)).toVar();
+        //     shape1.assign(shape1.oneMinus());
+        //     shape1.assign(bloomEdgePattern(shape1, freq, edge, exponent));
+        //     const shape2 = sdSphere(uv0.mul(0.6).mul(_time), 0.1).toVar();
+        //     shape2.assign(shape2.oneMinus());
+        //     shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
+
+        //     pattern.assign(smax(shape1, shape2, 0.9));
+        //     // pattern.assign(smin(shape1, shape2, 0.5));
+        //     // pattern.assign(shape2);
+        // });
+
+        _uv.assign(fract(_uv.mul(domainRepetitions)).sub(0.5));
+
+        let shape1 = float(0.0).toVar();
+        let shape2 = float(0.0).toVar();
+        Loop({ start: 0, end: 1 }, ({ i: _i }) => {
             const i = float(_i);
+            shape1.assign(sdBox2d(_uv.mul(2.0)).toVar());
+            // shape1.assign(shape1.oneMinus());
+            // shape1.assign(bloomEdgePattern(shape1, freq, edge, exponent));
 
-            // simple fractal formula - warpinug the uv coords
-            _uv.assign(fract(_uv.mul(1.5)).sub(0.5));
-            // _uv.assign(sdSphere(_uv.mul(1.4), 0.5));
+            shape2.assign(sdSphere(uv0.mul(0.9), 0.2));
+            shape1.mulAssign(shape2);
+            // shape2.assign(shape2.oneMinus());
+            shape2.absAssign(shape2);
+            // shape2.assign(shape2.oneMinus());
+            // shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
 
-            const pFinal = _uv.assign(sdSphere(_uv.mul(1.4).mul(i), 0.5));
-            pFinal.assign(bloomEdgePattern(pFinal, freq, edge, exponent, _time))
+            // pattern.assign(smax(shape1, shape2, 0.2));
+            // pattern.assign(shape1);
+        });
 
-            // const color = cosinePalette(abs(uv0.x).add(abs(uv0.y)).add(i).mul(_time), a, b, c, d);
-            const color = cosinePalette(sdSphere(uv0.mul(1.4), 0.5).add(i).mul(_time), a, b, c, d);
 
-            finalColor.assign(color.mul(pFinal));
+        // pattern.assign(smin(shape1, shape2, 0.6));
+        pattern.assign(smin(shape1, shape2.oneMinus().sub(0.8), 0.1));
 
-        })
+        // finalColor.assign(cosinePalette(pattern.oneMinus(), a, b, c, d));
 
-        return finalColor;
+        // const shape2Color = cosinePalette(shape2.oneMinus(), a, b, c, d);
+        // const shape2Color = vec3(shape2.oneMinus(), 0.0, 0.0);
+        // finalColor.mulAssign(shape2Color);
+        // finalColor.assign(vec3(1.0, 0.0, 0.0));
+        // return finalColor.mul(pattern);
+        return vec3(shape1.mul(0.3).add(shape2.oneMinus().sub(0.6).mul(sin(_time))), 0, 0);
 
     });
 

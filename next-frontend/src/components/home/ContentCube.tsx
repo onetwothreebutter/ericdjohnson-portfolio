@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useControls } from "leva";
+import { useFrame, extend } from "@react-three/fiber";
 import { Text, useVideoTexture, RoundedBox, Html } from "@react-three/drei";
 import * as THREE from "three";
+import { MeshBasicNodeMaterial } from 'three/webgpu';
+import { normalView, positionView, varying, vec3, float, mix, color, Fn, uniform, dot, pow, texture, uv, vec2, If } from 'three/tsl';
 
 
 
@@ -12,8 +15,46 @@ interface ContentCubeProps {
 }
 
 export default function ContentCube({ onRotationStart }: ContentCubeProps) {
-    const meshRef = useRef<THREE.Mesh>(null!);
+    const groupRef = useRef<THREE.Group>(null!);
+
+    const glassProps = useControls('Glass Material', {
+        glowColor: { value: '#ffffff' },
+        fresnelPower: { value: 2.0, min: 0, max: 10 },
+        fresnelBias: { value: 0.1, min: 0, max: 1 },
+        opacity: { value: 0.5, min: 0, max: 1 },
+    })
+
+    const { showContent } = useControls('Debug', {
+        showContent: { value: false, label: 'Show Inner Cube' }
+    });
+
     const [isAutoRotating, setIsAutoRotating] = useState(true);
+
+    const glassMaterial = useMemo(() => {
+        const glowColor = uniform(color(glassProps.glowColor));
+        const fresnelPower = uniform(glassProps.fresnelPower);
+        const fresnelBias = uniform(glassProps.fresnelBias);
+        const opacity = uniform(glassProps.opacity);
+
+        const main = Fn(() => {
+            // Fresnel calculation
+            // In View Space, simple fresnel is 1.0 - dot(viewDir, normal)
+            // positionView is vector from camera to point. ViewDir is -positionView.
+            const viewDir = positionView.negate().normalize();
+            const fresnelTerm = float(1.0).sub(dot(viewDir, normalView).abs());
+            const fresnel = pow(fresnelTerm, fresnelPower).add(fresnelBias);
+
+            return glowColor.mul(fresnel).mul(opacity);
+        });
+
+        const mat = new MeshBasicNodeMaterial();
+        mat.colorNode = main();
+        mat.transparent = true;
+        mat.blending = THREE.AdditiveBlending;
+        mat.depthWrite = false; // Important for transparent objects usually
+        mat.side = THREE.DoubleSide;
+        return mat;
+    }, [glassProps]);
 
     // Rotation Target
     const targetQuaternion = useRef(new THREE.Quaternion());
@@ -55,15 +96,15 @@ export default function ContentCube({ onRotationStart }: ContentCubeProps) {
     ];
 
     useFrame((state, delta) => {
-        if (meshRef.current) {
+        if (groupRef.current) {
             if (isAutoRotating) {
-                // Auto-rotate the MESH directly
-                meshRef.current.rotation.y += delta * 0.1;
-                meshRef.current.rotation.x += delta * 0.05;
+                // Auto-rotate the GROUP directly
+                groupRef.current.rotation.y += delta * 0.1;
+                groupRef.current.rotation.x += delta * 0.05;
 
             } else {
                 // Slerp to target
-                meshRef.current.quaternion.slerp(targetQuaternion.current, 0.1);
+                groupRef.current.quaternion.slerp(targetQuaternion.current, 0.1);
             }
         }
     });
@@ -76,13 +117,13 @@ export default function ContentCube({ onRotationStart }: ContentCubeProps) {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (!meshRef.current) return;
+            if (!groupRef.current) return;
 
             // Stop auto-rotation immediately on interaction
             if (isAutoRotatingRef.current) {
                 setIsAutoRotating(false);
                 // Update target to current so it doesn't jump.
-                targetQuaternion.current.copy(meshRef.current.quaternion);
+                targetQuaternion.current.copy(groupRef.current.quaternion);
             }
 
             const currentQ = targetQuaternion.current.clone(); // Current rotation state
@@ -157,40 +198,49 @@ export default function ContentCube({ onRotationStart }: ContentCubeProps) {
     }, [currentFace]);
 
     return (
-        <mesh ref={meshRef}>
-            <boxGeometry args={[4, 4, 4]} />
-            {/* Right (+x) */}
-            <VideoMaterial url={videos[0]} attach="material-0" rotation={faceRotations[0]} isActive={currentFace === 0} />
-            {/* Left (-x) */}
-            <VideoMaterial url={videos[1]} attach="material-1" rotation={faceRotations[1]} isActive={currentFace === 1} />
-            {/* Top (+y) */}
-            <VideoMaterial url={videos[2]} attach="material-2" rotation={faceRotations[2]} isActive={currentFace === 2} />
-            {/* Bottom (-y) */}
-            <VideoMaterial url={videos[3]} attach="material-3" rotation={faceRotations[3]} isActive={currentFace === 3} />
-            {/* Front (+z) */}
-            <meshStandardMaterial attach="material-4" color="white">
-            </meshStandardMaterial>
-            {/* Back (-z) */}
-            <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} isActive={currentFace === 5} />
+        <group ref={groupRef}>
+            {/* Inner Content Cube */}
+            <mesh visible={showContent}>
+                <boxGeometry args={[4, 4, 4]} />
+                {/* Right (+x) */}
+                <VideoMaterial url={videos[0]} attach="material-0" rotation={faceRotations[0]} isActive={currentFace === 0} />
+                {/* Left (-x) */}
+                <VideoMaterial url={videos[1]} attach="material-1" rotation={faceRotations[1]} isActive={currentFace === 1} />
+                {/* Top (+y) */}
+                <VideoMaterial url={videos[2]} attach="material-2" rotation={faceRotations[2]} isActive={currentFace === 2} />
+                {/* Bottom (-y) */}
+                <VideoMaterial url={videos[3]} attach="material-3" rotation={faceRotations[3]} isActive={currentFace === 3} />
+                {/* Front (+z) */}
+                <meshStandardMaterial attach="material-4" color="white">
+                </meshStandardMaterial>
+                {/* Back (-z) */}
+                <VideoMaterial url={videos[4]} attach="material-5" rotation={faceRotations[5]} isActive={currentFace === 5} />
 
-            {/* Front Face Content */}
-            <Html
-                transform
-                position={[0, 0, 2.01]}
-                rotation={[0, 0, 0]}
-                occlude={true}
-                scale={0.19}
-            >
-                <div className="flex flex-col items-center justify-center text-center select-none w-[800px] h-[800px] bg-white text-black p-10">
-                    <h1 className="text-[140px] font-black mb-8 leading-none tracking-tighter font-brandon">
-                        Eric<br />Johnson
-                    </h1>
-                    <p className="text-5xl font-bold opacity-80 max-w-2xl leading-tight font-brandon">
-                        Senior Frontend Developer & Vanquisher of Boring Websites
-                    </p>
-                </div>
-            </Html>
-        </mesh >
+                {/* Front Face Content */}
+                <Html
+                    transform
+                    position={[0, 0, 2.01]}
+                    rotation={[0, 0, 0]}
+                    occlude={true}
+                    scale={0.19}
+                >
+                    <div className="flex flex-col items-center justify-center text-center select-none w-[800px] h-[800px] bg-white text-black p-10">
+                        <h1 className="text-[140px] font-black mb-8 leading-none tracking-tighter font-brandon">
+                            Eric<br />Johnson
+                        </h1>
+                        <p className="text-5xl font-bold opacity-80 max-w-2xl leading-tight font-brandon">
+                            Senior Frontend Developer & Vanquisher of Boring Websites
+                        </p>
+                    </div>
+                </Html>
+            </mesh >
+
+            {/* Outer Glass Cube */}
+            <mesh>
+                <boxGeometry args={[4.2, 4.2, 4.2]} />
+                <primitive object={glassMaterial} attach="material" />
+            </mesh>
+        </group>
     );
 }
 
@@ -201,15 +251,8 @@ interface VideoMaterialProps {
     isActive?: boolean;
 }
 
-import { extend } from "@react-three/fiber";
-
-// --- Custom Shader Material ---
-// This shader handles:
-// 1. "Containing" the video within the UV space (preserving aspect ratio)
-// 2. Fading the edges (SDF) to avoid hard cuts or streaks 
 // --- Custom TSL Material ---
-import { MeshBasicNodeMaterial } from 'three/webgpu';
-import { texture, uv, uniform, vec2, float, If, Fn } from 'three/tsl';
+// (Imports moved to top of file)
 
 function VideoMaterial({ url, attach, rotation = 0, isActive = false }: VideoMaterialProps) {
     const textureMap = useVideoTexture(url);

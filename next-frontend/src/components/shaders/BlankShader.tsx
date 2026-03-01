@@ -9,28 +9,27 @@ import {
 } from 'next/font/google';
 import { MeshBasicNodeMaterial } from 'three/webgpu';
 import {
-    screenSize, vec3, vec2, vec4, uv, float, Fn, smoothstep, uniform,
-    fract, floor, mix, sin, abs, max, texture,
+    vec3, vec2, vec4, uv, float, Fn, smoothstep, uniform,
+    fract, floor, mix, sin, abs, max, texture, length,
 } from 'three/tsl';
 import { useThree, useFrame } from '@react-three/fiber';
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import * as THREE from 'three';
-import { useControls } from 'leva';
-import { sdSphere } from './tsl/utils/sdf/shapes';
+import { useControls, button } from 'leva';
 import { cosinePalette } from './tsl/utils/color/cosine_palette';
 
-const spaceMono    = Space_Mono({ weight: '700', subsets: ['latin'] });
-const robotoMono   = Roboto_Mono({ weight: '700', subsets: ['latin'] });
+const spaceMono     = Space_Mono({ weight: '700', subsets: ['latin'] });
+const robotoMono    = Roboto_Mono({ weight: '700', subsets: ['latin'] });
 const sourceCodePro = Source_Code_Pro({ weight: '900', subsets: ['latin'] });
 const jetBrainsMono = JetBrains_Mono({ weight: '800', subsets: ['latin'] });
-const ibmPlexMono  = IBM_Plex_Mono({ weight: '700', subsets: ['latin'] });
+const ibmPlexMono   = IBM_Plex_Mono({ weight: '700', subsets: ['latin'] });
 
 const fontMap = {
-    'Space Mono':     spaceMono,
-    'Roboto Mono':    robotoMono,
+    'Space Mono':      spaceMono,
+    'Roboto Mono':     robotoMono,
     'Source Code Pro': sourceCodePro,
-    'JetBrains Mono': jetBrainsMono,
-    'IBM Plex Mono':  ibmPlexMono,
+    'JetBrains Mono':  jetBrainsMono,
+    'IBM Plex Mono':   ibmPlexMono,
 };
 
 const palettes = {
@@ -43,7 +42,7 @@ const palettes = {
 
 export function BlankShader(props: any) {
     const meshRef = useRef<THREE.Mesh>(null);
-    const { viewport } = useThree();
+    const { gl, scene, camera, viewport } = useThree();
 
     const timeUniform      = useMemo(() => uniform(0), []);
     const uRowBandHeight   = useMemo(() => uniform(0.8), []);
@@ -57,7 +56,7 @@ export function BlankShader(props: any) {
     const [textTexture] = useState(() => new THREE.CanvasTexture(document.createElement('canvas')));
 
     const uniforms = useMemo(() => ({
-        gridParams:  { value: new THREE.Vector3(10, 10, 0.35) },  // cols, rows, radius
+        gridParams:  { value: new THREE.Vector4(10, 10, 0.35, 1.0) },  // cols, rows, radius, ratio
         animParams:  { value: new THREE.Vector2(1.0, 0.1) },       // speed, pulseAmount
         dotColor:    { value: new THREE.Vector3(1, 1, 1) },
         bgColor:     { value: new THREE.Vector3(0, 0, 0) },
@@ -73,19 +72,19 @@ export function BlankShader(props: any) {
         colorMode: { value: 'Flat',  options: ['Flat', 'Palette', 'Position'] },
         cols:   { value: 10,   min: 1,    max: 50,   step: 1,     onChange: (v: number) => uniforms.gridParams.value.setX(v) },
         rows:   { value: 10,   min: 1,    max: 50,   step: 1,     onChange: (v: number) => uniforms.gridParams.value.setY(v) },
-        radius: { value: 0.35, min: 0.01, max: 0.49, step: 0.001, onChange: (v: number) => uniforms.gridParams.value.setZ(v) },
+        radius: { value: 0.35, min: 0.01, max: 5, step: 0.001, onChange: (v: number) => uniforms.gridParams.value.setZ(v) },
         animate:     { value: false },
         animSpeed:   { value: 1.0, min: 0.0, max: 5.0,  step: 0.01,  onChange: (v: number) => uniforms.animParams.value.setX(v) },
         pulseAmount: { value: 0.1, min: 0.0, max: 0.45, step: 0.001, onChange: (v: number) => uniforms.animParams.value.setY(v) },
         dotColor:    { value: '#ffffff', onChange: (v: string) => { const c = new THREE.Color(v); uniforms.dotColor.value.set(c.r, c.g, c.b); } },
         bgColor:     { value: '#000000', onChange: (v: string) => { const c = new THREE.Color(v); uniforms.bgColor.value.set(c.r, c.g, c.b); } },
         rowBgColor:  { value: '#262626', label: 'Row BG Color', onChange: (v: string) => { const c = new THREE.Color(v); uniforms.rowBgColor.value.set(c.r, c.g, c.b); } },
-        rowBandHeight: { value: 0.8, min: 0.0, max: 1.0, step: 0.01, label: 'Row Band Height', onChange: (v: number) => { uRowBandHeight.value = v; } },
+        rowBandHeight: { value: 0.8, min: 0.0, max: 1.0, step: 0.01,  label: 'Row Band Height',   onChange: (v: number) => { uRowBandHeight.value = v; } },
         rowBandOffset: { value: 0.0, min: -0.5, max: 0.5, step: 0.01, label: 'Row Band Y Offset', onChange: (v: number) => { uRowBandOffset.value = v; } },
-        lightAngle:      { value: 45, min: 0, max: 360, step: 1, label: 'Light Angle', onChange: (v: number) => { const r = v * Math.PI / 180; uLightDir.value.set(Math.cos(r), Math.sin(r)); } },
-        shadowLength:    { value: 0.3, min: 0.0, max: 5.0, step: 0.01, label: 'Shadow Length', onChange: (v: number) => { uShadowLength.value = v; } },
-        shadowSoftness:  { value: 0.05, min: 0.0, max: 0.3, step: 0.005, label: 'Shadow Softness', onChange: (v: number) => { uShadowSoftness.value = v; } },
-        shadowIntensity: { value: 0.5, min: 0.0, max: 1.0, step: 0.01, label: 'Shadow Intensity', onChange: (v: number) => { uShadowIntensity.value = v; } },
+        lightAngle:      { value: 45,   min: 0,   max: 360, step: 1,     label: 'Light Angle',      onChange: (v: number) => { const r = v * Math.PI / 180; uLightDir.value.set(Math.cos(r), Math.sin(r)); } },
+        shadowLength:    { value: 0.3,  min: 0.0, max: 5.0, step: 0.01,  label: 'Shadow Length',    onChange: (v: number) => { uShadowLength.value = v; } },
+        shadowSoftness:  { value: 0.05, min: 0.0, max: 0.3, step: 0.005, label: 'Shadow Softness',  onChange: (v: number) => { uShadowSoftness.value = v; } },
+        shadowIntensity: { value: 0.5,  min: 0.0, max: 1.0, step: 0.01,  label: 'Shadow Intensity', onChange: (v: number) => { uShadowIntensity.value = v; } },
         palette: {
             value: 'Cool Blue',
             options: Object.keys(palettes),
@@ -104,14 +103,114 @@ export function BlankShader(props: any) {
         c: { value: [1.0, 1.0, 1.0],       onChange: (v: [number, number, number]) => uniforms.c.value.set(...v) },
         d: { value: [0.263, 0.416, 0.557], onChange: (v: [number, number, number]) => uniforms.d.value.set(...v) },
         // --- Text number controls ---
-        value1:          { value: 1, min: 0, max: 9, step: 1, label: 'Number 1' },
-        value2:          { value: 2, min: 0, max: 9, step: 1, label: 'Number 2' },
+        value1:          { value: 1,   min: 0, max: 9, step: 1, label: 'Number 1' },
+        value2:          { value: 2,   min: 0, max: 9, step: 1, label: 'Number 2' },
         fontFamily:      { value: 'Space Mono', options: Object.keys(fontMap), label: 'Font' },
         fontSize:        { value: 300, min: 50, max: 900, step: 10, label: 'Font Size' },
         textMaskEnabled: { value: true, label: 'Text Mask' },
+        // --- Export ---
+        exportWidth:  { value: 1000, min: 100, max: 8000, step: 10,  label: 'Export Width' },
+        exportHeight: { value: 1000, min: 100, max: 8000, step: 10,  label: 'Export Height' },
+        transparent:  { value: false, label: 'Transparent BG' },
+        preview:      { value: false, label: 'Preview Aspect' },
     }));
 
-    const { mode, colorMode, animate, value1, value2, fontFamily, fontSize, textMaskEnabled } = controls as any;
+    const { mode, colorMode, animate, value1, value2, fontFamily, fontSize, textMaskEnabled,
+            exportWidth, exportHeight, transparent, preview, cols, rows } = controls as any;
+
+    // Visible world dimensions at the mesh's Z depth
+    const { width, height } = useMemo(() => {
+        const z = (props.position?.[2] ?? (Array.isArray(props.position) ? props.position[2] : 0)) || 0;
+        const cam = camera as THREE.PerspectiveCamera;
+        if (!cam.isPerspectiveCamera) return viewport;
+        const distance = Math.abs(cam.position.z - z);
+        const fov = (cam.fov * Math.PI) / 180;
+        const h = 2 * Math.tan(fov / 2) * distance;
+        const w = h * (viewport.width / viewport.height);
+        return { width: w, height: h };
+    }, [camera, props.position, viewport]);
+
+    // Constrain mesh to target aspect ratio when preview is on
+    const { renderWidth, renderHeight } = useMemo(() => {
+        if (!preview) return { renderWidth: width, renderHeight: height };
+        const targetAspect = exportWidth / exportHeight;
+        const currentAspect = width / height;
+        let w = width, h = height;
+        if (currentAspect > targetAspect) {
+            w = height * targetAspect;
+        } else {
+            h = width / targetAspect;
+        }
+        return { renderWidth: w, renderHeight: h };
+    }, [width, height, preview, exportWidth, exportHeight]);
+
+    // Ref so the export callback always sees fresh dimensions/settings
+    const exportSettingsRef = useRef({ width: 1000, height: 1000, transparent: false });
+    exportSettingsRef.current = {
+        width:       typeof exportWidth  !== 'undefined' ? exportWidth  : 1000,
+        height:      typeof exportHeight !== 'undefined' ? exportHeight : 1000,
+        transparent: typeof transparent  !== 'undefined' ? transparent  : false,
+    };
+
+    const handleExport = useCallback(() => {
+        const { width: targetWidth, height: targetHeight, transparent: isTransparent } = exportSettingsRef.current;
+        const cam = camera as THREE.PerspectiveCamera;
+        const mesh = meshRef.current;
+        if (!mesh || !cam.isPerspectiveCamera) return;
+
+        const originalSize = new THREE.Vector2();
+        gl.getSize(originalSize);
+        const originalPixelRatio = gl.getPixelRatio();
+        const originalBackground = scene.background;
+        const originalAspect = cam.aspect;
+        const originalScale = mesh.scale.clone();
+        const originalRatio = uniforms.gridParams.value.w;
+
+        gl.setSize(targetWidth, targetHeight, false);
+        gl.setPixelRatio(1);
+        cam.aspect = targetWidth / targetHeight;
+        cam.updateProjectionMatrix();
+
+        const z = (props.position?.[2] ?? (Array.isArray(props.position) ? props.position[2] : 0)) || 0;
+        const distance = Math.abs(cam.position.z - z);
+        const fov = (cam.fov * Math.PI) / 180;
+        const visibleHeight = 2 * Math.tan(fov / 2) * distance;
+        const visibleWidth = visibleHeight * cam.aspect;
+        mesh.scale.set(visibleWidth / renderWidth, visibleHeight / renderHeight, 1);
+
+        // Update ratio for the export canvas dimensions
+        const currentCols = uniforms.gridParams.value.x;
+        const currentRows = uniforms.gridParams.value.y;
+        uniforms.gridParams.value.w = (targetWidth / currentCols) / (targetHeight / currentRows);
+
+        if (isTransparent) {
+            scene.background = null;
+            gl.setClearColor(0x000000, 0);
+        }
+
+        gl.render(scene, camera);
+
+        const dataUrl = gl.domElement.toDataURL('image/png', 1.0);
+        const link = document.createElement('a');
+        link.download = 'shader-export.png';
+        link.href = dataUrl;
+        link.click();
+
+        // Restore
+        gl.setSize(originalSize.x, originalSize.y, false);
+        gl.setPixelRatio(originalPixelRatio);
+        scene.background = originalBackground;
+        uniforms.gridParams.value.w = originalRatio;
+        cam.aspect = originalAspect;
+        cam.updateProjectionMatrix();
+        mesh.scale.copy(originalScale);
+        if (isTransparent) gl.setClearColor(0x000000, 0);
+        gl.render(scene, camera);
+    }, [gl, scene, camera, uniforms, props.position, renderWidth, renderHeight]);
+
+    useControls('SDF Dot Grid', {
+        'Export': button(handleExport),
+    }, [handleExport]);
 
     // Render two numbers onto the canvas texture — left half: value1, right half: value2
     useEffect(() => {
@@ -142,6 +241,7 @@ export function BlankShader(props: any) {
 
     useFrame(({ clock }) => {
         timeUniform.value = clock.getElapsedTime();
+        uniforms.gridParams.value.w = (renderWidth / cols) / (renderHeight / rows);
     });
 
     const material = useMemo(() => {
@@ -155,9 +255,8 @@ export function BlankShader(props: any) {
         const cNode = uniform(uniforms.c.value);
         const dNode = uniform(uniforms.d.value);
 
-        const colsNode   = gridParamsNode.x;
-        const rowsNode   = gridParamsNode.y;
-        const baseRadius = gridParamsNode.z;
+        const colsNode = gridParamsNode.x;
+        const rowsNode = gridParamsNode.y;
 
         const main = Fn(() => {
             const uvCoord = uv();
@@ -171,18 +270,12 @@ export function BlankShader(props: any) {
             // Center cell UV: -0.5 to 0.5
             const centeredUV = cellUV.sub(0.5);
 
-            // Correct aspect so dots are circular regardless of cols/rows or screen shape
-            // cellAspect = (screenW / cols) / (screenH / rows) = screenW*rows / screenH*cols
-            const cellAspect = screenSize.x.div(screenSize.y).mul(rowsNode).div(colsNode);
-            const correctedUV = vec2(centeredUV.x.mul(cellAspect), centeredUV.y);
+            // gridParamsNode.w = (renderWidth / cols) / (renderHeight / rows)
+            // Corrects dots to be circular for the actual output dimensions.
+            const correctedUV = vec2(centeredUV.x.mul(gridParamsNode.w), centeredUV.y);
 
-            // Optionally pulse the radius over time
-            const radius = animate
-                ? baseRadius.add(sin(timeUniform.mul(animParamsNode.x)).mul(animParamsNode.y))
-                : baseRadius;
-
-            // SDF circle: negative inside, positive outside
-            const d = sdSphere(correctedUV, radius);
+            const dist = length(correctedUV);
+            const d = dist.sub(gridParamsNode.z);
 
             // --- Dot color ---
             const dotCol = vec3(0).toVar();
@@ -215,13 +308,13 @@ export function BlankShader(props: any) {
             // For each band pixel, shift toward the light and test if that position lands inside a dot.
             // If it does, this pixel is in shadow (the dot occludes the light above it).
             //
-            // The shift is converted to global UV space so we can also look up which cell the
-            // shadow-caster lives in and confirm an actual dot exists there (font mask check).
-            // Without this, the SDF would report shadow even in cells where no dot is rendered.
+            // The shift is in global UV space so we correctly identify the shadow-caster cell even
+            // when the shadow crosses a cell boundary. We also sample the font mask at the caster
+            // cell to avoid phantom shadows where no dot is rendered.
             const shadowGlobalUV = uvCoord.add(
                 vec2(uLightDir.x.div(colsNode), uLightDir.y.div(rowsNode)).mul(uShadowLength)
             );
-            const shadowCasterCellID = floor(shadowGlobalUV.mul(gridDims));
+            const shadowCasterCellID  = floor(shadowGlobalUV.mul(gridDims));
             const shadowCasterCenterUV = shadowCasterCellID.add(0.5).div(gridDims);
             const shadowCasterSample = textMaskEnabled
                 ? texture(textTexture, shadowCasterCenterUV).r
@@ -229,14 +322,14 @@ export function BlankShader(props: any) {
 
             // Evaluate SDF in the shadow-caster cell's own local space so the shadow
             // correctly spans across cell boundaries.
-            const shadowCasterLocalUV = fract(shadowGlobalUV.mul(gridDims)).sub(0.5);
-            const shadowCasterCorrectedUV = vec2(shadowCasterLocalUV.x.mul(cellAspect), shadowCasterLocalUV.y);
-            const shadowSdf = sdSphere(shadowCasterCorrectedUV, radius);
-            const litValue = smoothstep(uShadowSoftness.negate(), uShadowSoftness, shadowSdf); // 0=in shadow, 1=lit
+            const shadowCasterLocalUV    = fract(shadowGlobalUV.mul(gridDims)).sub(0.5);
+            const shadowCasterCorrectedUV = vec2(shadowCasterLocalUV.x.mul(gridParamsNode.w), shadowCasterLocalUV.y);
+            const shadowSdf     = length(shadowCasterCorrectedUV).sub(gridParamsNode.z);
+            const litValue      = smoothstep(uShadowSoftness.negate(), uShadowSoftness, shadowSdf); // 0=in shadow, 1=lit
 
             // Suppress shadow where no real dot exists at the caster position
             const effectiveLitValue = max(litValue, float(1).sub(shadowCasterSample));
-            const shadowFactor = mix(float(1).sub(uShadowIntensity), float(1), effectiveLitValue);
+            const shadowFactor  = mix(float(1).sub(uShadowIntensity), float(1), effectiveLitValue);
             const rowBgShadowed = rowBgColorNode.mul(shadowFactor);
 
             const bandedBg = mix(bgColorNode, rowBgShadowed, bandMask);
@@ -249,20 +342,19 @@ export function BlankShader(props: any) {
                 const dotMask = textMaskEnabled ? inside.mul(textSample) : inside;
                 finalColor.assign(mix(bandedBg, dotCol, dotMask));
             } else if (mode === 'Glow') {
-                // Soft glow emanating from the circle surface outward
-                const glowWidth = baseRadius.mul(0.8);
+                const glowWidth = gridParamsNode.z.mul(0.8);
                 const glow = float(1).sub(smoothstep(float(0), glowWidth, max(d, float(0))));
                 const dotMask = textMaskEnabled ? glow.mul(textSample) : glow;
                 finalColor.assign(mix(bandedBg, dotCol, dotMask));
             } else if (mode === 'Ring') {
-                // Outline ring at the circle surface
-                const ringThickness = baseRadius.mul(0.15);
+                const ringThickness = gridParamsNode.z.mul(0.15);
                 const ring = float(1).sub(smoothstep(ringThickness, ringThickness.add(aa), abs(d)));
                 const dotMask = textMaskEnabled ? ring.mul(textSample) : ring;
                 finalColor.assign(mix(bandedBg, dotCol, dotMask));
             }
 
-            return vec4(finalColor, 1.0);
+            // DEBUG: d+0.5 in red (dark=inside circle, bright=outside), gridParamsNode.z in green (should be ~0.35)
+            return vec4(d.add(float(0.5)), gridParamsNode.z, float(0), float(1));
         });
 
         const mat = new MeshBasicNodeMaterial();
@@ -273,7 +365,7 @@ export function BlankShader(props: any) {
 
     return (
         <mesh ref={meshRef} {...props}>
-            <planeGeometry args={[viewport.width, viewport.height]} />
+            <planeGeometry args={[renderWidth, renderHeight]} />
             <primitive object={material} attach="material" />
         </mesh>
     );

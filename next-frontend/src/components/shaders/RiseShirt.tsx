@@ -56,7 +56,7 @@ export function RiseShirt(props: any) {
     const { gl, scene, camera, viewport } = useThree();
 
     // Leva controls
-    const { rows, cols, minRadius, maxRadius, color, backgroundColor, exportWidth, exportHeight, transparent, preview, invert, topMargin, text, textGridCols, textGridRows, textX, textY, fontSize, textBlendAmount, textCircleRadius, textColor, textBgColor, textBgTransparent, fontFamily, colorMode } = useControls('Rise Shirt', {
+    const { rows, cols, minRadius, maxRadius, color, backgroundColor, exportWidth, exportHeight, transparent, preview, invert, topMargin, text, textGridCols, textGridRows, textX, textY, fontSize, textBlendAmount, textCircleRadius, textColor, textBgColor, textBgTransparent, fontFamily, colorMode, textEnabled, textColorMode } = useControls('Rise Shirt', {
         rows: { value: 48, min: 10, max: 200, step: 1 },
         cols: { value: 37, min: 1, max: 50, step: 1 },
         minRadius: { value: 0.02, min: 0.01, max: 0.5, step: 0.01 },
@@ -101,6 +101,25 @@ export function RiseShirt(props: any) {
         b: { value: [0.5, 0.5, 0.5],       onChange: (v: [number, number, number]) => uPaletteB.value.set(...v) },
         c: { value: [1.0, 1.0, 1.0],       onChange: (v: [number, number, number]) => uPaletteC.value.set(...v) },
         d: { value: [0.263, 0.416, 0.557], onChange: (v: [number, number, number]) => uPaletteD.value.set(...v) },
+        textEnabled: { value: true, label: 'Text Enabled' },
+        textColorMode: { value: 'Flat', options: ['Flat', 'Palette'], label: 'Text Color Mode' },
+        textPalette: {
+            value: 'Cool Blue',
+            options: Object.keys(palettes),
+            label: 'Text Palette',
+            onChange: (v: string) => {
+                const p = palettes[v as keyof typeof palettes];
+                if (!p) return;
+                uTextPaletteA.value.set(...(p.a as [number, number, number]));
+                uTextPaletteB.value.set(...(p.b as [number, number, number]));
+                uTextPaletteC.value.set(...(p.c as [number, number, number]));
+                uTextPaletteD.value.set(...(p.d as [number, number, number]));
+            },
+        },
+        tA: { value: [0.5, 0.5, 0.5],       label: 'Text A', onChange: (v: [number, number, number]) => uTextPaletteA.value.set(...v) },
+        tB: { value: [0.5, 0.5, 0.5],       label: 'Text B', onChange: (v: [number, number, number]) => uTextPaletteB.value.set(...v) },
+        tC: { value: [1.0, 1.0, 1.0],       label: 'Text C', onChange: (v: [number, number, number]) => uTextPaletteC.value.set(...v) },
+        tD: { value: [0.263, 0.416, 0.557], label: 'Text D', onChange: (v: [number, number, number]) => uTextPaletteD.value.set(...v) },
     });
 
     const { width, height } = useMemo(() => {
@@ -192,12 +211,20 @@ export function RiseShirt(props: any) {
     const uTextRatio = useMemo(() => uniform(1.0), []);
     const uTopMargin = useMemo(() => uniform(0.0), []);
 
-    // Cosine palette uniforms
+    // Cosine palette uniforms — main dots
     const uPaletteA = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
     const uPaletteB = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
     const uPaletteC = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
     const uPaletteD = useMemo(() => uniform(new THREE.Vector3(0.263, 0.416, 0.557)), []);
     const uColorMode = useMemo(() => uniform(0), []); // 0 = Flat, 1 = Palette
+
+    // Cosine palette uniforms — text dots
+    const uTextPaletteA = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
+    const uTextPaletteB = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
+    const uTextPaletteC = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
+    const uTextPaletteD = useMemo(() => uniform(new THREE.Vector3(0.263, 0.416, 0.557)), []);
+    const uTextColorMode = useMemo(() => uniform(0), []); // 0 = Flat, 1 = Palette
+    const uTextEnabled = useMemo(() => uniform(1), []);
 
     // Text Texture
     const [textTexture] = useState(() => new THREE.CanvasTexture(document.createElement('canvas')));
@@ -375,6 +402,8 @@ export function RiseShirt(props: any) {
         const tbc = new THREE.Color(textBgColor);
         uTextBgColorVec4.value.set(tbc.r, tbc.g, tbc.b, textBgTransparent ? 0 : 1);
         uColorMode.value = colorMode === 'Palette' ? 1 : 0;
+        uTextColorMode.value = textColorMode === 'Palette' ? 1 : 0;
+        uTextEnabled.value = textEnabled ? 1 : 0;
     });
 
     const main = Fn(() => {
@@ -421,10 +450,10 @@ export function RiseShirt(props: any) {
         const textCenterUv = (textCellIndex.add(0.5)).div(textGridDims);
         const textSample = texture(textTexture, textCenterUv).r;
         const circleMask = smoothstep(uTextCircleRadius, uTextCircleRadius.sub(smoothing), textDist);
-        const textMask = circleMask.mul(textSample).mul(uTextBlendAmount);
+        const textMask = circleMask.mul(textSample).mul(uTextBlendAmount).mul(uTextEnabled);
         const textMixFactor = mix(textCenterUv.y, float(1).sub(textCenterUv.y), uInvert);
-        const textPaletteColor = vec4((cosinePalette as any)(textMixFactor, uPaletteA, uPaletteB, uPaletteC, uPaletteD), 1.0);
-        const textDotColor = select(uColorMode.greaterThan(float(0.5)), textPaletteColor, uTextColorVec4);
+        const textPaletteColor = vec4((cosinePalette as any)(textMixFactor, uTextPaletteA, uTextPaletteB, uTextPaletteC, uTextPaletteD), 1.0);
+        const textDotColor = select(uTextColorMode.greaterThan(float(0.5)), textPaletteColor, uTextColorVec4);
         const marginColor = mix(uTextBgColorVec4, textDotColor, textMask);
 
         // Margin shows text, design area shows dots
