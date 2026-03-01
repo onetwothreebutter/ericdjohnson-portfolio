@@ -14,8 +14,8 @@ import {
 } from 'next/font/google';
 import { MeshBasicNodeMaterial } from 'three/webgpu';
 import {
-    vec3, vec2, vec4, uv, float, Fn, smoothstep, uniform,
-    fract, mix, length, clamp, pow, texture,
+    vec2, vec4, uv, float, Fn, smoothstep, uniform,
+    fract, mix, length, clamp, pow, texture, cos, sin, fwidth,
 } from 'three/tsl';
 import { useThree, useFrame } from '@react-three/fiber';
 import { useRef, useMemo, useState, useEffect } from 'react';
@@ -71,10 +71,17 @@ export function LineCircle(props: any) {
     const uB = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
     const uC = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
     const uD = useMemo(() => uniform(new THREE.Vector3(0.263, 0.416, 0.557)), []);
-    const uTextColor    = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
-    const uOutlineColor = useMemo(() => uniform(new THREE.Vector3(0.0, 0.0, 0.0)), []);
+    const uTextColor      = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
+    const uUseTextColor   = useMemo(() => uniform(0.0), []);
+    const uOutlineColor   = useMemo(() => uniform(new THREE.Vector3(0.0, 0.0, 0.0)), []);
     const uTextX        = useMemo(() => uniform(0.5), []);
     const uTextY        = useMemo(() => uniform(0.5), []);
+    const uTriEnabled   = useMemo(() => uniform(1.0), []);
+    const uTriRotation  = useMemo(() => uniform(0.0), []);
+    const uTriSize      = useMemo(() => uniform(1.0), []);
+    const uTriWidth          = useMemo(() => uniform(Math.PI / 6), []); // 30° = equilateral half-angle
+    const uCenterCircleEnabled = useMemo(() => uniform(0.0), []);
+    const uCenterCircleRadius  = useMemo(() => uniform(0.05), []);
 
     const [textTexture] = useState(() => new THREE.CanvasTexture(document.createElement('canvas')));
 
@@ -103,12 +110,21 @@ export function LineCircle(props: any) {
             c: { value: [1.0, 1.0, 1.0],       onChange: (v: [number, number, number]) => uC.value.set(...v) },
             d: { value: [0.263, 0.416, 0.557], onChange: (v: [number, number, number]) => uD.value.set(...v) },
         }),
+        'Mask Settings': folder({
+            triEnabled:  { value: true,  label: 'Triangle Enabled',    onChange: (v: boolean) => { uTriEnabled.value = v ? 1.0 : 0.0; } },
+            triRotation: { value: 0,     label: 'Triangle Rotation',   min: 0,   max: 360,  step: 1,    onChange: (v: number) => { uTriRotation.value = v * Math.PI / 180; } },
+            triSize:     { value: 1.0,   label: 'Triangle Size',       min: 0.1, max: 2.0,  step: 0.01, onChange: (v: number) => { uTriSize.value = v; } },
+            triWidth:    { value: 30,    label: 'Triangle Base Width',  min: 5,   max: 89,   step: 1,    onChange: (v: number) => { uTriWidth.value = v * Math.PI / 180; } },
+            centerCircleEnabled: { value: false, label: 'Center Circle',        onChange: (v: boolean) => { uCenterCircleEnabled.value = v ? 1.0 : 0.0; } },
+            centerCircleRadius:  { value: 0.05,  label: 'Center Circle Radius', min: 0.01, max: 0.45, step: 0.005, onChange: (v: number) => { uCenterCircleRadius.value = v; } },
+        }),
         'Text Settings': folder({
             text:           { value: 'HELLO',      label: 'Text' },
             fontFamily:     { value: 'Space Mono', options: Object.keys(fontMap), label: 'Font' },
             fontSize:       { value: 120, min: 8,   max: 300, step: 1,    label: 'Font Size' },
             textX:          { value: 0.5, min: 0.0, max: 1.0, step: 0.01, label: 'Text X' },
             textY:          { value: 0.5, min: 0.0, max: 1.0, step: 0.01, label: 'Text Y' },
+            useCustomTextColor: { value: false, label: 'Custom Text Color', onChange: (v: boolean) => { uUseTextColor.value = v ? 1.0 : 0.0; } },
             textColor:      { value: '#ffffff', label: 'Text Color', onChange: (v: string) => {
                 const c = new THREE.Color(v); uTextColor.value.set(c.r, c.g, c.b);
             }},
@@ -183,8 +199,8 @@ export function LineCircle(props: any) {
             // Aspect-corrected circle SDF
             const correctedUV = vec2(centeredUV.x.mul(uAspect), centeredUV.y);
             const circleSDF = length(correctedUV).sub(uRadius);
-            const aaEdge = float(0.002);
-            const circleMask = float(1).sub(smoothstep(aaEdge.negate(), aaEdge, circleSDF));
+            const aaCircle = fwidth(circleSDF).mul(0.5);
+            const circleMask = float(1).sub(smoothstep(aaCircle.negate(), aaCircle, circleSDF));
 
             // t: 0 at top of circle, 1 at bottom
             const circleTop = float(0.5).add(uRadius);
@@ -203,15 +219,44 @@ export function LineCircle(props: any) {
             // Line fill fraction: thin at top, thick at bottom
             const lineWidth = mix(uWidthTop, uWidthBot, t);
 
-            // 1 inside the filled stripe, 0 in the gap
-            const aaLine = float(0.008);
+            // 1 inside the filled stripe, 0 in the gap — fwidth gives a 1-pixel AA band everywhere
+            const aaLine = fwidth(phase).mul(0.5);
             const lineMask = float(1).sub(smoothstep(lineWidth.sub(aaLine), lineWidth.add(aaLine), phase));
 
             // Cosine palette driven by vertical position
             const palColor = (cosinePalette as any)(t, uA, uB, uC, uD);
 
-            // Circle + lines base output
-            const base = palColor.mul(circleMask.mul(lineMask));
+            // Equilateral triangle: apex at center, base corners on circle edge
+            // Rotate correctedUV before edge tests so the whole triangle spins around center
+            const cosR = cos(uTriRotation);
+            const sinR = sin(uTriRotation);
+            const triUV = vec2(
+                correctedUV.x.mul(cosR).sub(correctedUV.y.mul(sinR)),
+                correctedUV.x.mul(sinR).add(correctedUV.y.mul(cosR)),
+            );
+            // Half-plane signed distances (positive = inside) in rotated aspect-corrected space
+            const cosW = cos(uTriWidth);
+            const sinW = sin(uTriWidth);
+            const triEdgeL = triUV.x.mul(cosW).sub(triUV.y.mul(sinW));
+            const triEdgeR = triUV.x.mul(cosW).negate().sub(triUV.y.mul(sinW));
+            const triEdgeB = triUV.y.add(uRadius.mul(uTriSize));
+            const aaTriL = fwidth(triEdgeL).mul(0.5);
+            const aaTriR = fwidth(triEdgeR).mul(0.5);
+            const aaTriB = fwidth(triEdgeB).mul(0.5);
+            const triInner = smoothstep(aaTriL.negate(), aaTriL, triEdgeL)
+                .mul(smoothstep(aaTriR.negate(), aaTriR, triEdgeR))
+                .mul(smoothstep(aaTriB.negate(), aaTriB, triEdgeB));
+            // Inverted: cutout inside triangle. uTriEnabled blends to no-op (1) when off.
+            const triMask = mix(float(1), float(1).sub(triInner), uTriEnabled);
+
+            // Small circle cutout at center
+            const centerSDF   = length(correctedUV).sub(uCenterCircleRadius);
+            const aaCenter    = fwidth(centerSDF).mul(0.5);
+            const centerInner = float(1).sub(smoothstep(aaCenter.negate(), aaCenter, centerSDF));
+            const centerMask  = mix(float(1), float(1).sub(centerInner), uCenterCircleEnabled);
+
+            // Circle + lines + triangle + center circle base output
+            const base = palColor.mul(circleMask.mul(lineMask).mul(triMask).mul(centerMask));
 
             // Text overlay: sample with aspect-corrected UV so glyphs appear
             // undistorted on non-square viewports. Scale the x delta from the
@@ -225,7 +270,8 @@ export function LineCircle(props: any) {
             const outlineSample = smoothstep(float(0.05), float(0.6), texSample.g);
             // Composite: outline first, fill on top
             const withOutline   = mix(base, uOutlineColor, outlineSample);
-            const finalColor    = mix(withOutline, uTextColor, fillSample);
+            const textFillColor = mix(palColor, uTextColor, uUseTextColor);
+            const finalColor    = mix(withOutline, textFillColor, fillSample);
 
             return vec4(finalColor, float(1));
         });
@@ -233,7 +279,7 @@ export function LineCircle(props: any) {
         const mat = new MeshBasicNodeMaterial();
         mat.colorNode = main();
         return mat;
-    }, [uAspect, uRadius, uLineCount, uPower, uWidthTop, uWidthBot, uA, uB, uC, uD, uTextColor, uOutlineColor, uTextX, uTextY, textTexture]);
+    }, [uAspect, uRadius, uLineCount, uPower, uWidthTop, uWidthBot, uA, uB, uC, uD, uTextColor, uUseTextColor, uOutlineColor, uTextX, uTextY, uTriEnabled, uTriRotation, uTriSize, uTriWidth, uCenterCircleEnabled, uCenterCircleRadius, textTexture]);
 
     return (
         <mesh ref={meshRef} {...props}>
