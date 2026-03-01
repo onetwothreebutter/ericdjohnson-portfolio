@@ -135,7 +135,7 @@ export function LineCircle(props: any) {
         }),
         'Text Settings': folder({
             text:           { value: '2001',            label: 'Text' },
-            fontFamily:     { value: 'Spline Sans Mono', options: Object.keys(fontMap), label: 'Font' },
+            fontFamily:     { value: 'Courier Prime', options: Object.keys(fontMap), label: 'Font' },
             fontSize:       { value: 120,  min: 8,   max: 300, step: 1,    label: 'Font Size' },
             textX:          { value: 0.30, min: 0.0, max: 1.0, step: 0.01, label: 'Text X' },
             textY:          { value: 0.85, min: 0.0, max: 1.0, step: 0.01, label: 'Text Y' },
