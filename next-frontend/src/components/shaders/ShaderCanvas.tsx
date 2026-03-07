@@ -40,7 +40,7 @@ export function ShaderCanvas({ children, cameraPosition = [0, 0, 5] }: ShaderCan
                         styleHeight: canvas.style.height
                     });
 
-                    const renderer = new WebGPURenderer({ canvas: canvas, antialias: true, forceWebGL: false });
+                    const renderer = new WebGPURenderer({ canvas: canvas, antialias: true, alpha: true, forceWebGL: false });
                     renderer.init().then(() => {
                         console.log('ShaderCanvas: WebGPURenderer init success');
                         setFrameloop('always');

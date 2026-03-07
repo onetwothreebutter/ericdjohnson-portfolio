@@ -24,6 +24,8 @@ import { RiseShirtText } from '@/components/shaders/RiseShirtText';
 import { BlankShader } from '@/components/shaders/BlankShader';
 import { NumberDot } from '@/components/shaders/NumberDot';
 import { LineCircle } from '@/components/shaders/LineCircle';
+import { ThreeSquare } from '@/components/shaders/ThreeSquare';
+import { StackedGradient } from '@/components/shaders/StackedGradient';
 
 
 import { notFound } from 'next/navigation';
@@ -109,6 +111,12 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'line-circle':
             ShaderComponent = LineCircle;
+            break;
+        case 'three-square':
+            ShaderComponent = ThreeSquare;
+            break;
+        case 'stacked-gradient':
+            ShaderComponent = StackedGradient;
             break;
 
         default:

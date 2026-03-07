@@ -46,6 +46,12 @@ export default function ShadersPage() {
                 <Link href="/shaders/line-circle" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Line Circle
                 </Link>
+                <Link href="/shaders/three-square" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Three Square
+                </Link>
+                <Link href="/shaders/stacked-gradient" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Stacked Gradient
+                </Link>
             </div>
 
             <ShaderGallery />
