@@ -52,6 +52,9 @@ export default function ShadersPage() {
                 <Link href="/shaders/stacked-gradient" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Stacked Gradient
                 </Link>
+                <Link href="/shaders/letter-grid" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Letter Grid
+                </Link>
             </div>
 
             <ShaderGallery />

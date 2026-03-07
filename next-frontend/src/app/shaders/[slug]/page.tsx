@@ -26,6 +26,7 @@ import { NumberDot } from '@/components/shaders/NumberDot';
 import { LineCircle } from '@/components/shaders/LineCircle';
 import { ThreeSquare } from '@/components/shaders/ThreeSquare';
 import { StackedGradient } from '@/components/shaders/StackedGradient';
+import { LetterGrid } from '@/components/shaders/LetterGrid';
 
 
 import { notFound } from 'next/navigation';
@@ -117,6 +118,9 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'stacked-gradient':
             ShaderComponent = StackedGradient;
+            break;
+        case 'letter-grid':
+            ShaderComponent = LetterGrid;
             break;
 
         default:
