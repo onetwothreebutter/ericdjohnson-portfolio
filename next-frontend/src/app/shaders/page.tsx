@@ -55,6 +55,15 @@ export default function ShadersPage() {
                 <Link href="/shaders/letter-grid" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Letter Grid
                 </Link>
+                <Link href="/shaders/apollonian-gasket" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Apollonian Gasket
+                </Link>
+                <Link href="/shaders/sdf-packing" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    SDF Packing
+                </Link>
+                <Link href="/shaders/echo-text" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Echo Text
+                </Link>
             </div>
 
             <ShaderGallery />

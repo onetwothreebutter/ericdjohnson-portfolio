@@ -32,12 +32,9 @@ import {
   float,
   Fn,
   uniform,
-  fract,
   floor,
   length,
   smoothstep,
-  pow,
-  mix,
   texture,
   fwidth,
 } from "three/tsl";
@@ -129,6 +126,12 @@ const palettes = {
 };
 
 const CANVAS_SIZE = 1024;
+// Max grid resolution. The packing canvas is always MAX_GRID×MAX_GRID;
+// only the active [0..cols-1, 0..rows-1] region is used.
+const MAX_GRID = 100;
+// r is stored as r_uv/R_SCALE so it fits in [0,1] even at fillFactor=2.
+// sqrt(2) * fillFactor_max / maxDim * maxDim / 2 = sqrt(2) ≈ 1.41, so R_SCALE=2 covers it.
+const R_SCALE = 2.0;
 
 export function LetterGrid(props: any) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -138,14 +141,13 @@ export function LetterGrid(props: any) {
   const uCols = useMemo(() => uniform(30.0), []);
   const uRows = useMemo(() => uniform(30.0), []);
   const uAspect = useMemo(() => uniform(1.0), []);
-  const uMinRadius = useMemo(() => uniform(0.02), []);
-  const uMaxRadius = useMemo(() => uniform(0.96), []);
-  const uFalloff = useMemo(() => uniform(1.0), []);
   const uA = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
   const uB = useMemo(() => uniform(new THREE.Vector3(0.5, 0.5, 0.5)), []);
   const uC = useMemo(() => uniform(new THREE.Vector3(1.0, 1.0, 1.0)), []);
   const uD = useMemo(() => uniform(new THREE.Vector3(0.0, 0.33, 0.67)), []);
 
+  // SDF canvas: white bg + blurred black letter.
+  // White (1.0) = far from letter = large circle. Black (0.0) = inside/near letter.
   const [sdfTexture] = useState(() => {
     const canvas = document.createElement("canvas");
     canvas.width = CANVAS_SIZE;
@@ -153,60 +155,37 @@ export function LetterGrid(props: any) {
     return new THREE.CanvasTexture(canvas);
   });
 
+  // Packing canvas: MAX_GRID×MAX_GRID, one texel per grid cell.
+  // RGBA8 encoding: R=cx, G=cy, B=r/R_SCALE, A=active (all in [0,1]).
+  // flipY=false so canvas row r matches shader texUV.y ≈ r/MAX_GRID.
+  const [packingTexture] = useState(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = MAX_GRID;
+    canvas.height = MAX_GRID;
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.magFilter = THREE.NearestFilter;
+    tex.minFilter = THREE.NearestFilter;
+    tex.flipY = false;
+    return tex;
+  });
+
   const [controls, set] = useControls("Letter Grid", () => ({
     "Letter Settings": folder({
       letter: { value: "A", label: "Letter", type: LevaInputs.STRING },
-      fontFamily: {
-        value: "Montserrat",
-        options: Object.keys(fontMap),
-        label: "Font",
-      },
+      fontFamily: { value: "Montserrat", options: Object.keys(fontMap), label: "Font" },
       fontSize: { value: 700, min: 50, max: 950, step: 1, label: "Font Size" },
       sdfSpread: { value: 80, min: 1, max: 300, step: 1, label: "SDF Spread" },
+      threshold: { value: 0.5, min: 0.05, max: 0.95, step: 0.01, label: "Threshold" },
     }),
     Grid: folder({
-      cols: {
-        value: 30,
-        min: 2,
-        max: 100,
-        step: 1,
-        label: "Columns",
-        onChange: (v: number) => { uCols.value = v; },
-      },
-      rows: {
-        value: 30,
-        min: 2,
-        max: 100,
-        step: 1,
-        label: "Rows",
-        onChange: (v: number) => { uRows.value = v; },
-      },
+      cols: { value: 30, min: 2, max: MAX_GRID, step: 1, label: "Columns" },
+      rows: { value: 30, min: 2, max: MAX_GRID, step: 1, label: "Rows" },
     }),
     Circles: folder({
-      minRadius: {
-        value: 0.02,
-        min: 0,
-        max: 0.5,
-        step: 0.005,
-        label: "Min Radius",
-        onChange: (v: number) => { uMinRadius.value = v; },
-      },
-      maxRadius: {
-        value: 0.96,
-        min: 0,
-        max: 1.0,
-        step: 0.005,
-        label: "Max Radius",
-        onChange: (v: number) => { uMaxRadius.value = v; },
-      },
-      falloff: {
-        value: 1.0,
-        min: 0.1,
-        max: 5.0,
-        step: 0.05,
-        label: "Falloff",
-        onChange: (v: number) => { uFalloff.value = v; },
-      },
+      // fillFactor=1 → circle tangent to where the letter was first detected.
+      // >1 overlaps into the letter, <1 leaves a gap.
+      fillFactor: { value: 1.0, min: 0.1, max: 2.0, step: 0.05, label: "Fill Factor" },
+      minRunLength: { value: 1, min: 1, max: 20, step: 1, label: "Min Run Length" },
     }),
     Palette: folder({
       palette: {
@@ -222,22 +201,10 @@ export function LetterGrid(props: any) {
           uD.value.set(...(p.d as [number, number, number]));
         },
       },
-      a: {
-        value: [0.5, 0.5, 0.5],
-        onChange: (v: [number, number, number]) => uA.value.set(...v),
-      },
-      b: {
-        value: [0.5, 0.5, 0.5],
-        onChange: (v: [number, number, number]) => uB.value.set(...v),
-      },
-      c: {
-        value: [1.0, 1.0, 1.0],
-        onChange: (v: [number, number, number]) => uC.value.set(...v),
-      },
-      d: {
-        value: [0.0, 0.33, 0.67],
-        onChange: (v: [number, number, number]) => uD.value.set(...v),
-      },
+      a: { value: [0.5, 0.5, 0.5], onChange: (v: [number, number, number]) => uA.value.set(...v) },
+      b: { value: [0.5, 0.5, 0.5], onChange: (v: [number, number, number]) => uB.value.set(...v) },
+      c: { value: [1.0, 1.0, 1.0], onChange: (v: [number, number, number]) => uC.value.set(...v) },
+      d: { value: [0.0, 0.33, 0.67], onChange: (v: [number, number, number]) => uD.value.set(...v) },
     }),
     Export: folder({
       exportWidth: { value: 4500, min: 100, max: 9000, step: 10, label: "Width" },
@@ -246,26 +213,35 @@ export function LetterGrid(props: any) {
   }));
   setRef.current = set;
 
-  const { letter, fontFamily, fontSize, sdfSpread, exportWidth, exportHeight } =
-    controls as any;
+  const {
+    letter,
+    fontFamily,
+    fontSize,
+    sdfSpread,
+    threshold,
+    cols,
+    rows,
+    fillFactor,
+    minRunLength,
+    exportWidth,
+    exportHeight,
+  } = controls as any;
 
   useEffect(() => {
-    const canvas = sdfTexture.image as HTMLCanvasElement;
-    canvas.width = CANVAS_SIZE;
-    canvas.height = CANVAS_SIZE;
-    const ctx = canvas.getContext("2d");
+    uCols.value = cols;
+    uRows.value = rows;
+
+    // --- Step 1: Draw blurred letter to SDF canvas ---
+    const sdfCanvas = sdfTexture.image as HTMLCanvasElement;
+    sdfCanvas.width = CANVAS_SIZE;
+    sdfCanvas.height = CANVAS_SIZE;
+    const ctx = sdfCanvas.getContext("2d");
     if (!ctx) return;
 
-    // White background: far-from-letter areas stay white (sdfVal≈1 → large circles)
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
     if (letter) {
-      // Draw letter black-on-white to offscreen, then composite with blur.
-      // Blur spreads the dark letter outward, creating a gradient:
-      //   deep inside letter  → dark (low sdfVal  → small circles)
-      //   near letter edge    → gray (mid sdfVal   → medium circles)
-      //   far outside letter  → white (high sdfVal → large circles)
       const offscreen = document.createElement("canvas");
       offscreen.width = CANVAS_SIZE;
       offscreen.height = CANVAS_SIZE;
@@ -278,14 +254,73 @@ export function LetterGrid(props: any) {
       octx.textBaseline = "middle";
       octx.fillStyle = "black";
       octx.fillText(letter, CANVAS_SIZE / 2, CANVAS_SIZE / 2);
-
       ctx.filter = `blur(${sdfSpread}px)`;
       ctx.drawImage(offscreen, 0, 0);
       ctx.filter = "none";
     }
 
     sdfTexture.needsUpdate = true;
-  }, [letter, fontFamily, fontSize, sdfSpread, sdfTexture]);
+
+    // --- Step 2: Read SDF pixels ---
+    const imageData = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    function getSdf(col: number, row: number): number {
+      const x = Math.min(Math.floor((col + 0.5) / cols * CANVAS_SIZE), CANVAS_SIZE - 1);
+      const y = Math.min(Math.floor((row + 0.5) / rows * CANVAS_SIZE), CANVAS_SIZE - 1);
+      return imageData.data[(y * CANVAS_SIZE + x) * 4] / 255;
+    }
+
+    // --- Step 3: Diagonal-scan packing ---
+    // For each diagonal k = col-row, walk from the grid edge (direction +col,+row).
+    // Consecutive cells with sdfVal >= threshold = one super cell.
+    // One circle per super cell: center at midpoint, radius tangent to the letter boundary.
+    //
+    // Encoding into RGBA8 (all channels normalised to [0,1]):
+    //   R = cx          (circle center x in UV)
+    //   G = cy          (circle center y in UV)
+    //   B = r / R_SCALE (radius, divided so it fits in [0,1])
+    //   A = 1           (active cell)
+    const packCanvas = packingTexture.image as HTMLCanvasElement;
+    const packCtx = packCanvas.getContext("2d")!;
+    const imgData = packCtx.createImageData(MAX_GRID, MAX_GRID); // initialised to all-zero
+
+    const maxDim = Math.max(cols, rows);
+
+    for (let k = -(rows - 1); k <= cols - 1; k++) {
+      const startCol = Math.max(0, k);
+      const startRow = Math.max(0, -k);
+
+      let runLen = 0;
+      let c = startCol;
+      let r = startRow;
+      while (c < cols && r < rows) {
+        if (getSdf(c, r) < threshold) break;
+        runLen++;
+        c++;
+        r++;
+      }
+
+      if (runLen < minRunLength) continue;
+
+      const cx = (startCol + runLen * 0.5) / cols;
+      const cy = (startRow + runLen * 0.5) / rows;
+      // Radius so the circle is tangent to the letter boundary:
+      // diagonal half-length in UV = sqrt(2)/2 * runLen/maxDim
+      const r_uv = (Math.SQRT2 / 2) * (runLen / maxDim) * fillFactor;
+
+      for (let i = 0; i < runLen; i++) {
+        const col = startCol + i;
+        const row = startRow + i;
+        const idx = (row * MAX_GRID + col) * 4;
+        imgData.data[idx + 0] = Math.round(cx * 255);
+        imgData.data[idx + 1] = Math.round(cy * 255);
+        imgData.data[idx + 2] = Math.round((r_uv / R_SCALE) * 255);
+        imgData.data[idx + 3] = 255; // active
+      }
+    }
+
+    packCtx.putImageData(imgData, 0, 0);
+    packingTexture.needsUpdate = true;
+  }, [letter, fontFamily, fontSize, sdfSpread, threshold, cols, rows, fillFactor, minRunLength, sdfTexture, packingTexture]);
 
   useFrame(() => {
     uAspect.value = viewport.width / viewport.height;
@@ -358,31 +393,31 @@ export function LetterGrid(props: any) {
     const main = Fn(() => {
       const uvCoord = uv();
 
-      // Grid decomposition
+      // Determine which grid cell this pixel belongs to.
       const gridUV = vec2(uvCoord.x.mul(uCols), uvCoord.y.mul(uRows));
       const cellID = floor(gridUV);
-      const cellUV = fract(gridUV).sub(0.5); // [-0.5, 0.5] local coords
 
-      // Sample SDF texture at this cell's center
-      const cellCenter = cellID.add(0.5).div(vec2(uCols, uRows));
-      const sdfVal = texture(sdfTexture, cellCenter).r;
+      // Look up the packing canvas at this cell's texel.
+      // packingTexture is MAX_GRID×MAX_GRID with flipY=false, so texUV.y=0 → canvas row 0.
+      const texUV = cellID.add(0.5).div(float(MAX_GRID));
+      const pack = texture(packingTexture, texUV);
 
-      // Circle radius driven by SDF value
-      const radius = mix(uMinRadius, uMaxRadius, pow(sdfVal, uFalloff));
+      // Decode RGBA8: cx, cy in [0,1]; r = B * R_SCALE; active = A (1 or 0)
+      const cx = pack.r;
+      const cy = pack.g;
+      const r = pack.b.mul(float(R_SCALE));
+      const active = pack.a;
 
-      // Aspect-correct local UV so circles appear round on screen.
-      // Cell physical aspect = (screenW/cols) / (screenH/rows) = uAspect * (uRows/uCols)
-      const cellAspect = uAspect.mul(uRows).div(uCols);
-      const correctedUV = vec2(cellUV.x.mul(cellAspect), cellUV.y);
-
-      // Circle SDF + anti-aliased mask
-      const d = length(correctedUV).sub(radius);
+      // Aspect-corrected distance from this pixel to the circle center
+      const dx = uvCoord.x.sub(cx).mul(uAspect);
+      const dy = uvCoord.y.sub(cy);
+      const d = length(vec2(dx, dy)).sub(r);
       const aa = fwidth(d).mul(0.5);
-      const circleMask = float(1).sub(smoothstep(aa.negate(), aa, d));
+      const circleMask = float(1).sub(smoothstep(aa.negate(), aa, d)).mul(active);
 
-      // Cosine palette color driven by SDF value (large circles = different hue than small)
+      // Color from cosine palette keyed on SDF value at circle center
+      const sdfVal = texture(sdfTexture, vec2(cx, cy)).r;
       const col = (cosinePalette as any)(sdfVal, uA, uB, uC, uD);
-
       return vec4(col, circleMask);
     });
 
@@ -390,7 +425,7 @@ export function LetterGrid(props: any) {
     mat.colorNode = main();
     mat.transparent = true;
     return mat;
-  }, [uCols, uRows, uAspect, uMinRadius, uMaxRadius, uFalloff, uA, uB, uC, uD, sdfTexture]);
+  }, [uCols, uRows, uAspect, uA, uB, uC, uD, sdfTexture, packingTexture]);
 
   return (
     <mesh ref={meshRef} {...props}>

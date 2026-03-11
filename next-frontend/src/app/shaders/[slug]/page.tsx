@@ -27,6 +27,9 @@ import { LineCircle } from '@/components/shaders/LineCircle';
 import { ThreeSquare } from '@/components/shaders/ThreeSquare';
 import { StackedGradient } from '@/components/shaders/StackedGradient';
 import { LetterGrid } from '@/components/shaders/LetterGrid';
+import { ApollonianGasket } from '@/components/shaders/ApollonianGasket';
+import { SDFPacking } from '@/components/shaders/SDFPacking';
+import { EchoText } from '@/components/shaders/EchoText';
 
 
 import { notFound } from 'next/navigation';
@@ -121,6 +124,15 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'letter-grid':
             ShaderComponent = LetterGrid;
+            break;
+        case 'apollonian-gasket':
+            ShaderComponent = ApollonianGasket;
+            break;
+        case 'sdf-packing':
+            ShaderComponent = SDFPacking;
+            break;
+        case 'echo-text':
+            ShaderComponent = EchoText;
             break;
 
         default:
