@@ -30,6 +30,7 @@ import { LetterGrid } from '@/components/shaders/LetterGrid';
 import { ApollonianGasket } from '@/components/shaders/ApollonianGasket';
 import { SDFPacking } from '@/components/shaders/SDFPacking';
 import { EchoText } from '@/components/shaders/EchoText';
+import { FourShapes } from '@/components/shaders/FourShapes';
 
 
 import { notFound } from 'next/navigation';
@@ -133,6 +134,9 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'echo-text':
             ShaderComponent = EchoText;
+            break;
+        case 'four-shapes':
+            ShaderComponent = FourShapes;
             break;
 
         default:

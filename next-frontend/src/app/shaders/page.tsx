@@ -64,6 +64,9 @@ export default function ShadersPage() {
                 <Link href="/shaders/echo-text" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Echo Text
                 </Link>
+                <Link href="/shaders/four-shapes" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Four Shapes
+                </Link>
             </div>
 
             <ShaderGallery />
