@@ -105,6 +105,24 @@ export const sdEquilateralTriangle = Fn(([p, _r = float(0.1)]) => {
 }) as unknown as (p: any, r?: any) => ShaderNodeObject<Node>;
 
 /**
+ * Returns an isosceles triangle SDF with apex at origin, base at y=h.
+ * @param {vec2} p - The point coordinates (vec2).
+ * @param {vec2} q - vec2(half-base-width, height).
+ * @returns {number} The signed distance (negative inside).
+ */
+export const sdIsosceles = Fn(([p_in, q]: any[]) => {
+    const p = vec2(abs(p_in.x), p_in.y).toVar();
+    const a = p.sub(q.mul(dot(p, q).div(dot(q, q)).clamp(0.0, 1.0)));
+    const b = p.sub(q.mul(vec2(p.x.div(q.x).clamp(0.0, 1.0), float(1.0))));
+    const s = q.y.sign().negate();
+    const d = min(
+        vec2(dot(a, a), s.mul(p.x.mul(q.y).sub(p.y.mul(q.x)))),
+        vec2(dot(b, b), s.mul(p.y.sub(q.y))),
+    );
+    return sqrt(d.x).negate().mul(d.y.sign());
+}) as unknown as (p: any, q: any) => ShaderNodeObject<Node>;
+
+/**
  * Returns a line SDF for a given coordinate.
  * @param {number} p - The coordinate (float).
  * @returns {number} The signed distance from the line.
