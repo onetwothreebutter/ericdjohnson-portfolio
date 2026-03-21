@@ -67,6 +67,9 @@ export default function ShadersPage() {
                 <Link href="/shaders/four-shapes" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Four Shapes
                 </Link>
+                <Link href="/shaders/scaling-letters" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Scaling Letters
+                </Link>
             </div>
 
             <ShaderGallery />
