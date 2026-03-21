@@ -70,6 +70,9 @@ export default function ShadersPage() {
                 <Link href="/shaders/scaling-letters" className="text-white opacity-70 hover:opacity-100 transition-opacity">
                     Scaling Letters
                 </Link>
+                <Link href="/shaders/line-text" className="text-white opacity-70 hover:opacity-100 transition-opacity">
+                    Line Text
+                </Link>
             </div>
 
             <ShaderGallery />
