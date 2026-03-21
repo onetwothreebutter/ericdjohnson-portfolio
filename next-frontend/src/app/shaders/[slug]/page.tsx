@@ -31,6 +31,7 @@ import { ApollonianGasket } from '@/components/shaders/ApollonianGasket';
 import { SDFPacking } from '@/components/shaders/SDFPacking';
 import { EchoText } from '@/components/shaders/EchoText';
 import { FourShapes } from '@/components/shaders/FourShapes';
+import { ScalingLetters } from '@/components/shaders/ScalingLetters';
 
 
 import { notFound } from 'next/navigation';
@@ -137,6 +138,9 @@ export default function ShaderPage({ params }: { params: { slug: string } }) {
             break;
         case 'four-shapes':
             ShaderComponent = FourShapes;
+            break;
+        case 'scaling-letters':
+            ShaderComponent = ScalingLetters;
             break;
 
         default:
