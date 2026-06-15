@@ -180,7 +180,7 @@ export function EchoText(props: any) {
           uA.value.set(...newA); uB.value.set(...newB);
           uC.value.set(...newC); uD.value.set(...newD);
         },
-        { render: (get) => get("Plain Text.Palette.colorMode") === "Cosine" },
+        { render: (get) => get("Plain Text.Palette.colorMode") === "Cosine" } as any,
       ),
       color0: { value: "#ff3366", label: "Color 1", render: (get) => get("Plain Text.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor0.value.set(c.r, c.g, c.b); } },
       color1: { value: "#ffcc00", label: "Color 2", render: (get) => get("Plain Text.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor1.value.set(c.r, c.g, c.b); } },
