@@ -35,8 +35,8 @@ export function FractalLikeV1(props: any) {
         const d = vec3(0.263, 0.416, 0.557);
 
         // Normalize uv coords between -.5 and .5, preserve aspect ratio
-        const _uv = screenAspectUV(screenSize).toVar();
-        const uv0 = screenAspectUV(screenSize);
+        const _uv = (screenAspectUV as any)(screenSize).toVar();
+        const uv0 = (screenAspectUV as any)(screenSize);
 
         // slow down time
         const _time = time.mul(0.1);
@@ -71,7 +71,7 @@ export function FractalLikeV1(props: any) {
         const patternRepititions = 8;
 
         // column effect
-        const uvR = screenAspectUV(screenSize).toVar();
+        const uvR = (screenAspectUV as any)(screenSize).toVar();
         // convert to 0 to 1
         uvR.addAssign(0.5);
 
@@ -95,7 +95,7 @@ export function FractalLikeV1(props: any) {
 
         // pattern.assign(abs(pattern))
 
-        const color = cosinePalette(sdSphere(uv0).add(time.mul(0.1)), a, b, c, d);
+        const color = (cosinePalette as any)((sdSphere as any)(uv0).add(time.mul(0.1)), a, b, c, d);
         // const color = vec3(1.0, 0.0, 0.0);
         // return finalColor.;
         return vec3(pattern.mul(color));

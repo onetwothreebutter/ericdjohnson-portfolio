@@ -35,8 +35,8 @@ export function FractalLikeV3(props: any) {
         const d = vec3(0.263, 0.416, 0.557);
 
         // Normalize uv coords between -.5 and .5, preserve aspect ratio
-        const _uv = screenAspectUV(screenSize).toVar();
-        const uv0 = screenAspectUV(screenSize);
+        const _uv = (screenAspectUV as any)(screenSize).toVar();
+        const uv0 = (screenAspectUV as any)(screenSize);
 
         // slow down time
         const _time = time.mul(0.1);
@@ -57,13 +57,13 @@ export function FractalLikeV3(props: any) {
         //     const i = float(_i);
         //     const shape1 = sdBox2d(fract(_uv.mul(domainRepetitions)).sub(0.5)).toVar();
         //     shape1.assign(shape1.oneMinus());
-        //     shape1.assign(bloomEdgePattern(shape1, freq, edge, exponent));
+        //     shape1.assign((bloomEdgePattern as any)(shape1, freq, edge, exponent));
         //     const shape2 = sdSphere(uv0.mul(0.6).mul(_time), 0.1).toVar();
         //     shape2.assign(shape2.oneMinus());
-        //     shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
+        //     shape2.assign((bloomEdgePattern as any)(shape2, freq, edge, exponent));
 
         //     pattern.assign(smax(shape1, shape2, 0.9));
-        //     // pattern.assign(smin(shape1, shape2, 0.5));
+        //     // pattern.assign((smin as any)(shape1, shape2, 0.5));
         //     // pattern.assign(shape2);
         // });
 
@@ -73,13 +73,13 @@ export function FractalLikeV3(props: any) {
             const i = float(_i);
             const shape1 = sdBox2d((_uv.mul(2))).toVar();
             shape1.assign(shape1.oneMinus());
-            shape1.assign(bloomEdgePattern(shape1, freq, 0.05, exponent));
+            shape1.assign((bloomEdgePattern as any)(shape1, freq, 0.05, exponent));
             const shape2 = sdSphere(uv0.mul(0.6).mul(sin(_time)), 0.1).toVar();
             shape2.assign(shape2.oneMinus());
-            shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
+            shape2.assign((bloomEdgePattern as any)(shape2, freq, edge, exponent));
 
             // pattern.assign(smax(shape1, shape2, 0.2));
-            pattern.assign(smin(shape1, shape2, 0.9));
+            pattern.assign((smin as any)(shape1, shape2, 0.9));
             // pattern.assign(shape1);
         });
 

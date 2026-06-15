@@ -92,7 +92,9 @@ const fontMap = {
   Montserrat: montserrat,
 };
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   Rainbow: {
     a: [0.5, 0.5, 0.5],
     b: [0.5, 0.5, 0.5],

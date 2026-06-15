@@ -35,8 +35,8 @@ export function FractalLikeV4(props: any) {
         const d = vec3(0.263, 0.416, 0.557);
 
         // Normalize uv coords between -.5 and .5, preserve aspect ratio
-        const _uv = screenAspectUV(screenSize).toVar();
-        const uv0 = screenAspectUV(screenSize);
+        const _uv = (screenAspectUV as any)(screenSize).toVar();
+        const uv0 = (screenAspectUV as any)(screenSize);
 
         // slow down time
         const _time = time.mul(0.1);
@@ -63,7 +63,7 @@ export function FractalLikeV4(props: any) {
         //     shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
 
         //     pattern.assign(smax(shape1, shape2, 0.9));
-        //     // pattern.assign(smin(shape1, shape2, 0.5));
+        //     // pattern.assign((smin as any)(shape1, shape2, 0.5));
         //     // pattern.assign(shape2);
         // });
 
@@ -80,7 +80,7 @@ export function FractalLikeV4(props: any) {
             shape2.assign(sdSphere(uv0.mul(0.9), 0.2));
             shape1.mulAssign(shape2);
             // shape2.assign(shape2.oneMinus());
-            shape2.absAssign(shape2);
+            shape2.absAssign();
             // shape2.assign(shape2.oneMinus());
             // shape2.assign(bloomEdgePattern(shape2, freq, edge, exponent));
 
@@ -89,8 +89,8 @@ export function FractalLikeV4(props: any) {
         });
 
 
-        // pattern.assign(smin(shape1, shape2, 0.6));
-        pattern.assign(smin(shape1, shape2.oneMinus().sub(0.8), 0.1));
+        // pattern.assign((smin as any)(shape1, shape2, 0.6));
+        pattern.assign((smin as any)(shape1, shape2.oneMinus().sub(0.8), 0.1));
 
         // finalColor.assign(cosinePalette(pattern.oneMinus(), a, b, c, d));
 

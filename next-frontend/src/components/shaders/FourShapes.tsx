@@ -59,7 +59,9 @@ const fontMap = {
 
 const CANVAS_SIZE = 512;
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   Rainbow: { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.0, 0.33, 0.67] },
   "Cool Blue": { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.263, 0.416, 0.557] },
   "Neon Heat": { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.3, 0.2, 0.2] },
@@ -219,7 +221,7 @@ export function FourShapes(props: any) {
         onChange: (v: string) => {
           const p = palettes[v as keyof typeof palettes];
           if (!p) return;
-          set({ a: p.a, b: p.b, c: p.c, d: p.d });
+          set({ a: p.a, b: p.b, c: p.c, d: p.d } as any);
           uA.value.set(...(p.a as [number, number, number]));
           uB.value.set(...(p.b as [number, number, number]));
           uC.value.set(...(p.c as [number, number, number]));
@@ -241,7 +243,7 @@ export function FourShapes(props: any) {
           uA.value.set(...newA); uB.value.set(...newB);
           uC.value.set(...newC); uD.value.set(...newD);
         },
-        { render: (get) => get("Four Shapes.Palette.colorMode") === "Cosine" },
+        { render: (get: (key: string) => any) => get("Four Shapes.Palette.colorMode") === "Cosine" } as any,
       ),
       color0: { value: "#ff3366", label: "Color 1", render: (get) => get("Four Shapes.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor0.value.set(c.r, c.g, c.b); } },
       color1: { value: "#ffcc00", label: "Color 2", render: (get) => get("Four Shapes.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor1.value.set(c.r, c.g, c.b); } },

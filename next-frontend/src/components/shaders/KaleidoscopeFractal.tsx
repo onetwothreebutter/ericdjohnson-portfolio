@@ -53,7 +53,7 @@ export function KaleidoscopeFractal(props: any) {
             const _t = time.mul(0.025).mul(pow(_i, 2))
 
             // Use a technique called: Prime number harmonics to create unique rotations based on the iteration number
-            const _m = mat2(
+            const _m = (mat2 as any)(
                 cos(_t.add(mul(0.8, 1))),
                 cos(_t.add(mul(0.8, 7))),
                 cos(_t.add(mul(0.8, 5))),

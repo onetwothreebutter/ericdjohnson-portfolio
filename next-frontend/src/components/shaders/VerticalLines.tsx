@@ -9,7 +9,9 @@ import { cosinePalette } from './tsl/utils/color/cosine_palette';
 import { perlinNoise3d } from './tsl/noise/perlin_noise_3d';
 import { useControls } from 'leva';
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
     'Cool Blue': {
         a: [0.5, 0.5, 0.5],
         b: [0.5, 0.5, 0.5],
@@ -86,11 +88,11 @@ export function VerticalLines(props: any) {
             onChange: (v: string) => {
                 const p = palettes[v as keyof typeof palettes];
                 if (p) {
-                    set({ a: p.a, b: p.b, c: p.c, d: p.d });
-                    uniforms.a.value.set(...(p.a as any));
-                    uniforms.b.value.set(...(p.b as any));
-                    uniforms.c.value.set(...(p.c as any));
-                    uniforms.d.value.set(...(p.d as any));
+                    set({ a: p.a, b: p.b, c: p.c, d: p.d } as any);
+                    uniforms.a.value.set(...p.a);
+                    uniforms.b.value.set(...p.b);
+                    uniforms.c.value.set(...p.c);
+                    uniforms.d.value.set(...p.d);
                 }
             }
         },
