@@ -94,7 +94,9 @@ const fontMap = {
 
 const CANVAS_SIZE = 512;
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   Rainbow: {
     a: [0.5, 0.5, 0.5],
     b: [0.5, 0.5, 0.5],
@@ -279,7 +281,7 @@ export function ThreeSquare(props: any) {
         onChange: (v: string) => {
           const p = palettes[v as keyof typeof palettes];
           if (!p) return;
-          set({ a: p.a, b: p.b, c: p.c, d: p.d });
+          set({ a: p.a, b: p.b, c: p.c, d: p.d } as any);
           uA.value.set(...(p.a as [number, number, number]));
           uB.value.set(...(p.b as [number, number, number]));
           uC.value.set(...(p.c as [number, number, number]));
@@ -331,7 +333,7 @@ export function ThreeSquare(props: any) {
           uC.value.set(...newC);
           uD.value.set(...newD);
         },
-        { render: (get) => get("Three Square.Palette.colorMode") === "Cosine" },
+        { render: (get: (key: string) => any) => get("Three Square.Palette.colorMode") === "Cosine" } as any,
       ),
       // 4-stop color pickers
       color0: {

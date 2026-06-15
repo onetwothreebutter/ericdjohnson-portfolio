@@ -18,7 +18,7 @@ import { smax, smin } from './tsl/utils/sdf/operations';
 export function RayMarching2(props: any) {
     const meshRef = useRef<THREE.Mesh>(null);
 
-    const calcNormal = Fn(([p]) => {
+    const calcNormal = Fn(([p]: any[]) => {
         const eps = float(0.0001)
         const h = vec2(eps, 0)
         return normalize(
@@ -30,7 +30,7 @@ export function RayMarching2(props: any) {
         )
     })
 
-    const lighting = Fn(([rayOrigin, ray]) => {
+    const lighting = Fn(([rayOrigin, ray]: any[]) => {
         const light = vec3(0).toVar();
         const viewDir = normalize(rayOrigin.sub(ray))
 
@@ -83,7 +83,7 @@ export function RayMarching2(props: any) {
         return finalLighting;
     })
 
-    const mySdf = Fn(([pos]) => {
+    const mySdf = Fn(([pos]: any[]) => {
 
         // create a grid on the xy plane
         const q = pos.toVar()

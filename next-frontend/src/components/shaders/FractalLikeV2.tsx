@@ -34,8 +34,8 @@ export function FractalLikeV2(props: any) {
         const d = vec3(0.263, 0.416, 0.557);
 
         // Normalize uv coords between -.5 and .5, preserve aspect ratio
-        const _uv = screenAspectUV(screenSize).toVar();
-        const uv0 = screenAspectUV(screenSize);
+        const _uv = (screenAspectUV as any)(screenSize).toVar();
+        const uv0 = (screenAspectUV as any)(screenSize);
 
         // slow down time
         const _time = time.mul(0.1);
@@ -98,7 +98,7 @@ export function FractalLikeV2(props: any) {
             // pattern.assign(bloomEdgePattern(pattern, freq, edge, exponent, time))
 
             // Here we apply a time offset to the sphere that gives us a nice animated gradient effect
-            const col = cosinePalette(sdSphere(uv0).add(mul(time, 0.2)), a, b, c, d)
+            const col = (cosinePalette as any)((sdSphere as any)(uv0).add(mul(time, 0.2)), a, b, c, d)
 
             // Because we have very small value ranges for pattern, we need to additively blend the pattern with the final color so that each loop contributes to the final color.
             finalColor.addAssign(pattern.mul(col))

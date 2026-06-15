@@ -105,7 +105,9 @@ const fontMap = {
   Montserrat: montserrat,
 };
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   "Cool Blue": {
     a: [0.5, 0.5, 0.5],
     b: [0.5, 0.5, 0.5],
@@ -231,7 +233,7 @@ export function LineCircle(props: any) {
         onChange: (v: string) => {
           const p = palettes[v as keyof typeof palettes];
           if (!p) return;
-          set({ a: p.a, b: p.b, c: p.c, d: p.d });
+          set({ a: p.a, b: p.b, c: p.c, d: p.d } as any);
           uA.value.set(...(p.a as [number, number, number]));
           uB.value.set(...(p.b as [number, number, number]));
           uC.value.set(...(p.c as [number, number, number]));

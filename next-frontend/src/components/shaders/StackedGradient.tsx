@@ -154,7 +154,9 @@ function computeNoiseThresholds(rowCount: number, seed: number): number[] {
   return computeThresholds(weights);
 }
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   Rainbow: {
     a: [0.5, 0.5, 0.5],
     b: [0.5, 0.5, 0.5],
@@ -237,16 +239,16 @@ export function StackedGradient(props: any) {
         uRowCount.value = v;
         noiseParamsRef.current.rowCount = v;
         const fib = computeFibThresholds(v);
-        fib.forEach((val, i) => { (uFibThresholds.array as Float32Array)[i] = val; });
+        fib.forEach((val, i) => { (uFibThresholds.array as unknown as Float32Array)[i] = val; });
         uFibThresholds.needsUpdate = true;
         const eq = computeEqTempThresholds(v);
-        eq.forEach((val, i) => { (uEqTempThresholds.array as Float32Array)[i] = val; });
+        eq.forEach((val, i) => { (uEqTempThresholds.array as unknown as Float32Array)[i] = val; });
         uEqTempThresholds.needsUpdate = true;
         const sine = computeSineThresholds(v);
-        sine.forEach((val, i) => { (uSineThresholds.array as Float32Array)[i] = val; });
+        sine.forEach((val, i) => { (uSineThresholds.array as unknown as Float32Array)[i] = val; });
         uSineThresholds.needsUpdate = true;
         const noise = computeNoiseThresholds(v, noiseParamsRef.current.seed);
-        noise.forEach((val, i) => { (uNoiseThresholds.array as Float32Array)[i] = val; });
+        noise.forEach((val, i) => { (uNoiseThresholds.array as unknown as Float32Array)[i] = val; });
         uNoiseThresholds.needsUpdate = true;
       },
     },
@@ -273,7 +275,7 @@ export function StackedGradient(props: any) {
       onChange: (v: number) => {
         noiseParamsRef.current.seed = v;
         const noise = computeNoiseThresholds(noiseParamsRef.current.rowCount, v);
-        noise.forEach((val, i) => { (uNoiseThresholds.array as Float32Array)[i] = val; });
+        noise.forEach((val, i) => { (uNoiseThresholds.array as unknown as Float32Array)[i] = val; });
         uNoiseThresholds.needsUpdate = true;
       },
     },
@@ -336,7 +338,7 @@ export function StackedGradient(props: any) {
         onChange: (v: string) => {
           const p = palettes[v as keyof typeof palettes];
           if (!p) return;
-          set({ a: p.a, b: p.b, c: p.c, d: p.d });
+          set({ a: p.a, b: p.b, c: p.c, d: p.d } as any);
           uA.value.set(...(p.a as [number, number, number]));
           uB.value.set(...(p.b as [number, number, number]));
           uC.value.set(...(p.c as [number, number, number]));
@@ -376,7 +378,7 @@ export function StackedGradient(props: any) {
           uC.value.set(...newC);
           uD.value.set(...newD);
         },
-        { render: (get) => get("Stacked Gradient.Palette.colorMode") === "Cosine" },
+        { render: (get: (key: string) => any) => get("Stacked Gradient.Palette.colorMode") === "Cosine" } as any,
       ),
       color0: {
         value: "#ff3366",
@@ -604,25 +606,25 @@ export function StackedGradient(props: any) {
       // --- Fibonacci row layout ---
       let fibRowID: any = float(0);
       for (let i = 0; i < 19; i++) {
-        fibRowID = fibRowID.add(step(uFibThresholds.element(i), y));
+        fibRowID = fibRowID.add((step as any)(uFibThresholds.element(i as any), y));
       }
 
       // --- Equal temperament row layout ---
       let eqTempRowID: any = float(0);
       for (let i = 0; i < 19; i++) {
-        eqTempRowID = eqTempRowID.add(step(uEqTempThresholds.element(i), y));
+        eqTempRowID = eqTempRowID.add((step as any)(uEqTempThresholds.element(i as any), y));
       }
 
       // --- Sine row layout ---
       let sineRowID: any = float(0);
       for (let i = 0; i < 19; i++) {
-        sineRowID = sineRowID.add(step(uSineThresholds.element(i), y));
+        sineRowID = sineRowID.add((step as any)(uSineThresholds.element(i as any), y));
       }
 
       // --- Noise row layout ---
       let noiseRowID: any = float(0);
       for (let i = 0; i < 19; i++) {
-        noiseRowID = noiseRowID.add(step(uNoiseThresholds.element(i), y));
+        noiseRowID = noiseRowID.add((step as any)(uNoiseThresholds.element(i as any), y));
       }
 
       // Select active layout: 0=golden, 1=fibonacci, 2=equal temperament, 3=sine, 4=noise

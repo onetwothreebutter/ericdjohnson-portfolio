@@ -35,8 +35,8 @@ export function FractalLikeV5(props: any) {
         const d = vec3(0.263, 0.416, 0.557);
 
         // Normalize uv coords between -.5 and .5, preserve aspect ratio
-        const _uv = screenAspectUV(screenSize).toVar();
-        const uv0 = screenAspectUV(screenSize);
+        const _uv = (screenAspectUV as any)(screenSize).toVar();
+        const uv0 = (screenAspectUV as any)(screenSize);
 
         // slow down time
         const _time = time.mul(0.1);
@@ -72,7 +72,7 @@ export function FractalLikeV5(props: any) {
             pattern.assign(abs(pattern))
 
             // apply the bloom effect
-            pattern.assign(bloomEdgePattern(pattern, freq, edge, exponent))
+            pattern.assign((bloomEdgePattern as any)(pattern, freq, edge, exponent))
 
             finalColor.addAssign(pattern)
         });

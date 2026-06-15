@@ -40,20 +40,20 @@ export function SDFLine() {
         const thickness = paramsNode.x;
 
         // Type casting for TSL functions since strict types are interfering
-        const sdSegmentWithH = Fn(([p, a, b]) => {
+        const sdSegmentWithH = Fn(([p, a, b]: any[]) => {
             const pa = p.sub(a);
             const ba = b.sub(a);
             const h = clamp(dot(pa, ba).div(dot(ba, ba)), 0.0, 1.0);
             return vec2(length(pa.sub(ba.mul(h))), h);
         });
 
-        const closestPointOnSegment = Fn(([p, a, b]) => {
+        const closestPointOnSegment = Fn(([p, a, b]: any[]) => {
             const ba = b.sub(a);
             const h = clamp(dot(p.sub(a), ba).div(dot(ba, ba)), 0.0, 1.0);
             return a.add(ba.mul(h));
         });
 
-        const sdSegment = Fn(([p, a, b]) => {
+        const sdSegment = Fn(([p, a, b]: any[]) => {
             return length(p.sub(closestPointOnSegment(p, a, b)));
         });
 

@@ -96,7 +96,9 @@ const fontMap = {
   Montserrat: montserrat,
 };
 
-const palettes = {
+type PaletteVec = [number, number, number];
+type Palette = { a: PaletteVec; b: PaletteVec; c: PaletteVec; d: PaletteVec };
+const palettes: Record<string, Palette> = {
   Rainbow:      { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.0,  0.33, 0.67] },
   "Cool Blue":  { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.263, 0.416, 0.557] },
   "Neon Heat":  { a: [0.5, 0.5, 0.5], b: [0.5, 0.5, 0.5], c: [1.0, 1.0, 1.0], d: [0.3,  0.2,  0.2  ] },
@@ -180,7 +182,7 @@ export function EchoText(props: any) {
           uA.value.set(...newA); uB.value.set(...newB);
           uC.value.set(...newC); uD.value.set(...newD);
         },
-        { render: (get) => get("Plain Text.Palette.colorMode") === "Cosine" } as any,
+        { render: (get: (key: string) => any) => get("Plain Text.Palette.colorMode") === "Cosine" } as any,
       ),
       color0: { value: "#ff3366", label: "Color 1", render: (get) => get("Plain Text.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor0.value.set(c.r, c.g, c.b); } },
       color1: { value: "#ffcc00", label: "Color 2", render: (get) => get("Plain Text.Palette.colorMode") === "4-Stop", onChange: (v: string) => { const c = new THREE.Color(v); uColor1.value.set(c.r, c.g, c.b); } },
