@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import { MobileMenu } from "@/components/layout/Menu";
+import { LenisProvider } from "@/components/layout/LenisProvider";
 
 const brandon = localFont({
   src: [
@@ -46,11 +47,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${brandon.variable} font-sans`}>
-        <div className="page-wrapper min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow pb-16 md:pb-0">{children}</main>
-          <MobileMenu />
-        </div>
+        <LenisProvider>
+          <div className="page-wrapper min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-grow pb-16 md:pb-0">{children}</main>
+            <MobileMenu />
+          </div>
+        </LenisProvider>
       </body>
     </html>
   );
