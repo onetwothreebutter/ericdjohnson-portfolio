@@ -26,6 +26,7 @@ uniform float uEdgeThreshold;
 uniform float uNoiseSteps;
 uniform float uNoiseAmplitude;
 uniform float uNoiseFrequency;
+uniform float uGlowWidth;
 varying vec2 vUv;
 
 float lum(vec3 c) {
@@ -86,9 +87,14 @@ void main() {
     float noise = fbm(vUv * uNoiseFrequency + uTime * 0.08);
     noise = floor(noise * uNoiseSteps) / uNoiseSteps * uNoiseAmplitude;
     float revealRadius = uReveal * 0.95 - 0.05;
-    float wipe = step(0.0, revealRadius - dist + noise);
+    float boundary = revealRadius - dist + noise;
+    float wipe = step(0.0, boundary);
+    float glow = smoothstep(uGlowWidth, 0.0, abs(boundary));
 
-    gl_FragColor = vec4(mix(edgeImage, original, wipe), 1.0);
+    vec3 color = mix(edgeImage, original, wipe);
+    color = mix(color, vec3(1.0), glow);
+
+    gl_FragColor = vec4(color, 1.0);
     #include <colorspace_fragment>
 }
 `;
@@ -109,6 +115,10 @@ function ImagePlane() {
         noiseFrequency: { value: 49,   min: 0.5, max: 64,  step: 0.5,  label: "Frequency" },
     });
 
+    const { glowWidth } = useControls("Wipe Glow", {
+        glowWidth: { value: 0.04, min: 0.0, max: 0.2, step: 0.005, label: "Width" },
+    });
+
     const uniforms = useMemo(() => ({
         uTexture: { value: map },
         uScaleX: { value: 1.0 },
@@ -120,6 +130,7 @@ function ImagePlane() {
         uNoiseSteps:     { value: 6 },
         uNoiseAmplitude: { value: 0.25 },
         uNoiseFrequency: { value: 4.0 },
+        uGlowWidth:      { value: 0.04 },
     }), [map]);
 
     useFrame((_, delta) => {
@@ -129,6 +140,7 @@ function ImagePlane() {
         uniforms.uNoiseSteps.value     = noiseSteps;
         uniforms.uNoiseAmplitude.value = noiseAmplitude;
         uniforms.uNoiseFrequency.value = noiseFrequency;
+        uniforms.uGlowWidth.value      = glowWidth;
     });
 
     useEffect(() => {
