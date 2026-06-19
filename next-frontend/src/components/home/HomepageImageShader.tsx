@@ -23,6 +23,9 @@ uniform vec2 uTexelSize;
 uniform float uTime;
 uniform float uReveal;
 uniform float uEdgeThreshold;
+uniform float uNoiseSteps;
+uniform float uNoiseAmplitude;
+uniform float uNoiseFrequency;
 varying vec2 vUv;
 
 float lum(vec3 c) {
@@ -78,11 +81,12 @@ void main() {
 
     vec3 original = texture2D(uTexture, coverUv).rgb;
 
-    // Radial wipe with organic fbm noise on the boundary, driven by scroll
+    // Radial wipe with posterized value noise — quantized steps give pixelated organic edge
     float dist = length(vUv - 0.5);
-    float noise = fbm(vUv * 4.0 + uTime * 0.08) * 0.18;
+    float noise = fbm(vUv * uNoiseFrequency + uTime * 0.08);
+    noise = floor(noise * uNoiseSteps) / uNoiseSteps * uNoiseAmplitude;
     float revealRadius = uReveal * 0.95 - 0.05;
-    float wipe = smoothstep(0.0, 0.06, revealRadius - dist + noise);
+    float wipe = step(0.0, revealRadius - dist + noise);
 
     gl_FragColor = vec4(mix(edgeImage, original, wipe), 1.0);
     #include <colorspace_fragment>
@@ -99,6 +103,12 @@ function ImagePlane() {
         edgeThreshold: { value: 0.2, min: 0.0, max: 1.0, step: 0.01, label: "Threshold" },
     });
 
+    const { noiseSteps, noiseAmplitude, noiseFrequency } = useControls("Wipe Noise", {
+        noiseSteps:     { value: 11,   min: 1,   max: 20,  step: 1,    label: "Steps" },
+        noiseAmplitude: { value: 0.13, min: 0.0, max: 0.5, step: 0.01, label: "Amplitude" },
+        noiseFrequency: { value: 49,   min: 0.5, max: 64,  step: 0.5,  label: "Frequency" },
+    });
+
     const uniforms = useMemo(() => ({
         uTexture: { value: map },
         uScaleX: { value: 1.0 },
@@ -107,12 +117,18 @@ function ImagePlane() {
         uTime: { value: 0.0 },
         uReveal: { value: 0.0 },
         uEdgeThreshold: { value: 0.2 },
+        uNoiseSteps:     { value: 6 },
+        uNoiseAmplitude: { value: 0.25 },
+        uNoiseFrequency: { value: 4.0 },
     }), [map]);
 
     useFrame((_, delta) => {
         uniforms.uTime.value += delta;
         uniforms.uReveal.value = scrollState.progress;
         uniforms.uEdgeThreshold.value = edgeThreshold;
+        uniforms.uNoiseSteps.value     = noiseSteps;
+        uniforms.uNoiseAmplitude.value = noiseAmplitude;
+        uniforms.uNoiseFrequency.value = noiseFrequency;
     });
 
     useEffect(() => {
