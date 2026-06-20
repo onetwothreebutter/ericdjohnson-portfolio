@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type React from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
@@ -11,7 +12,7 @@ const menuItems = [
     { href: "/contact-me", label: "Contact", sub: "me", mobileLabel: "Contact" },
 ];
 
-export function DesktopMenu({ className }: { className?: string }) {
+export function DesktopMenu({ className, linkStyle }: { className?: string; linkStyle?: React.CSSProperties }) {
     return (
         <nav className={clsx("hidden md:flex justify-center items-center h-[60px] font-brandon", className)}>
             {menuItems.map((item) => (
@@ -19,15 +20,16 @@ export function DesktopMenu({ className }: { className?: string }) {
                     key={item.href}
                     href={item.href}
                     className="group relative flex flex-col items-center justify-center ml-[50px] text-brand-red no-underline first:ml-0"
+                    style={linkStyle}
                 >
-                    <span className="absolute left-[-20px] top-[9px] text-[30px] font-light opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
+                    <span className="absolute left-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
                         (
                     </span>
                     <span className="text-lg uppercase">{item.label}</span>
-                    <span className="text-[10px] uppercase transition-all duration-300 group-hover:opacity-100">
+                    <span className="text-[10px] uppercase transition-opacity duration-300 group-hover:opacity-100">
                         {item.sub}
                     </span>
-                    <span className="absolute right-[-20px] top-[9px] text-[30px] font-light opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
+                    <span className="absolute right-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
                         )
                     </span>
                 </Link>

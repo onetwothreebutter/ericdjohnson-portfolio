@@ -15,8 +15,9 @@ export function LenisProvider({ children }: { children: ReactNode }) {
         };
         rafId = requestAnimationFrame(raf);
 
-        lenis.on("scroll", (e: { progress: number }) => {
+        lenis.on("scroll", (e: { progress: number; scroll: number }) => {
             scrollState.progress = e.progress;
+            scrollState.scrollY = e.scroll;
         });
 
         return () => {
