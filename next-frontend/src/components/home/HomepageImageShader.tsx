@@ -2,7 +2,7 @@
 
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
-import { useEffect, useMemo, Suspense } from "react";
+import { useEffect, useMemo, useRef, Suspense } from "react";
 import { useControls } from "leva";
 import * as THREE from "three";
 import { scrollState } from "@/lib/scrollState";
@@ -27,6 +27,8 @@ uniform float uNoiseSteps;
 uniform float uNoiseAmplitude;
 uniform float uNoiseFrequency;
 uniform float uGlowWidth;
+uniform float uPulseSpeed;
+uniform float uPulseAmp;
 varying vec2 vUv;
 
 float lum(vec3 c) {
@@ -86,7 +88,7 @@ void main() {
     float dist = length(vUv - 0.5);
     float noise = fbm(vUv * uNoiseFrequency + uTime * 0.08);
     noise = floor(noise * uNoiseSteps) / uNoiseSteps * uNoiseAmplitude;
-    float revealRadius = uReveal * 0.95 - 0.05;
+    float revealRadius = uReveal * 0.95 - 0.05 + sin(uTime * uPulseSpeed) * uPulseAmp;
     float boundary = revealRadius - dist + noise;
     float wipe = step(0.0, boundary);
     float glow = smoothstep(uGlowWidth, 0.0, abs(boundary));
@@ -99,11 +101,12 @@ void main() {
 }
 `;
 
-function ImagePlane() {
+function ImagePlane({ onReady }: { onReady?: () => void }) {
     const map = useTexture("/images/homepage/eric-and-elwood-2.jpg", (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
     });
     const { viewport, size } = useThree();
+    const readyFired = useRef(false);
 
     const { edgeThreshold } = useControls("Edge Highlight", {
         edgeThreshold: { value: 0.2, min: 0.0, max: 1.0, step: 0.01, label: "Threshold" },
@@ -116,7 +119,12 @@ function ImagePlane() {
     });
 
     const { glowWidth } = useControls("Wipe Glow", {
-        glowWidth: { value: 0.04, min: 0.0, max: 0.2, step: 0.005, label: "Width" },
+        glowWidth: { value: 0.01, min: 0.0, max: 0.2, step: 0.005, label: "Width" },
+    });
+
+    const { pulseSpeed, pulseAmp } = useControls("Wipe Animation", {
+        pulseSpeed: { value: 0.4, min: 0.0, max: 3.0, step: 0.05, label: "Speed" },
+        pulseAmp:   { value: 0.02, min: 0.0, max: 0.1, step: 0.005, label: "Amplitude" },
     });
 
     const uniforms = useMemo(() => ({
@@ -131,9 +139,15 @@ function ImagePlane() {
         uNoiseAmplitude: { value: 0.25 },
         uNoiseFrequency: { value: 4.0 },
         uGlowWidth:      { value: 0.04 },
+        uPulseSpeed:     { value: 0.4 },
+        uPulseAmp:       { value: 0.02 },
     }), [map]);
 
     useFrame((_, delta) => {
+        if (!readyFired.current) {
+            readyFired.current = true;
+            onReady?.();
+        }
         uniforms.uTime.value += delta;
         uniforms.uReveal.value = scrollState.progress;
         uniforms.uEdgeThreshold.value = edgeThreshold;
@@ -141,6 +155,8 @@ function ImagePlane() {
         uniforms.uNoiseAmplitude.value = noiseAmplitude;
         uniforms.uNoiseFrequency.value = noiseFrequency;
         uniforms.uGlowWidth.value      = glowWidth;
+        uniforms.uPulseSpeed.value     = pulseSpeed;
+        uniforms.uPulseAmp.value       = pulseAmp;
     });
 
     useEffect(() => {
@@ -173,12 +189,12 @@ function ImagePlane() {
     );
 }
 
-export default function HomepageImageShader() {
+export default function HomepageImageShader({ onReady }: { onReady?: () => void }) {
     return (
         <div style={{ width: "100%", height: "100%" }}>
             <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
                 <Suspense fallback={null}>
-                    <ImagePlane />
+                    <ImagePlane onReady={onReady} />
                 </Suspense>
             </Canvas>
         </div>
