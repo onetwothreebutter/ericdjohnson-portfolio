@@ -86,6 +86,19 @@ export default function WorkIveDonePage() {
                     </p>
                 </section>
             </div>
+
+            <div className="max-w-3xl mx-auto px-6 space-y-12 pt-20 pb-20">
+                <section>
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Other Work</h2>
+                </section>
+
+                <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
+                    <h3 className="mb-2 text-2xl font-brandon">Shopify Universal Commerce Protocol</h3>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        I was a lead developer on the <a href="https://shopify.com/ucp" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify Universal Commerce Protocol</a> page. [Placeholder copy — details coming soon.]
+                    </p>
+                </section>
+            </div>
         </div>
     );
 }
