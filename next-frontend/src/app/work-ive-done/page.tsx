@@ -44,7 +44,7 @@ export default function WorkIveDonePage() {
                 <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;24 Edition &mdash; &ldquo;Foundations&rdquo;</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        I led development of the 3D hero for Shopify&apos;s Winter &apos;24 Edition, working closely with a 3D designer to bring an abstract architectural model from Cinema 4D into React Three Fiber.
+                        I led development of the 3D hero for <a href="http://shopify.com/editions/winter2024" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;24 Edition</a>, working closely with a 3D designer to bring an abstract architectural model from Cinema 4D into React Three Fiber.
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         A key challenge was matching the final WebGL scene to the designer&apos;s rendered visuals. To preserve the exact color and material treatment, we baked the texture and used Three.js MeshBasicMaterial, allowing the model to display consistently without being affected by scene lighting.
@@ -60,7 +60,7 @@ export default function WorkIveDonePage() {
                 <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;25 Edition &mdash; &ldquo;The Boring Edition&rdquo;</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        I led development of Boring TV, a 3D easter egg for Shopify&apos;s Winter &apos;25 Edition: an interactive retro television featuring 188 AI-generated videos about Shopify&apos;s latest product releases.
+                        I led development of Boring TV, a 3D easter egg for <a href="https://www.shopify.com/editions/winter2025/tv" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;25 Edition</a>: an interactive retro television featuring 188 AI-generated videos about Shopify&apos;s latest product releases.
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         The TV screen used a Three.js render target, which allowed us to layer in custom CRT-style shader effects, including screen curvature, scanline treatment, and static when switching channels.
@@ -73,7 +73,7 @@ export default function WorkIveDonePage() {
                 <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Editions &mdash; Record Albums Index Page</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        I was one of two lead developers on the Shopify Editions Record Albums index page, a 3D record-store-inspired experience that served as an archive for past Shopify Editions.
+                        I was one of two lead developers on the <a href="https://www.shopify.com/editions" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify Editions Record Albums index page</a>, a 3D record-store-inspired experience that served as an archive for past Shopify Editions.
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         The scene combined baked and dynamic rendering techniques: the shelves used a baked 3D texture for visual fidelity and performance, while the individual albums used dynamic shadows to respond naturally within the space. Fine-tuning those shadows was one of the harder challenges, especially balancing softness, quality, and frame rate. In a future iteration, I&apos;d explore texture projection as a more performant approach for the album shadows.
