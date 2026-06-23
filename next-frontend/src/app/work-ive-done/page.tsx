@@ -2,6 +2,7 @@ import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import PhotoCredit from "@/components/features/PhotoCredit";
 import WorkTile from "@/components/features/WorkTile";
 import NewtonsCradle from "@/components/ui/NewtonsCradle";
+import VideoZoom from "@/components/ui/VideoZoom";
 import Image from "next/image";
 
 export default function WorkIveDonePage() {
@@ -41,8 +42,13 @@ export default function WorkIveDonePage() {
                     </p>
                 </section>
 
-                <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;24 Edition &mdash; &ldquo;Foundations&rdquo;</h3>
+                    <VideoZoom
+                        mp4="/editions-winter-2024.mp4"
+                        webm="/editions-winter-2024.webm"
+                        className="w-full rounded-lg mb-4"
+                    />
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I led development of the 3D hero for <a href="http://shopify.com/editions/winter2024" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;24 Edition</a>, working closely with a 3D designer to bring an abstract architectural model from Cinema 4D into React Three Fiber.
                     </p>
@@ -57,8 +63,13 @@ export default function WorkIveDonePage() {
                     </p>
                 </section>
 
-                <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;25 Edition &mdash; &ldquo;The Boring Edition&rdquo;</h3>
+                    <VideoZoom
+                        mp4="/editions-winter-2025.mp4"
+                        webm="/editions-winter-2025.webm"
+                        className="w-full rounded-lg mb-4"
+                    />
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I led development of Boring TV, a 3D easter egg for <a href="https://www.shopify.com/editions/winter2025/tv" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;25 Edition</a>: an interactive retro television featuring 188 AI-generated videos about Shopify&apos;s latest product releases.
                     </p>
@@ -70,8 +81,13 @@ export default function WorkIveDonePage() {
                     </p>
                 </section>
 
-                <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Editions &mdash; Record Albums Index Page</h3>
+                    <VideoZoom
+                        mp4="/all-editions.mp4"
+                        webm="/all-editions.webm"
+                        className="w-full rounded-lg mb-4"
+                    />
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I was one of two lead developers on the <a href="https://www.shopify.com/editions" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify Editions Record Albums index page</a>, a 3D record-store-inspired experience that served as an archive for past Shopify Editions.
                     </p>
@@ -92,11 +108,16 @@ export default function WorkIveDonePage() {
                     <h2 className="text-3xl font-brandon text-brand-red mb-6">Other Work</h2>
                 </section>
 
-                <section className="mb-12 border-l-4 border-brand-red pl-6 py-1">
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Universal Commerce Protocol</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I was a lead developer on the <a href="https://shopify.com/ucp" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify Universal Commerce Protocol</a> page. [Placeholder copy — details coming soon.]
                     </p>
+                    <VideoZoom
+                        mp4="/ucp-interaction.mp4"
+                        webm="/ucp-interaction.webm"
+                        className="w-full rounded-lg mt-4"
+                    />
                 </section>
             </div>
         </div>

@@ -39,29 +39,7 @@ export default function WhoIAmPage() {
                     </p>
                 </section>
 
-                <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Rural Nerd</h2>
-                    <p className="text-gray-700 leading-relaxed mb-6">
-                        I grew up on a corn and soybean farm in southeast Iowa, where I balanced
-                        farm responsibilities like driving tractors and baling hay with a growing
-                        fascination for technology. I loved tinkering with our family's
-                        first computer and installing sound cards and RAM. One of my most memorable gifts was a
-                        SoundBlaster sound card, which solidified my status as a dedicated
-                        "rural nerd".
-
-                        [THIS NEEDS WORK OR DELETION]
-                    </p>
-                    <div className="relative h-64 md:h-96 w-full rounded-xl overflow-hidden shadow-lg">
-                        <Image
-                            src="/images/who-i-am/rural-nerd.jpg"
-                            alt="Rural Nerd"
-                            fill
-                            className="object-cover"
-                        />
-                    </div>
-                </section>
-
-                <section>
+<section>
                     <h2 className="text-3xl font-brandon text-brand-red mb-6">Open-minded</h2>
                     <p className="text-gray-700 leading-relaxed">
                         I embrace adaptability and am always willing to adjust my perspective when
