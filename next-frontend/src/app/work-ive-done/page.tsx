@@ -118,6 +118,25 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
+                    <h3 className="mb-2 text-2xl font-brandon">Brightfield Studio</h3>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        <a href="https://brightfield.studio/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Brightfield</a> is a generative art studio I created to explore how WebGL shader visuals can become physical products and ecommerce experiences.
+                    </p>
+                    <VideoZoom
+                        mp4="/brightfield-main.mp4"
+                        webm="/brightfield-main.webm"
+                        className="w-1/3 mx-auto rounded-lg mb-4"
+                        showAudioToggle
+                    />
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        I built the project end-to-end: the brand, Shopify storefront, WebGL shaders, product presentation, custom art submission flow, launch content, and social strategy. The goal was to make generative art feel approachable and collectible while giving people a playful way to discover what&apos;s possible by adjusting shader inputs.
+                    </p>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        Brightfield brings together creative frontend development, interaction design, commerce UX, and performance-conscious implementation. It also let me test how far a single developer/designer can take an idea&mdash;from visual experimentation to a live storefront and launch campaign&mdash;using Claude as a coding partner for much of the implementation.
+                    </p>
+                </section>
+
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 className="mb-2 text-2xl font-brandon">Shopify Universal Commerce Protocol Page</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I was the sole developer for <a href="https://shopify.com/ucp" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s launch page</a> announcing the Universal Commerce Protocol, a collaboration between Shopify and Google. The page launched in sync with Google CEO Sundar Pichai&apos;s keynote at the National Retail Federation Conference and served as the primary public artifact for Shopify&apos;s UCP announcement.
