@@ -127,6 +127,7 @@ export default function WorkIveDonePage() {
                         webm="/brightfield-main.webm"
                         className="w-1/3 mx-auto rounded-lg mb-4"
                         showAudioToggle
+                        mobileScale={2.5}
                     />
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I built the project end-to-end: the brand, Shopify storefront, WebGL shaders, product presentation, custom art submission flow, launch content, and social strategy. The goal was to make generative art feel approachable and collectible while giving people a playful way to discover what&apos;s possible by adjusting shader inputs.
