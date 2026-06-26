@@ -60,8 +60,18 @@ export default function VideoZoom({ mp4, webm, className, showAudioToggle, mobil
     };
 
     const effectiveScale = isMobile && mobileScale != null ? mobileScale : SCALE;
-    const showPanArrows = zoomed && !showAudioToggle;
-    const showControls = showAudioToggle || showPanArrows;
+    const hasPanArrows = !showAudioToggle;
+
+    // Always render the controls row so it reserves space in document flow.
+    // This prevents layout shift when zooming — arrows fade in/out via opacity instead.
+    const showControls = showAudioToggle || hasPanArrows;
+
+    // Push controls below the scaled video's visual bottom edge.
+    // For horizontal videos the row has h-0/overflow-visible so no space is reserved —
+    // the translateY positions the arrows correctly without contributing to layout.
+    const controlsOffset = zoomed && wrapperRef.current
+        ? (wrapperRef.current.offsetHeight * (effectiveScale - 1)) / 2
+        : 0;
 
     return (
         <div ref={rootRef} className={`block ${className ?? ""}`}>
@@ -90,14 +100,27 @@ export default function VideoZoom({ mp4, webm, className, showAudioToggle, mobil
                 </video>
             </div>
 
-            {/* Controls row — sits below the video, unaffected by transform */}
+            {/* Controls row — always in DOM to avoid layout shift on zoom.
+                Horizontal videos use h-0/overflow-visible so no space is reserved. */}
             {showControls && (
-                <div className="flex items-center justify-center gap-3 mt-2">
-                    {showPanArrows && (
+                <div
+                    className="flex items-center justify-center gap-3 mt-2"
+                    style={{
+                        ...(hasPanArrows ? { height: 0, overflow: "visible" } : {}),
+                        transform: `translateY(${controlsOffset}px)`,
+                        transition: "transform 0.3s ease",
+                    }}
+                >
+                    {hasPanArrows && (
                         <button
                             onClick={() => pan(-1)}
                             aria-label="Pan left"
                             className="md:hidden bg-black/50 hover:bg-black/75 text-white rounded-full w-9 h-9 flex items-center justify-center transition-colors backdrop-blur-sm cursor-pointer"
+                            style={{
+                                opacity: zoomed ? 1 : 0,
+                                pointerEvents: zoomed ? "auto" : "none",
+                                animation: zoomed ? "fade-in 0.3s ease both" : "none",
+                            }}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6" />
@@ -127,11 +150,16 @@ export default function VideoZoom({ mp4, webm, className, showAudioToggle, mobil
                         </button>
                     )}
 
-                    {showPanArrows && (
+                    {hasPanArrows && (
                         <button
                             onClick={() => pan(1)}
                             aria-label="Pan right"
                             className="md:hidden bg-black/50 hover:bg-black/75 text-white rounded-full w-9 h-9 flex items-center justify-center transition-colors backdrop-blur-sm cursor-pointer"
+                            style={{
+                                opacity: zoomed ? 1 : 0,
+                                pointerEvents: zoomed ? "auto" : "none",
+                                animation: zoomed ? "fade-in 0.3s ease both" : "none",
+                            }}
                         >
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6" />
