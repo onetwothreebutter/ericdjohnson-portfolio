@@ -30,50 +30,36 @@ export default function WhoIAmPage() {
       {/* Content */}
       <div className="max-w-3xl mx-auto px-6 space-y-12">
         <section>
+          <h2 className="text-3xl font-brandon text-brand-red mb-6">Collaborating with Designers</h2>
           <p className="text-gray-700 leading-relaxed">
-            I love collaborating with designers, trying new things with AI, and
-            experimenting with new creative coding ideas.
+            In my experience, the best interactive work comes from close collaboration between designers and developers. On Shopify&apos;s Universal Commerce Protocol page, I took a static background grid design, rebuilt it as a WebGL shader, and prototyped an interactive mouse-highlight effect. Designers and stakeholders immediately saw its potential, and I paired with the designer to refine the grid, hover behavior, and visual details into a hero moment that exceeded the original ask.
           </p>
         </section>
 
         <section>
-          <h2 className="text-3xl font-brandon text-brand-red mb-6">
-            {" "}
-            Collaborating with designers
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            The cross-pollination between designers and developers leads to
-            fantastic results in my experience. For exampleo on the
-            shopify.com/ucp page, I took a static design and prototyped a webgl
-            grid highlight effect. The designer love it and saw potential for it
-            in the hero and we collaborated and made a wow moment hero that
-            seemed to materialize out of nothing :heart-eyes:
+          <h2 className="text-3xl font-brandon text-brand-red mb-6">Creative Coding Prototyping</h2>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            I&apos;m hooked on the depth and possibility of creative coding. I love recreating interesting interaction ideas I see on Dribbble, social media, or in the wild, then pushing them further through experimentation. Some of the best discoveries happen accidentally during iteration.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            Debug controls are a core part of my prototyping process. Tools like Leva and lil-gui let me expose shader, motion, and layout variables through sliders, giving designers fine-grained control and making collaboration faster, more playful, and more precise.
           </p>
         </section>
 
         <section>
-          <h2 className="text-3xl font-brandon text-brand-red mb-6">AI</h2>
+          <h2 className="text-3xl font-brandon text-brand-red mb-6">AI-Assisted Development</h2>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            I use AI tools heavily in my development workflow, especially Claude Code, Claude Sonnet, and Claude Opus. I try new models as they&apos;re released, but Claude has become my primary coding partner for prototyping, debugging, refactoring, and exploring implementation options.
+          </p>
           <p className="text-gray-700 leading-relaxed">
-            I use Cursor (both the chat and the autocomplete) and Claude Code. I
-            try new models when they’re released but so far Claude Sonnet/Opus
-            are my main gotos. I use both few-shot prompts to build something a
-            bit bigger (ie, a new component) or focused questions/prompts to
-            address bugs. I’ve started a prompt library so I can keep track of
-            what prompts work well, and so I can try them out to evaluate new
-            models. Lately, I’ve been experimenting with AI agents to build
-            features, and I've refactored this website using Google Antigravity.
+            I&apos;ve also built AI-powered product experiences. For Shopify&apos;s Summer 2026 Edition, I created Plot, a backyard garden-planning app that used AI as part of its core functionality. I have also learned how to write evals and use Braintrust to prevent regressions, compare model behavior, and evaluate prompt changes with more confidence.
           </p>
         </section>
 
         <section>
-          <h2 className="text-3xl font-brandon text-brand-red mb-6">
-            Artistic
-          </h2>
+          <h2 className="text-3xl font-brandon text-brand-red mb-6">Work Ethos</h2>
           <p className="text-gray-700 leading-relaxed">
-            I love visual art and design. I enjoy creating unique and engaging
-            visual experiences for both the web and other mediums. My hobby
-            business is designing concrete sculptures and other art pieces using
-            Blender and my Elegoo 3D printer.
+            I also like to keep work fun. I enjoy joking around, bringing energy to a team, and finding the perfect Slack emoji or GIF to make the day more lively and human. 🫣🫠🤌
           </p>
         </section>
       </div>
