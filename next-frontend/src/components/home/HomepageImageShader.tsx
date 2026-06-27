@@ -3,7 +3,6 @@
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { useEffect, useMemo, useRef, Suspense } from "react";
-import { useControls } from "leva";
 import * as THREE from "three";
 import { scrollState } from "@/lib/scrollState";
 
@@ -108,25 +107,6 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
     const { viewport, size } = useThree();
     const readyFired = useRef(false);
 
-    const { edgeThreshold } = useControls("Edge Highlight", {
-        edgeThreshold: { value: 0.2, min: 0.0, max: 1.0, step: 0.01, label: "Threshold" },
-    });
-
-    const { noiseSteps, noiseAmplitude, noiseFrequency } = useControls("Wipe Noise", {
-        noiseSteps:     { value: 11,   min: 1,   max: 20,  step: 1,    label: "Steps" },
-        noiseAmplitude: { value: 0.13, min: 0.0, max: 0.5, step: 0.01, label: "Amplitude" },
-        noiseFrequency: { value: 49,   min: 0.5, max: 64,  step: 0.5,  label: "Frequency" },
-    });
-
-    const { glowWidth } = useControls("Wipe Glow", {
-        glowWidth: { value: 0.01, min: 0.0, max: 0.2, step: 0.005, label: "Width" },
-    });
-
-    const { pulseSpeed, pulseAmp } = useControls("Wipe Animation", {
-        pulseSpeed: { value: 0.4, min: 0.0, max: 3.0, step: 0.05, label: "Speed" },
-        pulseAmp:   { value: 0.02, min: 0.0, max: 0.1, step: 0.005, label: "Amplitude" },
-    });
-
     const uniforms = useMemo(() => ({
         uTexture: { value: map },
         uScaleX: { value: 1.0 },
@@ -135,10 +115,10 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
         uTime: { value: 0.0 },
         uReveal: { value: 0.0 },
         uEdgeThreshold: { value: 0.2 },
-        uNoiseSteps:     { value: 6 },
-        uNoiseAmplitude: { value: 0.25 },
-        uNoiseFrequency: { value: 4.0 },
-        uGlowWidth:      { value: 0.04 },
+        uNoiseSteps:     { value: 11 },
+        uNoiseAmplitude: { value: 0.13 },
+        uNoiseFrequency: { value: 49 },
+        uGlowWidth:      { value: 0.01 },
         uPulseSpeed:     { value: 0.4 },
         uPulseAmp:       { value: 0.02 },
     }), [map]);
@@ -150,13 +130,6 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
         }
         uniforms.uTime.value += delta;
         uniforms.uReveal.value = scrollState.progress;
-        uniforms.uEdgeThreshold.value = edgeThreshold;
-        uniforms.uNoiseSteps.value     = noiseSteps;
-        uniforms.uNoiseAmplitude.value = noiseAmplitude;
-        uniforms.uNoiseFrequency.value = noiseFrequency;
-        uniforms.uGlowWidth.value      = glowWidth;
-        uniforms.uPulseSpeed.value     = pulseSpeed;
-        uniforms.uPulseAmp.value       = pulseAmp;
     });
 
     useEffect(() => {
