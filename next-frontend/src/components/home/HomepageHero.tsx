@@ -26,7 +26,7 @@ export function HomepageHero() {
                     src="/images/homepage/eric-and-elwood-2.jpg"
                     alt="Eric and Elwood"
                     fill
-                    className="object-cover object-center"
+                    className="object-cover object-[20%_center] md:object-center md:object-cover"
                     priority
                 />
                 <HomepageImageShader onReady={() => setShaderReady(true)} />

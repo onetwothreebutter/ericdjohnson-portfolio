@@ -46,10 +46,10 @@ export function HeroCard() {
 
     return (
         <div
-            className="text-center p-4 backdrop-blur-sm rounded-xl shadow-2xl max-w-2xl w-full mx-4"
+            className="text-center p-4 backdrop-blur-sm rounded-xl shadow-2xl max-w-2xl w-full"
             style={containerStyle}
         >
-            <h1 className="text-5xl md:text-7xl font-brandon mb-4" style={{ color: h1Color }}>
+            <h1 className="text-4xl md:text-7xl font-brandon mb-4" style={{ color: h1Color }}>
                 Eric Johnson
             </h1>
             <div className="text-xl md:text-2xl font-brandon mb-8" style={{ color: subtitleColor }}>

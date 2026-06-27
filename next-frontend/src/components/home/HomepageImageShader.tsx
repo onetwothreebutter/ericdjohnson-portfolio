@@ -3,7 +3,6 @@
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { useEffect, useMemo, useRef, Suspense } from "react";
-import { useControls } from "leva";
 import * as THREE from "three";
 import { scrollState } from "@/lib/scrollState";
 
@@ -29,14 +28,7 @@ uniform float uNoiseFrequency;
 uniform float uGlowWidth;
 uniform float uPulseSpeed;
 uniform float uPulseAmp;
-uniform float uBloomRadius1;
-uniform float uBloomRadius2;
-uniform float uBloomThreshold;
-uniform float uBloomThresholdStart;
-uniform float uBloomIntensity;
-uniform float uBloomIntensityStart;
-uniform float uBloomStart;
-uniform float uBloomEnd;
+uniform float uOffsetX;
 varying vec2 vUv;
 
 float lum(vec3 c) {
@@ -72,7 +64,7 @@ float fbm(vec2 p) {
 }
 
 void main() {
-    vec2 coverUv = (vUv - 0.5) * vec2(uScaleX, uScaleY) + 0.5;
+    vec2 coverUv = (vUv - 0.5) * vec2(uScaleX, uScaleY) + 0.5 + vec2(uOffsetX, 0.0);
 
     float tl = lum(texture2D(uTexture, coverUv + uTexelSize * vec2(-1.0, -1.0)).rgb);
     float tc = lum(texture2D(uTexture, coverUv + uTexelSize * vec2( 0.0, -1.0)).rgb);
@@ -104,10 +96,10 @@ void main() {
     vec3 color = mix(edgeImage, original, wipe);
     color = mix(color, vec3(1.0), glow);
 
-    // Bloom: single-pass additive glow. All parameters animate over the same scroll span.
-    float bloomT = smoothstep(uBloomStart, uBloomEnd, uReveal);
-    float r1 = uBloomRadius1 * bloomT;
-    float r2 = uBloomRadius2 * bloomT;
+    // Bloom: single-pass additive glow. All parameters animate over the same scroll span (0.35 → 0.72).
+    float bloomT = smoothstep(0.35, 0.72, uReveal);
+    float r1 = 1.5 * bloomT;
+    float r2 = 1.0 * bloomT;
     float bloomStr = uReveal * wipe;
     if (bloomStr > 0.0) {
         vec3 b = vec3(0.0);
@@ -120,9 +112,8 @@ void main() {
         b += texture2D(uTexture, coverUv + vec2( 0.0,  r2) * uTexelSize).rgb * 0.5;
         b += texture2D(uTexture, coverUv + vec2( 0.0, -r2) * uTexelSize).rgb * 0.5;
         b /= 6.0;
-        float threshold = mix(uBloomThresholdStart, uBloomThreshold, bloomT);
-        float intensity = mix(uBloomIntensityStart, uBloomIntensity, bloomT);
-        float bright = max(0.0, lum(b) - threshold);
+        float intensity = mix(40.0, 3.8, bloomT);
+        float bright = max(0.0, lum(b));
         color += b * bright * bloomStr * intensity;
     }
 
@@ -138,17 +129,6 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
     const { viewport, size } = useThree();
     const readyFired = useRef(false);
 
-    const { bloomRadius1, bloomRadius2, bloomThresholdStart, bloomThreshold, bloomIntensityStart, bloomIntensity, bloomStart, bloomEnd } = useControls("Bloom", {
-        bloomRadius1:        { value: 1.5,  min: 1,   max: 40,  step: 0.5,  label: "Radius 1 (tight)" },
-        bloomRadius2:        { value: 1.0,  min: 1,   max: 80,  step: 0.5,  label: "Radius 2 (wide)" },
-        bloomThresholdStart: { value: 0.0,  min: 0.0, max: 1.0, step: 0.01, label: "Threshold start" },
-        bloomThreshold:      { value: 0.0,  min: 0.0, max: 1.0, step: 0.01, label: "Threshold end" },
-        bloomIntensityStart: { value: 40.0, min: 0.0, max: 40,  step: 0.1,  label: "Intensity start" },
-        bloomIntensity:      { value: 3.8,  min: 0.0, max: 10,  step: 0.1,  label: "Intensity end" },
-        bloomStart:          { value: 0.35, min: 0.0, max: 1.0, step: 0.01, label: "Reveal start" },
-        bloomEnd:            { value: 0.72, min: 0.0, max: 1.0, step: 0.01, label: "Reveal end" },
-    });
-
     const uniforms = useMemo(() => ({
         uTexture: { value: map },
         uScaleX: { value: 1.0 },
@@ -163,15 +143,17 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
         uGlowWidth:      { value: 0.01 },
         uPulseSpeed:     { value: 0.4 },
         uPulseAmp:       { value: 0.02 },
-        uBloomRadius1:   { value: 1.5 },
-        uBloomRadius2:   { value: 1.0 },
-        uBloomThresholdStart: { value: 0.0 },
-        uBloomThreshold:      { value: 0.0 },
-        uBloomIntensityStart: { value: 40.0 },
-        uBloomIntensity:      { value: 3.8 },
-        uBloomStart:      { value: 0.35 },
-        uBloomEnd:        { value: 0.72 },
+        uOffsetX:        { value: 0.0 },
     }), [map]);
+
+    useEffect(() => {
+        const update = () => {
+            uniforms.uOffsetX.value = window.innerWidth < 768 ? 0.2 : 0.0;
+        };
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, [uniforms]);
 
     useFrame((_, delta) => {
         if (!readyFired.current) {
@@ -180,14 +162,6 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
         }
         uniforms.uTime.value += delta;
         uniforms.uReveal.value = scrollState.progress;
-        uniforms.uBloomRadius1.value   = bloomRadius1;
-        uniforms.uBloomRadius2.value   = bloomRadius2;
-        uniforms.uBloomThresholdStart.value = bloomThresholdStart;
-        uniforms.uBloomThreshold.value      = bloomThreshold;
-        uniforms.uBloomIntensityStart.value = bloomIntensityStart;
-        uniforms.uBloomIntensity.value      = bloomIntensity;
-        uniforms.uBloomStart.value = bloomStart;
-        uniforms.uBloomEnd.value   = bloomEnd;
     });
 
     useEffect(() => {
