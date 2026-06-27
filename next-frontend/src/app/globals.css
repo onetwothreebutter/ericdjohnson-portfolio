@@ -4,3 +4,8 @@
     --font-brandon: var(--font-brandon);
     --color-brand-red: #CD6258;
 }
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

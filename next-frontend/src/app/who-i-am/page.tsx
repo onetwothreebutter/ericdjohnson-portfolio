@@ -30,55 +30,41 @@ export default function WhoIAmPage() {
             {/* Content */}
             <div className="max-w-3xl mx-auto px-6 space-y-12">
                 <section>
-                    <p className="text-gray-700 leading-relaxed">
-                        I’m a creative, good-humored guy who loves art, rural living, and joking around.
-                        I live on a small pick-your-own blueberry farm in Iowa with my wife, daughter,
-                        and two llamas (Jake and Elwood).
-
-                        [Photo of blueberry farm/llamas]
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        I&apos;m a design-minded frontend developer with Iowa roots, a love of visual craft and motion design, and a soft spot for weird, memorable web experiences.
                     </p>
-                </section>
-
-                <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Rural Nerd</h2>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        I grew up on a corn, soybean, cow, and pig farm in southeast Iowa. I loved farm life, but I also loved technology. As a kid, I was hooked on using, upgrading, and tinkering with our custom-built computer. That combination still shapes how I work today: practical, curious, resourceful, and always interested in how things are made.
+                    </p>
                     <p className="text-gray-700 leading-relaxed mb-6">
-                        I grew up on a corn and soybean farm in southeast Iowa, where I balanced
-                        farm responsibilities like driving tractors and baling hay with a growing
-                        fascination for technology. I loved tinkering with our family's
-                        first computer and installing sound cards and RAM. One of my most memorable gifts was a
-                        SoundBlaster sound card, which solidified my status as a dedicated
-                        "rural nerd".
-
-                        [THIS NEEDS WORK OR DELETION]
+                        These days, I live on a small you-pick blueberry farm with two pet llamas. I love the taste of fresh blueberries, the rhythm of rural life, and the joy of being around animals.
                     </p>
-                    <div className="relative h-64 md:h-96 w-full rounded-xl overflow-hidden shadow-lg">
+                    <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                         <Image
-                            src="/images/who-i-am/rural-nerd.jpg"
-                            alt="Rural Nerd"
+                            src="/images/skills-i-have/jake-elwood-sunset.JPG"
+                            alt="Jake and Elwood, the llamas, at sunset"
                             fill
-                            className="object-cover"
+                            className="object-cover object-center"
                         />
                     </div>
                 </section>
 
                 <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Open-minded</h2>
-                    <p className="text-gray-700 leading-relaxed">
-                        I embrace adaptability and am always willing to adjust my perspective when
-                        presented with compelling evidence. I view being wrong as an opportunity to
-                        learn, and I believe that progress comes from having the courage to voice
-                        ideas rather than staying silent.
+                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Outside the Job</h2>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        When I&apos;m not working, I like making things with my hands &mdash; or at least with machines that make things with their nozzles. I design and print 3D lamps using Blender and my Elegoo Neptune 4 Max, and I also 3D print molds for casting objects in concrete.
                     </p>
-                </section>
-
-                <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Artistic</h2>
-                    <p className="text-gray-700 leading-relaxed">
-                        I love visual art and design. I enjoy creating unique and engaging visual
-                        experiences for both the web and other mediums. My hobby business is
-                        designing concrete sculptures and other art pieces using Blender and my
-                        Elegoo 3D printer.
+                    <p className="text-gray-700 leading-relaxed mb-6">
+                        I&apos;m drawn to projects that combine digital tools with physical materials: printed lamps, concrete objects, strange little sculptures, and anything that lets me experiment with form, texture, and process.
                     </p>
+                    <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-6">
+                        <Image
+                            src="/images/who-i-am/squiggle-lamp-2.jpg"
+                            alt="3D printed squiggle lamp"
+                            fill
+                            className="object-cover object-center"
+                        />
+                    </div>
                 </section>
             </div>
         </div>
