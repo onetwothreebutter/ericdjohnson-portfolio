@@ -67,7 +67,7 @@ export function MobileMenu() {
 
     const t = progress;
     const bgVal = Math.round(lerp(0, 255, t));
-    const bgAlpha = lerp(0, 1, t);
+    const bgAlpha = lerp(0.85, 1, t);
     const borderAlpha = lerp(0, 1, t);
     const linkColor = lerpRgb(255, 255, 255, 205, 98, 88, t);
 
