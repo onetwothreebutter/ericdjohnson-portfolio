@@ -17,7 +17,7 @@ export function HomepageHero() {
     }, []);
 
     return (
-        <div className="fixed inset-0 -z-10 bg-black">
+        <div className="fixed top-0 left-0 right-0 h-[100lvh] -z-10 bg-black">
             <div
                 className="absolute inset-0 transition-opacity duration-[2500ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
                 style={{ opacity: shaderReady ? 1 : 0 }}
