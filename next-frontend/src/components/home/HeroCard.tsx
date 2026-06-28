@@ -80,7 +80,7 @@ export function HeroCard() {
     const t = progress;
 
     const bgVal = Math.round(lerp(0, 255, t));
-    const bgAlpha = lerp(1, 0.8, t);
+    const bgAlpha = lerp(1, 0.41, t);
     const borderAlpha = lerp(1, 0, t);
 
     const containerStyle = {
