@@ -90,7 +90,9 @@ void main() {
     float dist = length(vec2(centered.x * uAspect, centered.y));
     float noise = fbm(vUv * uNoiseFrequency + uTime * 0.08);
     noise = floor(noise * uNoiseSteps) / uNoiseSteps * uNoiseAmplitude;
-    float revealRadius = uReveal * 0.95 - 0.05 + sin(uTime * uPulseSpeed) * uPulseAmp;
+    // Scale endpoint by the actual corner distance so the wipe always completes on any aspect ratio
+    float maxCornerDist = length(vec2(0.5 * uAspect, 0.5));
+    float revealRadius = uReveal * (maxCornerDist + 0.1) - 0.05 + sin(uTime * uPulseSpeed) * uPulseAmp;
     float boundary = revealRadius - dist + noise;
     float wipe = step(0.0, boundary);
     float glow = smoothstep(uGlowWidth, 0.0, abs(boundary));
