@@ -30,6 +30,7 @@ uniform float uPulseSpeed;
 uniform float uPulseAmp;
 uniform float uOffsetX;
 uniform float uAspect;
+uniform float uCenterY;
 varying vec2 vUv;
 
 float lum(vec3 c) {
@@ -86,12 +87,12 @@ void main() {
     vec3 original = texture2D(uTexture, coverUv).rgb;
 
     // Radial wipe with posterized value noise — quantized steps give pixelated organic edge
-    vec2 centered = vUv - 0.5;
+    vec2 centered = vUv - vec2(0.5, uCenterY);
     float dist = length(vec2(centered.x * uAspect, centered.y));
     float noise = fbm(vUv * uNoiseFrequency + uTime * 0.08);
     noise = floor(noise * uNoiseSteps) / uNoiseSteps * uNoiseAmplitude;
-    // Scale endpoint by the actual corner distance so the wipe always completes on any aspect ratio
-    float maxCornerDist = length(vec2(0.5 * uAspect, 0.5));
+    // Max corner distance from the (possibly off-center) origin so the wipe always completes
+    float maxCornerDist = length(vec2(0.5 * uAspect, max(uCenterY, 1.0 - uCenterY)));
     float revealRadius = uReveal * (maxCornerDist + 0.1) - 0.05 + sin(uTime * uPulseSpeed) * uPulseAmp;
     float boundary = revealRadius - dist + noise;
     float wipe = step(0.0, boundary);
@@ -149,6 +150,7 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
         uPulseAmp:       { value: 0.02 },
         uOffsetX:        { value: 0.0 },
         uAspect:         { value: 1.0 },
+        uCenterY:        { value: 0.5 },
     }), [map]);
 
     useEffect(() => {
@@ -156,10 +158,18 @@ function ImagePlane({ onReady }: { onReady?: () => void }) {
             const mobile = window.innerWidth < 768;
             uniforms.uOffsetX.value = mobile ? 0.2 : 0.0;
             uniforms.uAspect.value  = window.innerWidth / window.innerHeight;
+            // svh / lvh: on iOS Safari window.innerHeight ≈ lvh and visualViewport.height ≈ svh.
+            // On desktop they're equal so uCenterY stays 0.5.
+            const svh = window.visualViewport?.height ?? window.innerHeight;
+            uniforms.uCenterY.value = 0.5 * svh / window.innerHeight;
         };
         update();
         window.addEventListener("resize", update);
-        return () => window.removeEventListener("resize", update);
+        window.visualViewport?.addEventListener("resize", update);
+        return () => {
+            window.removeEventListener("resize", update);
+            window.visualViewport?.removeEventListener("resize", update);
+        };
     }, [uniforms]);
 
     useFrame((_, delta) => {
