@@ -45,7 +45,7 @@ function generateParticles(card: HTMLElement): Particle[] {
         orderIndex: 0,
         delay: 0,
         duration: 0.55,
-        size: 2.5,
+        size: 5,
         id: particleCounter++,
     }];
 }
@@ -86,6 +86,7 @@ export function HeroCard() {
     const containerStyle = {
         background: `rgba(${bgVal}, ${bgVal}, ${bgVal}, ${bgAlpha})`,
         border: `3px solid rgba(255, 255, 255, ${borderAlpha})`,
+        filter: 'drop-shadow(0px 4px 24px rgba(0,0,0,0.5))',
     };
 
     const h1Color = lerpRgb(255, 255, 255, 0, 0, 0, t);
@@ -108,6 +109,7 @@ export function HeroCard() {
                             top: p.oy,
                             fontSize: `${p.size}rem`,
                             lineHeight: 1,
+                            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
                             animation: `${animName} ${p.duration}s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}s both`,
                             ['--peek-sx' as string]: p.startX,
                             ['--peek-sy' as string]: p.startY,
@@ -127,7 +129,7 @@ export function HeroCard() {
                 <h1 className="text-4xl md:text-7xl font-brandon mb-4" style={{ color: h1Color }}>
                     Eric Johnson
                 </h1>
-                <div className="text-xl md:text-2xl font-brandon mb-8" style={{ color: subtitleColor }}>
+                <div className="text-xl md:text-2xl font-brandon mb-[10px] md:mb-8" style={{ color: subtitleColor }}>
                     Web&nbsp;Developer &amp; Vanquisher of Boring Websites
                 </div>
                 <DesktopMenu linkStyle={{ color: linkColor }} />
