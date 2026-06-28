@@ -79,13 +79,13 @@ export function MobileMenu() {
                 borderTop: `1px solid rgba(241, 241, 241, ${borderAlpha})`,
             }}
         >
-            <nav className="flex justify-around py-2">
+            <nav className="flex justify-around py-4">
                 {menuItems.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
                         className={clsx(
-                            "flex flex-col items-center",
+                            "flex flex-col items-center justify-center h-[40px]",
                             pathname === item.href && "font-bold"
                         )}
                         style={{ color: linkColor }}
