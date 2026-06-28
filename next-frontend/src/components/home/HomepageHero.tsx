@@ -33,7 +33,7 @@ export function HomepageHero() {
             </div>
 
             <div
-                className="absolute bottom-[20%] md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white select-none pointer-events-none transition-opacity duration-700"
+                className="absolute bottom-[20%] md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white select-none pointer-events-none transition-opacity duration-700 scale-[0.8] md:scale-100"
                 style={{ opacity: shaderReady && !hasScrolled ? 1 : 0 }}
             >
                 <div className="absolute inset-0 -z-10 scale-[2.5] rounded-full" style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.75) 0%, transparent 70%)" }} />
