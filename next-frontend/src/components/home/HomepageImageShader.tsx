@@ -101,10 +101,10 @@ void main() {
     color = mix(color, vec3(1.0), glow);
 
     // Bloom: single-pass additive glow. All parameters animate over the same scroll span (0.35 → 0.72).
-    float bloomT = smoothstep(0.35, 0.72, uReveal);
+    float bloomT = smoothstep(0.35, 0.85, uReveal);
     float r1 = 1.5 * bloomT;
     float r2 = 1.0 * bloomT;
-    float bloomStr = uReveal * wipe;
+    float bloomStr = min(uReveal, 0.85) * wipe;
     if (bloomStr > 0.0) {
         vec3 b = vec3(0.0);
         b += texture2D(uTexture, coverUv + vec2( r1,  0.0) * uTexelSize).rgb;
