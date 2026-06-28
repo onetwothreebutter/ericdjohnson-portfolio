@@ -9,3 +9,15 @@
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+
+@keyframes emoji-peek {
+    0%   { transform: translate(var(--peek-sx), var(--peek-sy)) scale(0.5); opacity: 0; }
+    40%  { opacity: 1; }
+    100% { transform: translate(var(--peek-ex), var(--peek-ey)) scale(1); opacity: 1; }
+}
+
+@keyframes emoji-peek-out {
+    0%   { transform: translate(var(--peek-ex), var(--peek-ey)) scale(1); opacity: 1; }
+    60%  { opacity: 1; }
+    100% { transform: translate(var(--peek-sx), var(--peek-sy)) scale(0.5); opacity: 0; }
+}
