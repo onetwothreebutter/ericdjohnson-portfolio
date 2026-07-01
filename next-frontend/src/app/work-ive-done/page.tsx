@@ -33,7 +33,10 @@ export default function WorkIveDonePage() {
             {/* Work Tiles */}
             <div className="max-w-3xl mx-auto px-6 space-y-12 pt-20">
                 <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Shopify Editions</h2>
+                    <h2 id="shopify-editions" className="group text-3xl font-brandon text-brand-red mb-6">
+                        Shopify Editions
+                        <a href="#shopify-editions" className="ml-2 opacity-0 group-hover:opacity-100 text-brand-red/40 hover:text-brand-red transition-opacity text-2xl">#</a>
+                    </h2>
                     <p className="text-gray-700 leading-relaxed">
                         The work I&apos;m most proud of is helping create and build the Shopify Editions websites. I&apos;ve worked on most of them and they&apos;re always headspinning, imagination-stretching, feats of engineering.
                     </p>
@@ -43,7 +46,10 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
-                    <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;25 Edition &mdash; &ldquo;The Boring Edition&rdquo;</h3>
+                    <h3 id="winter-25" className="group mb-2 text-2xl font-brandon">
+                        Shopify Winter &apos;25 Edition &mdash; &ldquo;The Boring Edition&rdquo;
+                        <a href="#winter-25" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I led development of Boring TV, a 3D easter egg for <a href="https://www.shopify.com/editions/winter2025/tv" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;25 Edition</a>: an interactive retro television featuring 188 AI-generated videos about Shopify&apos;s latest product releases.
                     </p>
@@ -64,7 +70,10 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
-                    <h3 className="mb-2 text-2xl font-brandon">Shopify Winter &apos;24 Edition &mdash; &ldquo;Foundations&rdquo;</h3>
+                    <h3 id="winter-24" className="group mb-2 text-2xl font-brandon">
+                        Shopify Winter &apos;24 Edition &mdash; &ldquo;Foundations&rdquo;
+                        <a href="#winter-24" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I led development of the 3D hero for <a href="http://shopify.com/editions/winter2024" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s Winter &apos;24 Edition</a>, working closely with a 3D designer to bring an abstract architectural model from Cinema 4D into React Three Fiber.
                     </p>
@@ -88,7 +97,10 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
-                    <h3 className="mb-2 text-2xl font-brandon">Shopify Editions &mdash; Record Albums Index Page</h3>
+                    <h3 id="record-albums" className="group mb-2 text-2xl font-brandon">
+                        Shopify Editions &mdash; Record Albums Index Page
+                        <a href="#record-albums" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I was one of two lead developers on the <a href="https://www.shopify.com/editions" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify Editions Record Albums index page</a>, a 3D record-store-inspired experience that served as an archive for past Shopify Editions.
                     </p>
@@ -114,11 +126,17 @@ export default function WorkIveDonePage() {
 
             <div className="max-w-3xl mx-auto px-6 space-y-12 pt-20 pb-20">
                 <section>
-                    <h2 className="text-3xl font-brandon text-brand-red mb-6">Other Work</h2>
+                    <h2 id="other-work" className="group text-3xl font-brandon text-brand-red mb-6">
+                        Other Work
+                        <a href="#other-work" className="ml-2 opacity-0 group-hover:opacity-100 text-brand-red/40 hover:text-brand-red transition-opacity text-2xl">#</a>
+                    </h2>
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
-                    <h3 className="mb-2 text-2xl font-brandon">Brightfield Studio</h3>
+                    <h3 id="brightfield" className="group mb-2 text-2xl font-brandon">
+                        Brightfield Studio
+                        <a href="#brightfield" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         <a href="https://brightfield.studio/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Brightfield</a> is a generative art studio I created to explore how WebGL shader visuals can become physical products and ecommerce experiences.
                     </p>
@@ -138,7 +156,10 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
-                    <h3 className="mb-2 text-2xl font-brandon">Shopify Universal Commerce Protocol Page</h3>
+                    <h3 id="ucp" className="group mb-2 text-2xl font-brandon">
+                        Shopify Universal Commerce Protocol Page
+                        <a href="#ucp" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         I was the sole developer for <a href="https://shopify.com/ucp" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Shopify&apos;s launch page</a> announcing the Universal Commerce Protocol, a collaboration between Shopify and Google. The page launched in sync with Google CEO Sundar Pichai&apos;s keynote at the National Retail Federation Conference and served as the primary public artifact for Shopify&apos;s UCP announcement.
                     </p>
