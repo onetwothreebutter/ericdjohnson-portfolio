@@ -32,17 +32,8 @@ export function ShaderCanvas({ children, cameraPosition = [0, 0, 5] }: ShaderCan
                 camera={{ position: cameraPosition }}
                 gl={(config) => {
                     const canvas = config.canvas as unknown as HTMLCanvasElement;
-                    console.log('ShaderCanvas: Initializing WebGPURenderer', {
-                        canvas,
-                        width: canvas.width,
-                        height: canvas.height,
-                        styleWidth: canvas.style.width,
-                        styleHeight: canvas.style.height
-                    });
-
                     const renderer = new WebGPURenderer({ canvas: canvas, antialias: true, alpha: true, forceWebGL: false });
                     renderer.init().then(() => {
-                        console.log('ShaderCanvas: WebGPURenderer init success');
                         setFrameloop('always');
                     }).catch((err) => {
                         console.error('ShaderCanvas: WebGPURenderer init failed', err);
