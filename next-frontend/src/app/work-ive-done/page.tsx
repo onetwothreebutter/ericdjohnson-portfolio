@@ -169,7 +169,7 @@ export default function WorkIveDonePage() {
                         className="w-full rounded-lg mb-4"
                     />
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        The project had a compressed 2.5-week timeline split by Winter Break. I owned the build end-to-end, from core implementation to performance and launch coordination. Beyond executing the page, I designed the interactive hero globe grid shader, contributed the line &ldquo;forged from billions of transactions,&rdquo; and created a bespoke UCP logo animation.
+                        The project had a compressed 2.5-week timeline split by Winter Break. I owned the build end-to-end, from core implementation to performance and launch coordination. Beyond executing the page, I designed the interactive hero globe grid shader and contributed the line &ldquo;forged from billions of transactions.&rdquo;
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         A major technical challenge was creating an immersive WebGL-driven hero while maintaining performance and accessibility. I paired a pure-black-background video with CSS <code>mix-blend-mode</code> and an async WebGL shader grid, while ensuring the experience still worked with reduced motion enabled and with WebGL disabled. The final page achieved a Lighthouse score of 93.
