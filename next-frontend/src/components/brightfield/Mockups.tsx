@@ -66,9 +66,8 @@ export function HumanMockup() {
             aria-label="About section: the heading The human behind the designs, a two-paragraph bio in a serif face, and Eric Johnson's name and title beside a portrait."
         >
             <div className={clsx(s.stage, s.human)} inert>
-                {/* TODO: replace with the portrait export from the Figma file */}
                 <div className={s.humanPhoto}>
-                    <span>Portrait from the Figma file goes here</span>
+                    <Image src="/images/work-ive-done/brightfield-redesign/human.jpg" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" />
                 </div>
                 <div className={s.humanCopy}>
                     <h3>The human behind the designs</h3>
