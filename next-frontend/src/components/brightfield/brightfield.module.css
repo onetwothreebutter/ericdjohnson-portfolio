@@ -10,9 +10,12 @@
     --bf-surface: #191818;
     --bf-n10: #1e1b1b;
     --bf-border: #372e2e;
+    --bf-border-strong: #665c5c;
+    --bf-border-soft: #292425;
     --bf-n50: #7f7575;
     --bf-text2: #cfc4c4;
     --bf-text: #fffbfb;
+    --bf-n98: #fff8f8;
     --bf-pink: #ff0a54;
     container-type: inline-size;
     background: var(--bf-page);
@@ -280,10 +283,10 @@
     position: relative;
     flex: 0 0 calc(var(--u) * 590);
     aspect-ratio: 590 / 756;
-    border: 1px solid var(--bf-border);
+    border: 1px solid var(--bf-border-strong);
     border-radius: calc(var(--u) * 12);
     background: var(--bf-page);
-    box-shadow: 0 0 calc(var(--u) * 60) rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 calc(var(--u) * 90) rgba(255, 248, 248, 0.1);
     overflow: hidden;
 }
 .tee {
@@ -315,11 +318,22 @@
 }
 .panel {
     background: var(--bf-surface);
+    border: 1px solid var(--bf-border-soft);
     border-radius: calc(var(--u) * 32);
-    padding: calc(var(--u) * 24) calc(var(--u) * 32);
     margin-bottom: calc(var(--u) * 48);
     font-size: calc(var(--u) * 20);
-    letter-spacing: -0.02em;
+    line-height: 1;
+}
+.panelColors {
+    border-color: var(--bf-border);
+    border-radius: 999px;
+    padding: calc(var(--u) * 24);
+}
+.panelSettings {
+    padding: calc(var(--u) * 32) calc(var(--u) * 32) calc(var(--u) * 48);
+}
+.panelEffects {
+    padding: calc(var(--u) * 24) calc(var(--u) * 12);
 }
 .row {
     display: flex;
@@ -328,7 +342,7 @@
     gap: calc(var(--u) * 16);
 }
 .row + .row {
-    margin-top: calc(var(--u) * 30);
+    margin-top: calc(var(--u) * 48);
 }
 .swatches {
     display: flex;
@@ -337,44 +351,53 @@
     width: calc(var(--u) * 30);
     height: calc(var(--u) * 30);
     border-radius: 50%;
-    margin-right: calc(var(--u) * -8);
-    border: calc(var(--u) * 2) solid var(--bf-surface);
+    margin-right: calc(var(--u) * -10);
+    border: 1px solid #222;
+}
+.palette {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 4);
+    padding-right: calc(var(--u) * 12);
+}
+.palette svg {
+    width: calc(var(--u) * 13);
+    height: calc(var(--u) * 11);
 }
 .steps {
     display: flex;
-    gap: calc(var(--u) * 6);
+    gap: calc(var(--u) * 16);
+}
+.stepsSpacing {
+    gap: calc(var(--u) * 24);
 }
 .step {
     all: unset;
     cursor: pointer;
     position: relative;
-    width: calc(var(--u) * 30);
-    height: calc(var(--u) * 44);
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: var(--bar-gap, 2px);
+    height: calc(var(--u) * 37);
 }
-.step::before,
-.step::after {
-    content: "";
+.step i {
     display: block;
-    height: calc(var(--u) * 26);
-    width: var(--bar-width, 1px);
-    background: var(--bf-text2);
+    width: max(1px, calc(var(--u) * var(--n)));
+    background: var(--bf-n98);
 }
-.step[aria-pressed="true"]::before,
+.stepsSpacing .step i {
+    width: max(1px, var(--u));
+}
+.stepsSpacing .step i + i {
+    margin-left: calc(var(--u) * (var(--n) - 1));
+}
 .step[aria-pressed="true"]::after {
-    background: var(--bf-text);
-}
-.step[aria-pressed="true"] span {
+    content: "";
     position: absolute;
-    bottom: 0;
+    top: calc(var(--u) * 41);
     left: 50%;
     transform: translateX(-50%);
-    border: calc(var(--u) * 6) solid transparent;
-    border-bottom-color: var(--bf-text);
-    border-top: 0;
+    border: 0 solid transparent;
+    border-width: 0 calc(var(--u) * 7.4) calc(var(--u) * 12.75);
+    border-bottom-color: var(--bf-n98);
 }
 .effect {
     all: unset;
@@ -382,46 +405,19 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: calc(var(--u) * 24);
+    gap: calc(var(--u) * 32);
     width: 100%;
-    border-radius: calc(var(--u) * 8);
-    padding: calc(var(--u) * 8);
-    color: var(--bf-text2);
+    border-radius: calc(var(--u) * 12);
+    padding: calc(var(--u) * 12) calc(var(--u) * 24);
+    color: var(--bf-text);
 }
-.effect + .effect {
-    margin-top: calc(var(--u) * 4);
-}
-.effect i {
-    width: calc(var(--u) * 44);
-    height: calc(var(--u) * 44);
-    border-radius: calc(var(--u) * 4);
-    border: 1px solid var(--bf-border);
+.effect img {
+    width: calc(var(--u) * 43);
+    height: auto;
     flex: none;
 }
 .effect[aria-pressed="true"] {
-    color: var(--bf-text);
-    background: var(--bf-n10);
-}
-.effect[aria-pressed="true"] i {
-    border-color: var(--bf-pink);
-}
-.iconDistress {
-    background:
-        radial-gradient(circle at 30% 40%, #cfc4c4 0 8%, transparent 9%),
-        radial-gradient(circle at 70% 65%, #cfc4c4 0 6%, transparent 7%),
-        radial-gradient(circle at 55% 25%, #cfc4c4 0 5%, transparent 6%),
-        #292425;
-}
-.iconCrosshatch {
-    background:
-        repeating-linear-gradient(45deg, transparent 0 3px, #7f7575 3px 4px),
-        repeating-linear-gradient(-45deg, transparent 0 3px, #7f7575 3px 4px),
-        #191818;
-}
-.iconHalftone {
-    background:
-        radial-gradient(circle, #cfc4c4 0 35%, transparent 38%) 0 0 / 6px 6px,
-        #191818;
+    background: var(--bf-border-soft);
 }
 .previewButton {
     all: unset;
@@ -430,12 +426,14 @@
     display: block;
     width: 100%;
     text-align: center;
-    border: calc(var(--u) * 2) solid var(--bf-text2);
+    background: var(--bf-page);
+    border: 1px solid var(--bf-text2);
     color: var(--bf-text2);
     border-radius: calc(var(--u) * 8);
-    padding: calc(var(--u) * 16) 0;
-    font-size: calc(var(--u) * 22);
-    letter-spacing: 0.06em;
+    padding: calc(var(--u) * 16) calc(var(--u) * 24);
+    font-size: calc(var(--u) * 25);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
 }
 .previewButton:hover {
@@ -467,9 +465,6 @@
     }
     .controls {
         width: 100%;
-    }
-    .step {
-        height: calc(var(--u) * 52);
     }
 }
 

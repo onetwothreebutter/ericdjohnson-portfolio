@@ -5,7 +5,7 @@
  */
 
 export interface SquareDanceOptions {
-    /** Index into WIDTHS (0-6) */
+    /** Index into WIDTHS (0-7) */
     width: number;
     /** Index into GAPS (0-6) */
     gap: number;
@@ -16,8 +16,6 @@ export interface SquareDanceOptions {
     lift?: number;
 }
 
-export const STEP_COUNT = 7;
-
 const COASTAL: Array<[number, string]> = [
     [0, "#d8432b"],
     [0.22, "#e07a3a"],
@@ -26,7 +24,7 @@ const COASTAL: Array<[number, string]> = [
     [0.8, "#1f6b6c"],
     [1, "#123e45"],
 ];
-const WIDTHS = [1, 1.6, 2.4, 3.4, 4.6, 6, 8];
+const WIDTHS = [1, 1.6, 2.4, 3.4, 4.6, 6, 8, 10.5];
 const GAPS = [3.4, 4.4, 5.6, 7, 9, 11.5, 15];
 
 /** Small seeded PRNG (mulberry32) so the textures are stable between redraws. */

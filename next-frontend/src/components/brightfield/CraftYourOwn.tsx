@@ -2,11 +2,15 @@
 
 import { useState, type CSSProperties } from "react";
 import clsx from "clsx";
+import Image from "next/image";
 import ArtCanvas from "./ArtCanvas";
-import { STEP_COUNT } from "./art";
 import s from "./brightfield.module.css";
 
-const STEPS = Array.from({ length: STEP_COUNT }, (_, i) => i);
+// Icon measurements from the Figma controls: bar widths for Line Width, gap between the two bars for Line Spacing.
+const LINE_WIDTHS = [1, 3, 5, 7, 11, 13, 16, 20];
+const LINE_GAPS = [3, 4, 5, 6, 8, 9, 12];
+const SWATCHES = ["#e8491d", "#c9a030", "#2d8a5e", "#1a2744", "#d9d9d9"];
+const ICONS = "/images/work-ive-done/brightfield-redesign";
 
 function StepControl({
     id,
@@ -21,26 +25,23 @@ function StepControl({
     value: number;
     onChange: (next: number) => void;
 }) {
+    const icons = kind === "width" ? LINE_WIDTHS : LINE_GAPS;
     return (
         <div className={s.row}>
             <span id={id}>{label}</span>
-            <span className={s.steps} role="group" aria-labelledby={id}>
-                {STEPS.map((i) => (
+            <span className={clsx(s.steps, kind === "spacing" && s.stepsSpacing)} role="group" aria-labelledby={id}>
+                {icons.map((n, i) => (
                     <button
                         key={i}
                         type="button"
                         className={s.step}
-                        aria-label={`${label} ${i + 1} of ${STEP_COUNT}`}
+                        aria-label={`${label} ${i + 1} of ${icons.length}`}
                         aria-pressed={value === i}
                         onClick={() => onChange(i)}
-                        style={
-                            {
-                                "--bar-width": `${kind === "width" ? 1 + i * 1.1 : 1.5}px`,
-                                "--bar-gap": `${kind === "width" ? 2 : 1.5 + i * 1.2}px`,
-                            } as CSSProperties
-                        }
+                        style={{ "--n": n } as CSSProperties}
                     >
-                        <span />
+                        <i />
+                        {kind === "spacing" && <i />}
                     </button>
                 ))}
             </span>
@@ -90,36 +91,40 @@ export default function CraftYourOwn() {
                     </div>
                     <div className={s.controls}>
                         <p className={s.overline}>Colors</p>
-                        <div className={s.panel}>
+                        <div className={clsx(s.panel, s.panelColors)}>
                             <div className={s.row}>
                                 <span className={s.swatches} aria-hidden="true">
-                                    <i style={{ background: "#d8432b" }} />
-                                    <i style={{ background: "#e07a3a" }} />
-                                    <i style={{ background: "#3f9a8c" }} />
-                                    <i style={{ background: "#cfc4c4" }} />
+                                    {SWATCHES.map((color) => (
+                                        <i key={color} style={{ background: color }} />
+                                    ))}
                                 </span>
-                                <span>Coastal</span>
+                                <span className={s.palette}>
+                                    Coastal
+                                    <svg viewBox="0 0 13 11" aria-hidden="true">
+                                        <path d="M0 0h13L6.5 11z" fill="currentColor" />
+                                    </svg>
+                                </span>
                             </div>
                         </div>
 
                         <p className={s.overline}>Code settings</p>
-                        <div className={s.panel}>
+                        <div className={clsx(s.panel, s.panelSettings)}>
                             <StepControl id="bf-line-width" label="Line Width" kind="width" value={width} onChange={setWidth} />
                             <StepControl id="bf-line-spacing" label="Line Spacing" kind="spacing" value={gap} onChange={setGap} />
                         </div>
 
                         <p className={s.overline}>Effects</p>
-                        <div className={s.panel}>
+                        <div className={clsx(s.panel, s.panelEffects)}>
                             <button type="button" className={s.effect} aria-pressed={distress} onClick={() => setDistress((v) => !v)}>
-                                <i className={s.iconDistress} />
+                                <Image src={`${ICONS}/effect-distress.svg`} alt="" width={43} height={39} />
                                 Distress
                             </button>
                             <button type="button" className={s.effect} aria-pressed={crosshatch} onClick={() => setCrosshatch((v) => !v)}>
-                                <i className={s.iconCrosshatch} />
+                                <Image src={`${ICONS}/effect-crosshatch.svg`} alt="" width={43} height={39} />
                                 Crosshatch
                             </button>
                             <button type="button" className={s.effect} aria-pressed={halftone} onClick={() => setHalftone((v) => !v)}>
-                                <i className={s.iconHalftone} />
+                                <Image src={`${ICONS}/effect-halftone.svg`} alt="" width={43} height={43} />
                                 Halftone dots
                             </button>
                         </div>
