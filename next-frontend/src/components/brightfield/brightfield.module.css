@@ -262,59 +262,70 @@
 }
 
 /* ---------- get notified + footer ---------- */
-.ending {
-    padding-top: calc(var(--u) * 120);
+.notifyGlow {
+    position: relative;
+    aspect-ratio: 1440 / 699;
+    padding: calc(var(--u) * 57) calc(var(--u) * 120) calc(var(--u) * 58) calc(var(--u) * 131);
+    box-sizing: border-box;
 }
 .notify {
-    margin: 0 calc(var(--u) * 120);
-    border: 1px solid var(--bf-border);
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--u) * 64);
+    padding-top: calc(var(--u) * 103);
     border-radius: calc(var(--u) * 32);
     text-align: center;
-    padding: calc(var(--u) * 110) 0 calc(var(--u) * 120);
-    background:
-        radial-gradient(calc(var(--u) * 46) at 12% 52%, rgba(255, 150, 40, 0.55), transparent 70%),
-        radial-gradient(calc(var(--u) * 60) at 24% 47%, rgba(255, 190, 60, 0.6), transparent 70%),
-        radial-gradient(calc(var(--u) * 90) at 40% 50%, rgba(255, 200, 70, 0.55), transparent 72%),
-        radial-gradient(calc(var(--u) * 70) at 58% 46%, rgba(255, 170, 50, 0.55), transparent 70%),
-        radial-gradient(calc(var(--u) * 80) at 74% 50%, rgba(255, 140, 40, 0.5), transparent 70%),
-        radial-gradient(calc(var(--u) * 40) at 90% 54%, rgba(255, 120, 40, 0.5), transparent 70%),
-        radial-gradient(90% 28% at 50% 50%, rgba(170, 80, 20, 0.5), transparent 75%),
-        var(--bf-page);
+    /* Approximates Figma's glass effect (frost 59) */
+    -webkit-backdrop-filter: blur(calc(var(--u) * 30));
+    backdrop-filter: blur(calc(var(--u) * 30));
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 0 1px rgba(255, 248, 248, 0.22);
 }
 .notify h3 {
-    margin: 0 auto;
+    margin: 0;
     font-weight: 700;
     font-size: calc(var(--u) * 72);
-    line-height: 1.03;
+    line-height: calc(74 / 72);
     letter-spacing: -0.04em;
-    max-width: 9em;
+}
+.notify .dot {
+    color: #ff516a;
 }
 .notify p {
-    margin: calc(var(--u) * 28) auto 0;
+    margin: calc(var(--u) * -32) 0 0;
+    max-width: calc(var(--u) * 615);
     font-size: calc(var(--u) * 25);
-    line-height: 1.2;
+    line-height: calc(30 / 25);
     letter-spacing: -0.04em;
-    max-width: 23em;
+    color: #fff;
 }
 .form {
     display: flex;
-    justify-content: center;
     gap: calc(var(--u) * 24);
-    margin-top: calc(var(--u) * 64);
-}
-.form .btn {
-    padding: calc(var(--u) * 10) calc(var(--u) * 64);
-    background: rgba(18, 17, 17, 0.6);
+    font-size: calc(var(--u) * 25);
+    line-height: calc(30 / 25);
 }
 .field {
     width: calc(var(--u) * 363);
+    box-sizing: border-box;
     background: var(--bf-text);
     color: var(--bf-n50);
     border-radius: calc(var(--u) * 4);
     padding: calc(var(--u) * 12) calc(var(--u) * 16);
-    font-size: calc(var(--u) * 25);
     text-align: left;
     letter-spacing: -0.04em;
+}
+.signUp {
+    border: calc(var(--u) * 2) solid #fdfcfc;
+    border-radius: calc(var(--u) * 8);
+    padding: calc(var(--u) * 12) calc(var(--u) * 64);
+    color: #fdfcfc;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 .footer {
     margin-top: calc(var(--u) * 250);

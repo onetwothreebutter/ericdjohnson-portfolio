@@ -141,15 +141,20 @@ export function EndingMockup() {
             role="img"
             aria-label="Closing sections: a glowing panel headed Get notified about new designs with an email field and Sign up button, above a footer with the Brightfield wordmark and links."
         >
-            <div className={clsx(s.stage, s.ending)} inert>
-                <div className={s.notify}>
-                    <h3>
-                        Get notified about new designs<span className={s.dot}>.</span>
-                    </h3>
-                    <p>I release new art each month. Sign up, and I&rsquo;ll let you know when something new arrives.</p>
-                    <div className={s.form}>
-                        <span className={s.field}>Email address</span>
-                        <span className={s.btn}>Sign up</span>
+            <div className={s.stage} inert>
+                <div className={s.notifyGlow}>
+                    <Image src="/images/work-ive-done/brightfield-redesign/notify-glow.webp" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" />
+                    <div className={s.notify}>
+                        <h3>
+                            Get notified about
+                            <br />
+                            new designs<span className={s.dot}>.</span>
+                        </h3>
+                        <p>I release new art each month. Sign up, and I&rsquo;ll let you know when something new arrives.</p>
+                        <div className={s.form}>
+                            <span className={s.field}>Email address</span>
+                            <span className={s.signUp}>Sign up</span>
+                        </div>
                     </div>
                 </div>
                 <div className={s.footer}>
