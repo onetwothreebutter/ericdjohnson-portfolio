@@ -1,0 +1,367 @@
+/*
+ * Brightfield mockups for the redesign case study.
+ *
+ * Each .stage is drawn on the 1440px Figma artboard and scaled with container
+ * query units: --u is one artboard pixel, so calc(var(--u) * 72) is "72px in Figma".
+ * Colors and type come from the Brightfield Figma variables, not the portfolio theme.
+ */
+.frame {
+    --bf-page: #121111;
+    --bf-surface: #191818;
+    --bf-n10: #1e1b1b;
+    --bf-border: #372e2e;
+    --bf-n50: #7f7575;
+    --bf-text2: #cfc4c4;
+    --bf-text: #fffbfb;
+    --bf-pink: #ff0a54;
+    container-type: inline-size;
+    background: var(--bf-page);
+    color: var(--bf-text);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    font-family: var(--font-poppins), sans-serif;
+}
+.stage {
+    --u: calc(100cqw / 1440);
+    position: relative;
+}
+.dot {
+    color: var(--bf-pink);
+}
+
+/* wordmark */
+.wordmark {
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.8;
+    font-size: calc(var(--u) * 29);
+}
+.wordmark b {
+    display: block;
+    font-weight: 700;
+}
+.wordmark b + b {
+    padding-left: 1.72em;
+}
+
+/* shared section heading */
+.sectionHeading {
+    text-align: center;
+}
+.sectionHeading h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: calc(var(--u) * 72);
+    line-height: 1.03;
+    letter-spacing: -0.04em;
+}
+.sectionHeading p {
+    margin: calc(var(--u) * 26) auto 0;
+    font-size: calc(var(--u) * 25);
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+    max-width: 23em;
+}
+
+/* buttons */
+.btn {
+    border: calc(var(--u) * 2) solid #ffecec;
+    border-radius: calc(var(--u) * 8);
+    padding: calc(var(--u) * 16) calc(var(--u) * 64);
+    font-size: calc(var(--u) * 25);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+.btnSolid {
+    background: var(--bf-text);
+    border-color: var(--bf-text);
+    color: var(--bf-page);
+}
+
+/* ---------- hero ---------- */
+.hero {
+    aspect-ratio: 1440 / 1024;
+}
+.heroArt {
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+}
+.heroNav {
+    position: absolute;
+    left: calc(var(--u) * 120);
+    right: calc(var(--u) * 120);
+    top: calc(var(--u) * 24);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.heroLinks {
+    display: flex;
+    gap: calc(var(--u) * 48);
+    font-weight: 500;
+    font-size: calc(var(--u) * 20);
+    align-items: center;
+}
+.heroIcons {
+    display: flex;
+    gap: calc(var(--u) * 22);
+    margin-left: calc(var(--u) * 50);
+}
+.heroIcons svg {
+    width: calc(var(--u) * 24);
+    height: calc(var(--u) * 24);
+}
+.heroCopy {
+    position: absolute;
+    left: calc(var(--u) * 107);
+    top: calc(var(--u) * 287);
+}
+.heroBig {
+    font-weight: 700;
+    font-size: calc(var(--u) * 142);
+    line-height: 1.21;
+    letter-spacing: -0.04em;
+}
+.heroMid {
+    font-weight: 700;
+    font-size: calc(var(--u) * 80);
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+    margin-top: calc(var(--u) * -18);
+}
+.heroLead {
+    font-size: calc(var(--u) * 32);
+    line-height: 1.25;
+    letter-spacing: -0.04em;
+    margin-top: calc(var(--u) * 14);
+}
+.heroButtons {
+    display: flex;
+    gap: calc(var(--u) * 28);
+    margin-top: calc(var(--u) * 103);
+}
+
+/* ---------- human ---------- */
+.human {
+    aspect-ratio: 1440 / 900;
+}
+.humanPhoto {
+    position: absolute;
+    left: calc(var(--u) * 68);
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.humanPhoto img {
+    object-fit: cover;
+    object-position: top;
+}
+.humanCopy {
+    position: absolute;
+    left: calc(var(--u) * 107);
+    top: calc(var(--u) * 150);
+    width: calc(var(--u) * 660);
+}
+.humanCopy h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: calc(var(--u) * 72);
+    line-height: 1.03;
+    letter-spacing: -0.04em;
+}
+.humanCopy p {
+    font-family: var(--font-merriweather), Georgia, serif;
+    font-size: calc(var(--u) * 32);
+    line-height: 1.25;
+    margin: calc(var(--u) * 44) 0 0;
+}
+.humanCopy p + p {
+    margin-top: calc(var(--u) * 36);
+}
+.who {
+    display: flex;
+    gap: calc(var(--u) * 16);
+    align-items: center;
+    margin-top: calc(var(--u) * 48);
+    font-size: calc(var(--u) * 25);
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+}
+.who strong {
+    display: block;
+    font-weight: 600;
+}
+.lettermark {
+    width: calc(var(--u) * 58);
+    height: calc(var(--u) * 63);
+}
+
+/* ---------- designs ---------- */
+.designs {
+    padding: calc(var(--u) * 240) calc(var(--u) * 120) calc(var(--u) * 259);
+    background: var(--bf-page);
+}
+.designsBg {
+    position: absolute;
+    inset: 0;
+}
+.designsBg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        var(--bf-page) 0.38%,
+        rgba(18, 17, 17, 0) 18.04%,
+        rgba(18, 17, 17, 0) 71.94%,
+        var(--bf-page)
+    );
+}
+.designs .sectionHeading {
+    position: relative;
+}
+.grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--u) * 17);
+    margin-top: calc(var(--u) * 82);
+}
+.card {
+    position: relative;
+    aspect-ratio: 388.67 / 490.67;
+    background: var(--bf-page);
+    border-radius: calc(var(--u) * 4);
+    overflow: hidden;
+}
+.cardArt {
+    position: absolute;
+    left: 3.69%;
+    right: 3.69%;
+    top: 0.99%;
+    bottom: 0.99%;
+}
+.designsBg img,
+.cardArt img {
+    object-fit: cover;
+}
+.cardBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--u) * 72);
+    background: var(--bf-surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 calc(var(--u) * 24);
+    font-size: calc(var(--u) * 20);
+    letter-spacing: -0.04em;
+}
+
+/* ---------- get notified + footer ---------- */
+.notifyGlow {
+    position: relative;
+    aspect-ratio: 1440 / 699;
+    padding: calc(var(--u) * 57) calc(var(--u) * 120) calc(var(--u) * 58) calc(var(--u) * 131);
+    box-sizing: border-box;
+}
+.notify {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--u) * 64);
+    padding-top: calc(var(--u) * 103);
+    border-radius: calc(var(--u) * 32);
+    text-align: center;
+    /* Approximates Figma's glass effect (frost 59) */
+    -webkit-backdrop-filter: blur(calc(var(--u) * 30));
+    backdrop-filter: blur(calc(var(--u) * 30));
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 0 1px rgba(255, 248, 248, 0.22);
+}
+.notify h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: calc(var(--u) * 72);
+    line-height: calc(74 / 72);
+    letter-spacing: -0.04em;
+}
+.notify .dot {
+    color: #ff516a;
+}
+.notify p {
+    margin: calc(var(--u) * -32) 0 0;
+    max-width: calc(var(--u) * 615);
+    font-size: calc(var(--u) * 25);
+    line-height: calc(30 / 25);
+    letter-spacing: -0.04em;
+    color: #fff;
+}
+.form {
+    display: flex;
+    gap: calc(var(--u) * 24);
+    font-size: calc(var(--u) * 25);
+    line-height: calc(30 / 25);
+}
+.field {
+    width: calc(var(--u) * 363);
+    box-sizing: border-box;
+    background: var(--bf-text);
+    color: var(--bf-n50);
+    border-radius: calc(var(--u) * 4);
+    padding: calc(var(--u) * 12) calc(var(--u) * 16);
+    text-align: left;
+    letter-spacing: -0.04em;
+}
+.signUp {
+    border: calc(var(--u) * 2) solid #fdfcfc;
+    border-radius: calc(var(--u) * 8);
+    padding: calc(var(--u) * 12) calc(var(--u) * 64);
+    color: #fdfcfc;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+.footer {
+    margin-top: calc(var(--u) * 250);
+    height: calc(var(--u) * 312);
+    display: flex;
+    border-top: 1px solid var(--bf-n10);
+}
+.footerBrand {
+    width: calc(var(--u) * 450);
+    background: var(--bf-n10);
+    padding: calc(var(--u) * 70) calc(var(--u) * 120) 0;
+}
+.footerBrand .wordmark {
+    font-size: calc(var(--u) * 34);
+}
+.footerBrand small {
+    display: block;
+    margin-top: calc(var(--u) * 28);
+    font-size: calc(var(--u) * 13);
+    line-height: 1.5;
+    color: var(--bf-text2);
+}
+.footerLinks {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: calc(var(--u) * 96) calc(var(--u) * 120) calc(var(--u) * 40) 0;
+    font-size: calc(var(--u) * 20);
+}
+.footerLinks div {
+    display: flex;
+    gap: calc(var(--u) * 64);
+}
+.footerLinks div + div {
+    font-size: calc(var(--u) * 14);
+    color: var(--bf-text2);
+}

@@ -4,6 +4,7 @@ import WorkTile from "@/components/features/WorkTile";
 import NewtonsCradle from "@/components/ui/NewtonsCradle";
 import VideoZoom from "@/components/ui/VideoZoom";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function WorkIveDonePage() {
     return (
@@ -152,6 +153,9 @@ export default function WorkIveDonePage() {
                     </p>
                     <p className="text-gray-700 leading-relaxed mb-4">
                         Brightfield brings together creative frontend development, interaction design, commerce UX, and performance-conscious implementation. It also let me test how far a single developer/designer can take an idea&mdash;from visual experimentation to a live storefront and launch campaign&mdash;using Claude as a coding partner for much of the implementation.
+                    </p>
+                    <p className="text-gray-700 leading-relaxed">
+                        Related: <Link href="/work-ive-done/brightfield-redesign" className="text-brand-red hover:underline">Brightfield homepage redesign case study</Link>
                     </p>
                 </section>
 
