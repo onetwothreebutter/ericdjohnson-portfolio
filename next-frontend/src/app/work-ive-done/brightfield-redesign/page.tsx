@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Merriweather, Poppins } from "next/font/google";
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
-import CraftYourOwn from "@/components/brightfield/CraftYourOwn";
 import { DesignsMockup, EndingMockup, HeroMockup, HumanMockup } from "@/components/brightfield/Mockups";
 
 // Brightfield's own typefaces, used only inside the mockups and type specimens.
@@ -146,14 +145,18 @@ export default function BrightfieldRedesignPage() {
 
                 <section>
                     <SectionHeading id="tool">The Tool</SectionHeading>
-                    <p className="text-gray-700 leading-relaxed mb-4">
+                    <p className="text-gray-700 leading-relaxed">
                         After the shop comes the invitation to make your own. The controls are the parameters of the code itself: a palette, line width, line spacing, and three print effects.
                     </p>
-                    <p className="text-gray-700 leading-relaxed">
-                        This one is live. Change something.
-                    </p>
-                    <Figure caption="Craft your own, working. The effects and shirt preview are quick canvas versions, not the production shaders.">
-                        <CraftYourOwn />
+                    <Figure caption="Craft your own.">
+                        <Image
+                            src="/images/work-ive-done/brightfield-redesign/craft-your-own.webp"
+                            alt="Craft your own section: a canvas showing a generative line design beside controls for the Coastal color palette, line width, line spacing, and Distress, Crosshatch and Halftone dots effects, above a Preview on shirt button."
+                            width={1440}
+                            height={1310}
+                            sizes="(min-width: 1024px) 1024px, 100vw"
+                            className="w-full h-auto rounded-lg"
+                        />
                     </Figure>
                 </section>
 
