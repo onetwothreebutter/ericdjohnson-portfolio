@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Merriweather, Poppins } from "next/font/google";
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
-import ArtCanvas from "@/components/brightfield/ArtCanvas";
 import CraftYourOwn from "@/components/brightfield/CraftYourOwn";
 import { DesignsMockup, EndingMockup, HeroMockup, HumanMockup } from "@/components/brightfield/Mockups";
 
@@ -92,7 +92,7 @@ export default function BrightfieldRedesignPage() {
         <div className={`min-h-screen bg-white pb-20 ${poppins.variable} ${merriweather.variable}`}>
             {/* Banner */}
             <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden mb-12 bg-[#121111]">
-                <ArtCanvas kind="hero" className="absolute inset-0 w-full h-full" />
+                <Image src="/images/work-ive-done/brightfield-redesign/hero.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="relative z-10 text-center text-white px-6">
                     <AnimatedHeading
@@ -119,7 +119,7 @@ export default function BrightfieldRedesignPage() {
                     <p className="text-gray-700 leading-relaxed">
                         The art fills the first screen, edge to edge, before anything is said about it. The headline is three words, and the two buttons name the two things you can do at Brightfield: shop a design, or create one.
                     </p>
-                    <Figure caption="Hero, 1440 × 1024. Type is live; the shader is approximated in canvas.">
+                    <Figure caption="Hero, 1440 × 1024. Type is live; the shader render is exported from Figma.">
                         <HeroMockup />
                     </Figure>
                 </section>

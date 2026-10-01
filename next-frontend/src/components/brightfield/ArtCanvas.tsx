@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { drawHeroShader, drawSquareDance, type SquareDanceOptions } from "./art";
+import { drawSquareDance, type SquareDanceOptions } from "./art";
 
 type ArtCanvasProps = {
     className?: string;
     label?: string;
-} & (
-    | { kind: "hero" }
-    | ({ kind: "square-dance" } & Partial<SquareDanceOptions>)
-);
+} & { kind: "square-dance" } & Partial<SquareDanceOptions>;
 
 /** Canvas that redraws one of the Brightfield stand-in artworks whenever it resizes. */
 export default function ArtCanvas(props: ArtCanvasProps) {
@@ -25,10 +22,7 @@ export default function ArtCanvas(props: ArtCanvasProps) {
     useEffect(() => {
         const canvas = ref.current;
         if (!canvas) return;
-        const draw = () => {
-            if (kind === "hero") drawHeroShader(canvas);
-            else drawSquareDance(canvas, { width, gap, distress, crosshatch, halftone, lift });
-        };
+        const draw = () => drawSquareDance(canvas, { width, gap, distress, crosshatch, halftone, lift });
         draw();
         const observer = new ResizeObserver(draw);
         observer.observe(canvas);

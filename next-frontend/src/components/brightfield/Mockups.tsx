@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Image from "next/image";
 import ArtCanvas from "./ArtCanvas";
 import s from "./brightfield.module.css";
 
@@ -24,7 +25,7 @@ export function HeroMockup() {
             aria-label="Hero section: a full-bleed orange shader render with the headline Art for your body, the line Sculpted with code by a human, and Shop and Create buttons."
         >
             <div className={clsx(s.stage, s.hero)} inert>
-                <ArtCanvas kind="hero" className={s.heroArt} />
+                <Image src="/images/work-ive-done/brightfield-redesign/hero.jpg" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" className={s.heroArt} />
                 <div className={s.heroNav}>
                     <Wordmark />
                     <div className={s.heroLinks}>

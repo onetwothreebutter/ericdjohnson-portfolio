@@ -89,6 +89,7 @@
     aspect-ratio: 1440 / 1024;
 }
 .heroArt {
+    object-fit: cover;
     position: absolute;
     inset: 0;
 }
