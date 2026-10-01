@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Merriweather, Poppins } from "next/font/google";
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
+import FigmaEmbed from "@/components/brightfield/FigmaEmbed";
 import { DesignsMockup, EndingMockup, HeroMockup, HumanMockup } from "@/components/brightfield/Mockups";
+
+const FIGMA_FILE = "DiDquPfATSCtAbBgIOOs1T/Brightfield-web-redesign-Sept-2026?node-id=233-147";
+const FIGMA_URL = `https://www.figma.com/design/${FIGMA_FILE}`;
+const FIGMA_EMBED_URL = `https://embed.figma.com/design/${FIGMA_FILE}&embed-host=share`;
 
 // Brightfield's own typefaces, used only inside the mockups and type specimens.
 const poppins = Poppins({
@@ -111,6 +116,14 @@ export default function BrightfieldRedesignPage() {
                     <p className="text-gray-700 leading-relaxed">
                         I own the brand, the design, and the build. Below is the page from top to bottom, followed by the variables it&apos;s built from. For the story of the studio itself, see <Link href="/work-ive-done#brightfield" className="text-brand-red hover:underline">Work I&apos;ve Done</Link>.
                     </p>
+                    <a
+                        href={FIGMA_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-6 inline-block rounded-md border-2 border-brand-red px-5 py-2 font-brandon uppercase tracking-wide text-brand-red transition-colors hover:bg-brand-red hover:text-white"
+                    >
+                        View in Figma
+                    </a>
                 </section>
 
                 <section>
@@ -221,6 +234,16 @@ export default function BrightfieldRedesignPage() {
                             </ul>
                         </div>
                     </div>
+                </section>
+
+                <section>
+                    <SectionHeading id="file">The File</SectionHeading>
+                    <p className="text-gray-700 leading-relaxed">
+                        Everything above comes from one Figma frame. Here it is, with the variables and components intact. You can also <a href={FIGMA_URL} target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">open it in Figma</a>.
+                    </p>
+                    <Figure caption="The Figma file, Desktop frame.">
+                        <FigmaEmbed src={FIGMA_EMBED_URL} title="Brightfield homepage redesign in Figma" />
+                    </Figure>
                 </section>
 
                 <section>
