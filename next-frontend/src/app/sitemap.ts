@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: 'https://ericdjohnson.com/work-ive-done/brightfield-redesign',
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 0.6,
+        },
+        {
             url: 'https://ericdjohnson.com/skills-i-have',
             lastModified: new Date(),
             changeFrequency: 'monthly',
