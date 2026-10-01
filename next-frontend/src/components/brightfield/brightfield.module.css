@@ -200,8 +200,7 @@
 }
 .lettermark {
     width: calc(var(--u) * 58);
-    height: calc(var(--u) * 62);
-    border: calc(var(--u) * 5) dotted var(--bf-text);
+    height: calc(var(--u) * 63);
 }
 
 /* ---------- designs ---------- */

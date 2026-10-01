@@ -76,7 +76,7 @@ export function HumanMockup() {
                         After two decades of making things for the web, I created Brightfield as a place to explore code as an artistic medium&mdash;turning math into original designs you can wear.
                     </p>
                     <div className={s.who}>
-                        <span className={s.lettermark} />
+                        <Image src="/images/work-ive-done/brightfield-redesign/lettermark.svg" alt="" width={58} height={63} className={s.lettermark} />
                         <div>
                             <strong>Eric Johnson</strong>
                             Brightfield creator/designer
