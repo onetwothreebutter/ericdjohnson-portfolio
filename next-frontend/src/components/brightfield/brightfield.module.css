@@ -205,13 +205,29 @@
 
 /* ---------- designs ---------- */
 .designs {
-    padding: calc(var(--u) * 150) calc(var(--u) * 120) calc(var(--u) * 160);
-    background:
-        radial-gradient(60% 30% at 15% 62%, rgba(226, 112, 31, 0.28), transparent 70%),
-        radial-gradient(50% 24% at 88% 60%, rgba(120, 60, 30, 0.22), transparent 70%),
-        var(--bf-page);
+    padding: calc(var(--u) * 240) calc(var(--u) * 120) calc(var(--u) * 259);
+    background: var(--bf-page);
+}
+.designsBg {
+    position: absolute;
+    inset: 0;
+}
+.designsBg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        var(--bf-page) 0.38%,
+        rgba(18, 17, 17, 0) 18.04%,
+        rgba(18, 17, 17, 0) 71.94%,
+        var(--bf-page)
+    );
+}
+.designs .sectionHeading {
+    position: relative;
 }
 .grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: calc(var(--u) * 17);
@@ -223,6 +239,17 @@
     background: var(--bf-page);
     border-radius: calc(var(--u) * 4);
     overflow: hidden;
+}
+.cardArt {
+    position: absolute;
+    left: 3.69%;
+    right: 3.69%;
+    top: 0.99%;
+    bottom: 0.99%;
+}
+.designsBg img,
+.cardArt img {
+    object-fit: cover;
 }
 .cardBar {
     position: absolute;

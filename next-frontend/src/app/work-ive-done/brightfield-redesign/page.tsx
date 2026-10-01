@@ -139,7 +139,7 @@ export default function BrightfieldRedesignPage() {
                     <p className="text-gray-700 leading-relaxed">
                         Nine designs on one card component. Each card gives the art the whole frame and keeps the name and price to a single bar along the bottom.
                     </p>
-                    <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card; it is redrawn here in canvas.">
+                    <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card.">
                         <DesignsMockup />
                     </Figure>
                 </section>

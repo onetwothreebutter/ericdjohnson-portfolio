@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import Image from "next/image";
-import ArtCanvas from "./ArtCanvas";
 import s from "./brightfield.module.css";
 
 /**
@@ -95,7 +94,7 @@ const DESIGNS = [
     "Four Circles",
     "Stacked",
     "Echo",
-    "Line Test",
+    "Line Text",
     "Geometric Grid",
     "Chladni",
 ];
@@ -108,6 +107,9 @@ export function DesignsMockup() {
             aria-label="Product grid: nine cards in three columns, each showing a generative line design with its name and a price of 32 dollars."
         >
             <div className={clsx(s.stage, s.designs)} inert>
+                <div className={s.designsBg}>
+                    <Image src="/images/work-ive-done/brightfield-redesign/designs-bg.webp" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" />
+                </div>
                 <div className={s.sectionHeading}>
                     <h3>
                         The designs<span className={s.dot}>.</span>
@@ -117,7 +119,9 @@ export function DesignsMockup() {
                 <div className={s.grid}>
                     {DESIGNS.map((name) => (
                         <div key={name} className={s.card}>
-                            <ArtCanvas kind="square-dance" lift={0.07} />
+                            <div className={s.cardArt}>
+                                <Image src="/images/work-ive-done/brightfield-redesign/square-dance.webp" alt="" fill sizes="(min-width: 1024px) 340px, 33vw" />
+                            </div>
                             <div className={s.cardBar}>
                                 <span>{name}</span>
                                 <span>$32</span>
