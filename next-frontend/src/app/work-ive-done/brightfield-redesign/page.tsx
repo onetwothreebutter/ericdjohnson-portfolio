@@ -191,6 +191,33 @@ export default function BrightfieldRedesignPage() {
                 </section>
 
                 <section>
+                    <SectionHeading id="wordmark">The Wordmark</SectionHeading>
+                    <p className="text-gray-700 leading-relaxed">
+                        The wordmark started as type tests: the full name set in several sans serifs, then pulled apart into a stacked &ldquo;bright / field&rdquo; and a run of b-and-f marks, including a b inside a frame of dots. A mirrored-B monogram got its own round before the stacked lowercase lockup won out. Its pink dot on the i is the one place the brand color appears in the logo.
+                    </p>
+                    <Figure caption="Logo exploration: type tests, early stacks, and b/f marks.">
+                        <Image
+                            src="/images/work-ive-done/brightfield-redesign/logo-exploration-type.webp"
+                            alt="Logo exploration sheet: Brightfield set in six sans serif styles, a BF monogram, two stacked bright/field lockups, and two rows of b and f letter marks, the second row placing a b inside a frame of dots."
+                            width={2400}
+                            height={736}
+                            sizes="(min-width: 1024px) 1024px, 100vw"
+                            className="w-full h-auto rounded-lg border border-gray-200"
+                        />
+                    </Figure>
+                    <Figure caption="The monogram round and the final stacked lockup.">
+                        <Image
+                            src="/images/work-ive-done/brightfield-redesign/logo-exploration-lockups.webp"
+                            alt="Logo exploration sheet: brightfield in bold lowercase, a BF monogram whose B is progressively mirrored, the mirrored monogram beside the wordmark, and two stacked bright/field lockups, one with the g greyed out."
+                            width={1600}
+                            height={911}
+                            sizes="(min-width: 1024px) 1024px, 100vw"
+                            className="w-full h-auto rounded-lg border border-gray-200"
+                        />
+                    </Figure>
+                </section>
+
+                <section>
                     <SectionHeading id="system">The System</SectionHeading>
                     <p className="text-gray-700 leading-relaxed mb-8">
                         Every value on the page is a Figma variable, named the way it will be named in CSS. Two typefaces, nine spacing steps, five radii, and a neutral ramp that leans slightly red all the way down, so that even the black sits comfortably next to the pink.
