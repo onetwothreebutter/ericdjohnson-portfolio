@@ -72,6 +72,12 @@ const radii = [
     ["full", 999],
 ] as const;
 
+const lettermarks = [
+    { src: "/images/work-ive-done/brightfield-redesign/lettermark-v1.svg", alt: "Lettermark: a white b inside a frame of pink dots." },
+    { src: "/images/work-ive-done/brightfield-redesign/lettermark-v2.svg", alt: "Lettermark: a frame of white dots with one pink dot in the top right corner." },
+    { src: "/images/work-ive-done/brightfield-redesign/lettermark-v3.svg", alt: "Lettermark: a white b inside a frame of dots fading from white at the top to grey at the bottom." },
+];
+
 function SectionHeading({ id, children }: { id: string; children: ReactNode }) {
     return (
         <h2 id={id} className="group text-3xl font-brandon text-brand-red mb-6">
@@ -193,27 +199,23 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="wordmark">The Wordmark</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        The wordmark started as type tests: the full name set in several sans serifs, then pulled apart into a stacked &ldquo;bright / field&rdquo; and a run of b-and-f marks, including a b inside a frame of dots. A mirrored-B monogram got its own round before the stacked lowercase lockup won out. Its pink dot on the i is the one place the brand color appears in the logo.
+                        The final wordmark stacks &ldquo;bright&rdquo; over &ldquo;field&rdquo; in lowercase, with the dot on the i in pink. Alongside it is a lettermark built from a frame of dots, drawn in three versions: pink dots around a b, white dots with a single pink corner, and a b with dots fading from white to grey.
                     </p>
-                    <Figure caption="Logo exploration: type tests, early stacks, and b/f marks.">
-                        <Image
-                            src="/images/work-ive-done/brightfield-redesign/logo-exploration-type.webp"
-                            alt="Logo exploration sheet: Brightfield set in six sans serif styles, a BF monogram, two stacked bright/field lockups, and two rows of b and f letter marks, the second row placing a b inside a frame of dots."
-                            width={2400}
-                            height={736}
-                            sizes="(min-width: 1024px) 1024px, 100vw"
-                            className="w-full h-auto rounded-lg border border-gray-200"
-                        />
-                    </Figure>
-                    <Figure caption="The monogram round and the final stacked lockup.">
-                        <Image
-                            src="/images/work-ive-done/brightfield-redesign/logo-exploration-lockups.webp"
-                            alt="Logo exploration sheet: brightfield in bold lowercase, a BF monogram whose B is progressively mirrored, the mirrored monogram beside the wordmark, and two stacked bright/field lockups, one with the g greyed out."
-                            width={1600}
-                            height={911}
-                            sizes="(min-width: 1024px) 1024px, 100vw"
-                            className="w-full h-auto rounded-lg border border-gray-200"
-                        />
+                    <Figure caption="The final wordmark and three versions of the lettermark.">
+                        <div className="rounded-lg bg-[#121111] px-6 py-12 md:py-16">
+                            <Image
+                                src="/images/work-ive-done/brightfield-redesign/wordmark-final.svg"
+                                alt="Brightfield wordmark: bright stacked over field in white lowercase, the dot on the i in pink."
+                                width={262}
+                                height={113}
+                                className="mx-auto w-48 md:w-64 h-auto"
+                            />
+                            <div className="mt-12 flex flex-wrap items-center justify-center gap-10 md:gap-16">
+                                {lettermarks.map(({ src, alt }) => (
+                                    <Image key={src} src={src} alt={alt} width={120} height={131} className="w-16 md:w-20 h-auto" />
+                                ))}
+                            </div>
+                        </div>
                     </Figure>
                 </section>
 
