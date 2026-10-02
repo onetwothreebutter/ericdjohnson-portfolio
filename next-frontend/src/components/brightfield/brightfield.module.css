@@ -31,17 +31,9 @@
 
 /* wordmark */
 .wordmark {
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 0.8;
-    font-size: calc(var(--u) * 29);
-}
-.wordmark b {
     display: block;
-    font-weight: 700;
-}
-.wordmark b + b {
-    padding-left: 1.72em;
+    width: calc(var(--u) * 176);
+    height: auto;
 }
 
 /* shared section heading */
@@ -61,86 +53,6 @@
     line-height: 1.2;
     letter-spacing: -0.04em;
     max-width: 23em;
-}
-
-/* buttons */
-.btn {
-    border: calc(var(--u) * 2) solid #ffecec;
-    border-radius: calc(var(--u) * 8);
-    padding: calc(var(--u) * 16) calc(var(--u) * 64);
-    font-size: calc(var(--u) * 25);
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-}
-.btnSolid {
-    background: var(--bf-text);
-    border-color: var(--bf-text);
-    color: var(--bf-page);
-}
-
-/* ---------- hero ---------- */
-.hero {
-    aspect-ratio: 1440 / 1024;
-}
-.heroArt {
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-}
-.heroNav {
-    position: absolute;
-    left: calc(var(--u) * 120);
-    right: calc(var(--u) * 120);
-    top: calc(var(--u) * 24);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.heroLinks {
-    display: flex;
-    gap: calc(var(--u) * 48);
-    font-weight: 500;
-    font-size: calc(var(--u) * 20);
-    align-items: center;
-}
-.heroIcons {
-    display: flex;
-    gap: calc(var(--u) * 22);
-    margin-left: calc(var(--u) * 50);
-}
-.heroIcons svg {
-    width: calc(var(--u) * 24);
-    height: calc(var(--u) * 24);
-}
-.heroCopy {
-    position: absolute;
-    left: calc(var(--u) * 107);
-    top: calc(var(--u) * 287);
-}
-.heroBig {
-    font-weight: 700;
-    font-size: calc(var(--u) * 142);
-    line-height: 1.21;
-    letter-spacing: -0.04em;
-}
-.heroMid {
-    font-weight: 700;
-    font-size: calc(var(--u) * 80);
-    line-height: 1.2;
-    letter-spacing: -0.04em;
-    margin-top: calc(var(--u) * -18);
-}
-.heroLead {
-    font-size: calc(var(--u) * 32);
-    line-height: 1.25;
-    letter-spacing: -0.04em;
-    margin-top: calc(var(--u) * 14);
-}
-.heroButtons {
-    display: flex;
-    gap: calc(var(--u) * 28);
-    margin-top: calc(var(--u) * 103);
 }
 
 /* ---------- human ---------- */
@@ -336,10 +248,7 @@
 .footerBrand {
     width: calc(var(--u) * 450);
     background: var(--bf-n10);
-    padding: calc(var(--u) * 70) calc(var(--u) * 120) 0;
-}
-.footerBrand .wordmark {
-    font-size: calc(var(--u) * 34);
+    padding: calc(var(--u) * 80) calc(var(--u) * 120) 0;
 }
 .footerBrand small {
     display: block;

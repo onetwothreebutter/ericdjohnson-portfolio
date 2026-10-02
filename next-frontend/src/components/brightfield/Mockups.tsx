@@ -8,53 +8,7 @@ import s from "./brightfield.module.css";
  */
 
 function Wordmark() {
-    return (
-        <div className={s.wordmark}>
-            <b>bright</b>
-            <b>field</b>
-        </div>
-    );
-}
-
-export function HeroMockup() {
-    return (
-        <div
-            className={s.frame}
-            role="img"
-            aria-label="Hero section: a full-bleed orange shader render with the headline Art for your body, the line Sculpted with code by a human, and Shop and Create buttons."
-        >
-            <div className={clsx(s.stage, s.hero)} inert>
-                <Image src="/images/work-ive-done/brightfield-redesign/hero.jpg" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" className={s.heroArt} />
-                <div className={s.heroNav}>
-                    <Wordmark />
-                    <div className={s.heroLinks}>
-                        <span>APPAREL</span>
-                        <span>ABOUT</span>
-                        <span>CONTACT</span>
-                        <span className={s.heroIcons}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <circle cx="10" cy="10" r="7" />
-                                <path d="M15.5 15.5 22 22" />
-                            </svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 8h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
-                                <path d="M8 9V6a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <div className={s.heroCopy}>
-                    <div className={s.heroBig}>ART</div>
-                    <div className={s.heroMid}>FOR YOUR BODY</div>
-                    <div className={s.heroLead}>Sculpted with code by a human</div>
-                    <div className={s.heroButtons}>
-                        <span className={clsx(s.btn, s.btnSolid)}>Shop</span>
-                        <span className={s.btn}>Create</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    return <Image src="/images/work-ive-done/brightfield-redesign/wordmark.svg" alt="" width={176} height={76} className={s.wordmark} />;
 }
 
 export function HumanMockup() {
