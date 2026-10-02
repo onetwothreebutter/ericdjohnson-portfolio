@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Merriweather, Poppins } from "next/font/google";
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import FigmaEmbed from "@/components/brightfield/FigmaEmbed";
-import { DesignsMockup, EndingMockup, HeroMockup, HumanMockup } from "@/components/brightfield/Mockups";
+import { DesignsMockup, EndingMockup, HumanMockup } from "@/components/brightfield/Mockups";
 
 const FIGMA_FILE = "DiDquPfATSCtAbBgIOOs1T/Brightfield-web-redesign-Sept-2026?node-id=233-147";
 const FIGMA_URL = `https://www.figma.com/design/${FIGMA_FILE}`;
@@ -131,8 +131,15 @@ export default function BrightfieldRedesignPage() {
                     <p className="text-gray-700 leading-relaxed">
                         The art fills the first screen, edge to edge, before anything is said about it. The headline is three words, and the two buttons name the two things you can do at Brightfield: shop a design, or create one.
                     </p>
-                    <Figure caption="Hero, 1440 × 1024. Type is live; the shader render is exported from Figma.">
-                        <HeroMockup />
+                    <Figure caption="Hero, 1440 × 1024.">
+                        <Image
+                            src="/images/work-ive-done/brightfield-redesign/hero-section.webp"
+                            alt="Hero section: a full-bleed orange shader render with the Brightfield wordmark and navigation, the headline Art for your body, the line Sculpted with code by a human, and Shop and Create buttons."
+                            width={1440}
+                            height={1024}
+                            sizes="(min-width: 1024px) 1024px, 100vw"
+                            className="w-full h-auto rounded-lg"
+                        />
                     </Figure>
                 </section>
 
