@@ -1,10 +1,19 @@
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import PhotoCredit from "@/components/features/PhotoCredit";
-import WorkTile from "@/components/features/WorkTile";
-import NewtonsCradle from "@/components/ui/NewtonsCradle";
+import CaseStudyCard, { type CaseStudy } from "@/components/features/CaseStudyCard";
 import VideoZoom from "@/components/ui/VideoZoom";
 import Image from "next/image";
 import Link from "next/link";
+
+const caseStudies: CaseStudy[] = [
+    {
+        slug: "brightfield-redesign",
+        title: "Brightfield Homepage Redesign",
+        summary: "A Figma redesign of my generative art studio's homepage, built around the art, the person making it, and a tool that lets visitors make their own.",
+        image: "/images/work-ive-done/brightfield-redesign/hero-section.webp",
+        tags: ["Brand", "UI Design", "Design System"],
+    },
+];
 
 export default function WorkIveDonePage() {
     return (
@@ -33,6 +42,18 @@ export default function WorkIveDonePage() {
 
             {/* Work Tiles */}
             <div className="max-w-3xl mx-auto px-6 space-y-12 pt-20">
+                <section>
+                    <h2 id="case-studies" className="group text-3xl font-brandon text-brand-red mb-6">
+                        Case Studies
+                        <a href="#case-studies" className="ml-2 opacity-0 group-hover:opacity-100 text-brand-red/40 hover:text-brand-red transition-opacity text-2xl">#</a>
+                    </h2>
+                    <div className={caseStudies.length > 1 ? "grid gap-8 md:grid-cols-2" : undefined}>
+                        {caseStudies.map((study) => (
+                            <CaseStudyCard key={study.slug} {...study} />
+                        ))}
+                    </div>
+                </section>
+
                 <section>
                     <h2 id="shopify-editions" className="group text-3xl font-brandon text-brand-red mb-6">
                         Shopify Editions
@@ -154,9 +175,12 @@ export default function WorkIveDonePage() {
                     <p className="text-gray-700 leading-relaxed mb-4">
                         Brightfield brings together creative frontend development, interaction design, commerce UX, and performance-conscious implementation. It also let me test how far a single developer/designer can take an idea&mdash;from visual experimentation to a live storefront and launch campaign&mdash;using Claude as a coding partner for much of the implementation.
                     </p>
-                    <p className="text-gray-700 leading-relaxed">
-                        Related: <Link href="/work-ive-done/brightfield-redesign" className="text-brand-red hover:underline">Brightfield homepage redesign case study</Link>
-                    </p>
+                    <Link
+                        href="/work-ive-done/brightfield-redesign"
+                        className="inline-block rounded-md border-2 border-brand-red px-5 py-2 font-brandon uppercase tracking-wide text-brand-red transition-colors hover:bg-brand-red hover:text-white"
+                    >
+                        Read the redesign case study
+                    </Link>
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
