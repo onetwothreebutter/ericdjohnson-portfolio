@@ -129,7 +129,7 @@ export function HeroCard() {
                 <h1 className="text-4xl md:text-7xl font-brandon mb-4" style={{ color: h1Color }}>
                     Eric Johnson
                 </h1>
-                <div className="text-xl md:text-2xl font-brandon mb-[10px] md:mb-8" style={{ color: subtitleColor }}>
+                <div className="text-xl md:text-2xl font-brandon text-balance mb-[10px] md:mb-8" style={{ color: subtitleColor }}>
                     Design&nbsp;Engineer &amp; Vanquisher of Boring Websites
                 </div>
                 <DesktopMenu linkStyle={{ color: linkColor }} />
