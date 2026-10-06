@@ -1,6 +1,7 @@
 import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import PhotoCredit from "@/components/features/PhotoCredit";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function WhoIAmPage() {
   return (
@@ -32,7 +33,7 @@ export default function WhoIAmPage() {
         <section>
           <h2 className="text-3xl font-brandon text-brand-red mb-6">Collaborating with Designers</h2>
           <p className="text-gray-700 leading-relaxed">
-            In my experience, the best interactive work comes from close collaboration between designers and developers. On Shopify&apos;s Universal Commerce Protocol page, I took a static background grid design, rebuilt it as a WebGL shader, and prototyped an interactive mouse-highlight effect. Designers and stakeholders immediately saw its potential, and I paired with the designer to refine the grid, hover behavior, and visual details into a hero moment that exceeded the original ask.
+            In my experience, the best interactive work comes from close collaboration between designers and developers. On Shopify&apos;s Universal Commerce Protocol page, I took a static background grid design, rebuilt it as a WebGL shader, and prototyped an interactive mouse-highlight effect. Designers and stakeholders immediately saw its potential, and I paired with the designer to refine the grid, hover behavior, and visual details into a hero moment that exceeded the original ask. I design too, so I know both sides of the handoff; see my <Link href="/work-ive-done/brightfield-redesign" className="text-brand-red hover:underline">Brightfield homepage redesign case study</Link>.
           </p>
         </section>
 

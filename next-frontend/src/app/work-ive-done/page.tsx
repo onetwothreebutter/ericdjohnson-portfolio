@@ -175,9 +175,12 @@ export default function WorkIveDonePage() {
                     <p className="text-gray-700 leading-relaxed mb-4">
                         Brightfield brings together creative frontend development, interaction design, commerce UX, and performance-conscious implementation. It also let me test how far a single developer/designer can take an idea&mdash;from visual experimentation to a live storefront and launch campaign&mdash;using Claude as a coding partner for much of the implementation.
                     </p>
-                    <p className="text-gray-700 leading-relaxed">
-                        Related: <Link href="/work-ive-done/brightfield-redesign" className="text-brand-red hover:underline">Brightfield homepage redesign case study</Link>
-                    </p>
+                    <Link
+                        href="/work-ive-done/brightfield-redesign"
+                        className="inline-block rounded-md border-2 border-brand-red px-5 py-2 font-brandon uppercase tracking-wide text-brand-red transition-colors hover:bg-brand-red hover:text-white"
+                    >
+                        Read the redesign case study
+                    </Link>
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
