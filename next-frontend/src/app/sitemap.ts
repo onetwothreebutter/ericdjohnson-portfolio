@@ -21,19 +21,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.6,
         },
         {
-            url: 'https://www.ericdjohnson.net/skills-i-have',
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
-            url: 'https://www.ericdjohnson.net/who-i-am',
+            url: 'https://www.ericdjohnson.net/how-i-work',
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.5,
         },
         {
-            url: 'https://www.ericdjohnson.net/what-im-looking-for',
+            url: 'https://www.ericdjohnson.net/who-i-am',
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 0.5,
