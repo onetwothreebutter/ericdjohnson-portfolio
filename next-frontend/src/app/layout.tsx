@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import { MobileMenu } from "@/components/layout/Menu";
@@ -54,6 +55,7 @@ export default function RootLayout({
             <MobileMenu />
           </div>
         </LenisProvider>
+        <Analytics />
       </body>
     </html>
   );
