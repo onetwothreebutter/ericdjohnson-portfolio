@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: 'https://ericdjohnson.com/sitemap.xml',
+        sitemap: 'https://www.ericdjohnson.net/sitemap.xml',
     }
 }
