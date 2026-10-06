@@ -17,24 +17,24 @@ const brandon = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ericdjohnson.com"),
+  metadataBase: new URL("https://www.ericdjohnson.net"),
   title: {
-    default: "Eric Johnson | Web Developer",
+    default: "Eric Johnson | Design Engineer",
     template: "%s | Eric Johnson",
   },
-  description: "Eric Johnson's portfolio of web animations, code, and other skills.",
+  description: "Design engineer who designs and builds interactive, WebGL-heavy web experiences.",
   openGraph: {
-    title: "Eric Johnson | Web Developer",
-    description: "Eric Johnson's portfolio of web animations, code, and other skills.",
-    url: "https://ericdjohnson.com",
+    title: "Eric Johnson | Design Engineer",
+    description: "Design engineer who designs and builds interactive, WebGL-heavy web experiences.",
+    url: "https://www.ericdjohnson.net",
     siteName: "Eric Johnson Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eric Johnson | Web Developer",
-    description: "Eric Johnson's portfolio of web animations, code, and other skills.",
+    title: "Eric Johnson | Design Engineer",
+    description: "Design engineer who designs and builds interactive, WebGL-heavy web experiences.",
     creator: "@ericdjohnson", // Assuming handle, can be updated
   },
 };

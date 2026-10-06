@@ -130,7 +130,7 @@ export function HeroCard() {
                     Eric Johnson
                 </h1>
                 <div className="text-xl md:text-2xl font-brandon mb-[10px] md:mb-8" style={{ color: subtitleColor }}>
-                    Web&nbsp;Developer &amp; Vanquisher of Boring Websites
+                    Design&nbsp;Engineer &amp; Vanquisher of Boring Websites
                 </div>
                 <DesktopMenu linkStyle={{ color: linkColor }} />
             </div>
