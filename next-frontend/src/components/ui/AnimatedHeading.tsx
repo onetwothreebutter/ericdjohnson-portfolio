@@ -39,6 +39,7 @@ export default function AnimatedHeading({ text, className }: AnimatedHeadingProp
     return (
         <h1
             ref={containerRef}
+            aria-label={text}
             className={clsx("font-brandon font-bold uppercase", className)}
         >
             {words.map((word, wordIndex) => (
@@ -51,6 +52,7 @@ export default function AnimatedHeading({ text, className }: AnimatedHeadingProp
                             {letter}
                         </span>
                     ))}
+                    {wordIndex < words.length - 1 && " "}
                 </span>
             ))}
         </h1>

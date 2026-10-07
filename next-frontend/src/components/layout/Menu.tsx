@@ -32,14 +32,14 @@ export function DesktopMenu({ className, linkStyle }: { className?: string; link
                     className="group relative flex flex-col items-center justify-center ml-[50px] text-brand-red no-underline first:ml-0"
                     style={linkStyle}
                 >
-                    <span className="absolute left-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
+                    <span aria-hidden="true" className="absolute left-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
                         (
                     </span>
-                    <span className="text-lg uppercase">{item.label}</span>
+                    <span className="text-lg uppercase">{item.label}</span>{" "}
                     <span className="text-[10px] uppercase transition-opacity duration-300 group-hover:opacity-100">
                         {item.sub}
                     </span>
-                    <span className="absolute right-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
+                    <span aria-hidden="true" className="absolute right-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
                         )
                     </span>
                 </Link>
@@ -90,7 +90,7 @@ export function MobileMenu() {
                         )}
                         style={{ color: linkColor }}
                     >
-                        <span className="text-sm uppercase">{item.label}</span>
+                        <span className="text-sm uppercase">{item.label}</span>{" "}
                         <span className="text-[9px] uppercase">{item.sub}</span>
                     </Link>
                 ))}
