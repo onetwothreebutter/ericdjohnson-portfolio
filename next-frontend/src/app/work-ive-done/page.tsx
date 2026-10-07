@@ -27,7 +27,7 @@ export default function WorkIveDonePage() {
     return (
         <div className="min-h-screen bg-white">
             {/* Banner */}
-            <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
+            <section className="relative h-[22vh] min-h-[160px] flex items-center justify-center overflow-hidden">
                 <Image
                     src="/images/work-ive-done/michal-grosicki-221225.jpg"
                     alt="Work Banner"
