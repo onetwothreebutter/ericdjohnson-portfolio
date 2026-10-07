@@ -16,10 +16,10 @@ function lerpRgb(r1: number, g1: number, b1: number, r2: number, g2: number, b2:
 }
 
 const menuItems = [
-    { href: "/work-ive-done", label: "Work", sub: "i've done", mobileLabel: "Work" },
-    { href: "/how-i-work", label: "How", sub: "i work", mobileLabel: "How" },
-    { href: "/who-i-am", label: "Who", sub: "i am", mobileLabel: "Bio" },
-    { href: "/contact-me", label: "Contact", sub: "me", mobileLabel: "Contact" },
+    { href: "/work-ive-done", label: "Work", sub: "i've done" },
+    { href: "/how-i-work", label: "How", sub: "i work" },
+    { href: "/who-i-am", label: "Who", sub: "i am" },
+    { href: "/contact-me", label: "Contact", sub: "me" },
 ];
 
 export function DesktopMenu({ className, linkStyle }: { className?: string; linkStyle?: React.CSSProperties }) {
@@ -32,14 +32,14 @@ export function DesktopMenu({ className, linkStyle }: { className?: string; link
                     className="group relative flex flex-col items-center justify-center ml-[50px] text-brand-red no-underline first:ml-0"
                     style={linkStyle}
                 >
-                    <span className="absolute left-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
+                    <span aria-hidden="true" className="absolute left-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:translate-x-[5px]">
                         (
                     </span>
-                    <span className="text-lg uppercase">{item.label}</span>
+                    <span className="text-lg uppercase">{item.label}</span>{" "}
                     <span className="text-[10px] uppercase transition-opacity duration-300 group-hover:opacity-100">
                         {item.sub}
                     </span>
-                    <span className="absolute right-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
+                    <span aria-hidden="true" className="absolute right-[-20px] top-[3px] text-[30px] font-light opacity-0 transition-[opacity,transform] duration-300 group-hover:opacity-100 group-hover:-translate-x-[5px]">
                         )
                     </span>
                 </Link>
@@ -90,8 +90,8 @@ export function MobileMenu() {
                         )}
                         style={{ color: linkColor }}
                     >
-                        <span className="text-sm uppercase block md:hidden">{item.mobileLabel}</span>
-                        <span className="text-sm uppercase hidden md:block">{item.label}</span>
+                        <span className="text-sm uppercase">{item.label}</span>{" "}
+                        <span className="text-[9px] uppercase">{item.sub}</span>
                     </Link>
                 ))}
             </nav>
