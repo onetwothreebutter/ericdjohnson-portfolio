@@ -48,20 +48,20 @@ export default function WorkIveDonePage() {
                 </div>
             </section>
 
-            <div className="max-w-3xl mx-auto px-6 pt-12 pb-20">
+            <div className="max-w-3xl mx-auto px-6 pt-10 pb-20">
                 {/* Intro + index */}
-                <section className="mb-16">
-                    <p className="text-xl text-gray-800 leading-relaxed mb-4">
+                <section className="mb-12">
+                    <p className="text-xl text-gray-800 leading-relaxed mb-2">
                         Selected WebGL and interactive work, mostly from Shopify&apos;s brand and launch sites.
                     </p>
-                    <p className="text-gray-700 leading-relaxed mb-8">
+                    <p className="text-gray-700 leading-relaxed mb-6">
                         The work I&apos;m most proud of is helping create and build the Shopify Editions websites. I&apos;ve worked on most of them and they&apos;re always headspinning, imagination-stretching, feats of engineering.
                     </p>
-                    <nav aria-label="Projects on this page" className="grid gap-6 sm:grid-cols-2">
+                    <nav aria-label="Projects on this page" className="space-y-2">
                         {projectIndex.map((group) => (
-                            <div key={group.heading}>
-                                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">{group.heading}</p>
-                                <ul className="space-y-1">
+                            <div key={group.heading} className="sm:flex sm:gap-4">
+                                <p className="shrink-0 pt-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-500 sm:w-28">{group.heading}</p>
+                                <ul className="flex flex-wrap gap-x-4 gap-y-1">
                                     {group.projects.map((project) => (
                                         <li key={project.id}>
                                             <a href={`#${project.id}`} className="text-brand-red hover:underline">
@@ -76,7 +76,7 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-16">
-                    <h2 id="at-shopify" className="group text-3xl font-brandon text-brand-red mb-8">
+                    <h2 id="at-shopify" className="group text-3xl font-brandon text-brand-red mb-6">
                         At Shopify
                         <a href="#at-shopify" className="ml-2 opacity-0 group-hover:opacity-100 text-brand-red/40 hover:text-brand-red transition-opacity text-2xl">#</a>
                     </h2>
