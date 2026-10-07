@@ -68,6 +68,22 @@ export default function WorkIveDonePage() {
                 </section>
 
                 <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
+                    <h3 id="summer-26" className="group mb-2 text-2xl font-brandon">
+                        Shopify Summer &apos;26 Edition &mdash; Plot
+                        <a href="#summer-26" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        I created Plot, a backyard garden-planning app that used AI as part of its core functionality, for Shopify&apos;s Summer &apos;26 Edition. On most of my projects AI is a coding partner during the build. On this one the model was part of the product itself, doing the planning work at runtime based on what someone told the app about their space.
+                    </p>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        A key challenge was verifying prompt changes. Unlike code, a prompt can get worse without anything visibly breaking, so clicking through the app a few times wasn&apos;t enough to tell me whether a change was an improvement.
+                    </p>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        This is where I learned how to write evals and use Braintrust to prevent regressions, compare model behavior, and evaluate prompt changes with more confidence.
+                    </p>
+                </section>
+
+                <section className="mb-12 md:border-l-4 md:border-brand-red md:pl-6 md:py-1">
                     <h3 id="winter-25" className="group mb-2 text-2xl font-brandon">
                         Shopify Winter &apos;25 Edition &mdash; &ldquo;The Boring Edition&rdquo;
                         <a href="#winter-25" className="ml-2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity">#</a>

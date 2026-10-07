@@ -53,7 +53,7 @@ export default function WhoIAmPage() {
             I use AI tools heavily in my development workflow, especially Claude Code, Claude Sonnet, and Claude Opus. I try new models as they&apos;re released, but Claude has become my primary coding partner for prototyping, debugging, refactoring, and exploring implementation options.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            I&apos;ve also built AI-powered product experiences. For Shopify&apos;s Summer 2026 Edition, I created Plot, a backyard garden-planning app that used AI as part of its core functionality. I have also learned how to write evals and use Braintrust to prevent regressions, compare model behavior, and evaluate prompt changes with more confidence.
+            I&apos;ve also built AI-powered product experiences, like <Link href="/work-ive-done#summer-26" className="text-brand-red hover:underline">Plot</Link>, a backyard garden-planning app I created for Shopify&apos;s Summer &apos;26 Edition. Working on it is where I learned how to write evals and use Braintrust to prevent regressions, compare model behavior, and evaluate prompt changes with more confidence.
           </p>
         </section>
 
