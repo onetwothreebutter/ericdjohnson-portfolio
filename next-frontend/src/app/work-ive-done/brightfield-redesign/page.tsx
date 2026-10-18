@@ -222,7 +222,7 @@ export default function BrightfieldRedesignPage() {
                         </div>
                     </Figure>
                     <p className="text-gray-700 leading-relaxed mt-6">
-                        The tool changes the most. On tablet the canvas stays in view beside the controls as you scroll through them. On mobile there isn&apos;t room for both, so the three panels fold into a bar under the canvas with Colors, Code, and Finish tabs.
+                        The shader controls change the most. On tablet the canvas stays in view beside the controls as you scroll through them. On mobile there isn&apos;t room for both, so the three panels fold into a bar under the canvas with Colors, Code, and Finish tabs.
                     </p>
                     <Figure caption="Craft your own on tablet and mobile.">
                         <div className="flex items-start gap-4">
