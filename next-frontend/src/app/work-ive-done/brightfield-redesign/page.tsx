@@ -230,17 +230,17 @@ export default function BrightfieldRedesignPage() {
                                 src="/images/work-ive-done/brightfield-redesign/tablet-craft-your-own.webp"
                                 alt="Tablet craft your own section: the design canvas on the left, with Colors, Code settings and Effects panels and a Preview on shirt button on the right."
                                 width={1024}
-                                height={1069}
-                                sizes="(min-width: 1024px) 690px, 66vw"
-                                className="w-[67.4%] min-w-0 h-auto rounded-lg"
+                                height={1261}
+                                sizes="(min-width: 1024px) 650px, 62vw"
+                                className="w-[63.6%] min-w-0 h-auto rounded-lg"
                             />
                             <Image
                                 src="/images/work-ive-done/brightfield-redesign/mobile-craft-your-own.webp"
                                 alt="Mobile craft your own section: the design canvas filling the width, with a bar of Colors, Code and Finish tabs beneath it."
                                 width={402}
                                 height={866}
-                                sizes="(min-width: 1024px) 340px, 32vw"
-                                className="w-[32.6%] min-w-0 h-auto rounded-lg"
+                                sizes="(min-width: 1024px) 370px, 36vw"
+                                className="w-[36.4%] min-w-0 h-auto rounded-lg"
                             />
                         </div>
                     </Figure>
