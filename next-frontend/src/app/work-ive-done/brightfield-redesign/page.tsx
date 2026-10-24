@@ -7,7 +7,7 @@ import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import FigmaEmbed from "@/components/brightfield/FigmaEmbed";
 import { DesignsMockup, EndingMockup, HumanMockup } from "@/components/brightfield/Mockups";
 
-const FIGMA_FILE = "DiDquPfATSCtAbBgIOOs1T/Brightfield-web-redesign-Sept-2026?node-id=233-147";
+const FIGMA_FILE = "kD4AhFhs5ZlpsJfsTUuok6/Brightfield-web-redesign-Sept-2026?node-id=0-1";
 const FIGMA_URL = `https://www.figma.com/design/${FIGMA_FILE}`;
 const FIGMA_EMBED_URL = `https://embed.figma.com/design/${FIGMA_FILE}&embed-host=share`;
 
@@ -120,7 +120,7 @@ export default function BrightfieldRedesignPage() {
                         <a href="https://brightfield.studio/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Brightfield</a> is my generative art studio, where WebGL shaders become shirts you can wear. In September 2026 I redesigned its homepage in Figma around three things: the art, the person making it, and a tool that lets visitors make their own.
                     </p>
                     <p className="text-gray-700 leading-relaxed">
-                        I own the brand, the design, and the build. Below is the page from top to bottom, followed by the variables it&apos;s built from. For the story of the studio itself, see <Link href="/work-ive-done#brightfield" className="text-brand-red hover:underline">Work I&apos;ve Done</Link>.
+                        I own the brand, the design, and the build. Below is the page from top to bottom, how it adapts to tablet and mobile, and the variables it&apos;s built from. For the story of the studio itself, see <Link href="/work-ive-done#brightfield" className="text-brand-red hover:underline">Work I&apos;ve Done</Link>.
                     </p>
                     <a
                         href={FIGMA_URL}
@@ -193,6 +193,56 @@ export default function BrightfieldRedesignPage() {
                     </p>
                     <Figure caption="Get notified, and the footer.">
                         <EndingMockup />
+                    </Figure>
+                </section>
+
+                <section>
+                    <SectionHeading id="tablet-and-mobile">Tablet and Mobile</SectionHeading>
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                        The page is designed at three widths: 1440 for desktop, 1024 for tablet, and 402 for mobile. On tablet the layout keeps its desktop shape at a smaller size. On mobile the navigation shrinks to search, bag, and a menu, and the Shop and Create buttons stack full width so both stay easy to tap.
+                    </p>
+                    <Figure caption="Hero on tablet and mobile.">
+                        <div className="flex items-start gap-4">
+                            <Image
+                                src="/images/work-ive-done/brightfield-redesign/tablet-hero.webp"
+                                alt="Tablet hero: the orange shader render with the headline Art for your body and Shop and Create buttons side by side."
+                                width={1024}
+                                height={875}
+                                sizes="(min-width: 1024px) 730px, 70vw"
+                                className="w-[71.8%] min-w-0 h-auto rounded-lg"
+                            />
+                            <Image
+                                src="/images/work-ive-done/brightfield-redesign/mobile-hero.webp"
+                                alt="Mobile hero: the same headline over the shader render, with search, bag and menu icons in the navigation and full-width Shop and Create buttons stacked."
+                                width={402}
+                                height={875}
+                                sizes="(min-width: 1024px) 290px, 28vw"
+                                className="w-[28.2%] min-w-0 h-auto rounded-lg"
+                            />
+                        </div>
+                    </Figure>
+                    <p className="text-gray-700 leading-relaxed mt-6">
+                        The shader controls change the most. On tablet the canvas stays in view beside the controls as you scroll through them. On mobile there isn&apos;t room for both, so the three panels fold into a bar under the canvas with Colors, Code, and Finish tabs.
+                    </p>
+                    <Figure caption="Craft your own on tablet and mobile.">
+                        <div className="flex items-start gap-4">
+                            <Image
+                                src="/images/work-ive-done/brightfield-redesign/tablet-craft-your-own.webp"
+                                alt="Tablet craft your own section: the design canvas on the left, with Colors, Code settings and Effects panels and a Preview on shirt button on the right."
+                                width={1024}
+                                height={1261}
+                                sizes="(min-width: 1024px) 650px, 62vw"
+                                className="w-[63.6%] min-w-0 h-auto rounded-lg"
+                            />
+                            <Image
+                                src="/images/work-ive-done/brightfield-redesign/mobile-craft-your-own.webp"
+                                alt="Mobile craft your own section: the design canvas filling the width, with a bar of Colors, Code and Finish tabs beneath it."
+                                width={402}
+                                height={866}
+                                sizes="(min-width: 1024px) 370px, 36vw"
+                                className="w-[36.4%] min-w-0 h-auto rounded-lg"
+                            />
+                        </div>
                     </Figure>
                 </section>
 
@@ -275,9 +325,9 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="file">The File</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        Everything above comes from one Figma frame. Here it is, with the variables and components intact. You can also <a href={FIGMA_URL} target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">open it in Figma</a>.
+                        Everything above comes from one Figma file, with a frame for each of desktop, tablet, and mobile. Here it is, with the variables and components intact. You can also <a href={FIGMA_URL} target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">open it in Figma</a>.
                     </p>
-                    <Figure caption="The Figma file, Desktop frame.">
+                    <Figure caption="The Figma file: desktop, tablet, and mobile frames.">
                         <FigmaEmbed src={FIGMA_EMBED_URL} title="Brightfield homepage redesign in Figma" />
                     </Figure>
                 </section>
