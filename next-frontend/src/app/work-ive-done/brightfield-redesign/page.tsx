@@ -523,11 +523,12 @@ export default function BrightfieldRedesignPage() {
 
                 <section>
                     <SectionHeading id="reflection">Reflection</SectionHeading>
-                    {/* TODO(Eric): status line is a placeholder until Eric confirms whether the redesign is
-                        a design only, in progress, or live. Then add his words on what the project taught him,
-                        what he's happiest with, and what he'd improve next. See brightfield-case-study/plan.md. */}
+                    {/* TODO(Eric): add what the project taught you and what you'd improve next. */}
+                    <p className={`${P} mb-4`}>
+                        This is a design, not a shipped site. The redesign isn&apos;t live yet, so I have no sign-up numbers or user tests to show, and I won&apos;t pretend to.
+                    </p>
                     <p className={P}>
-                        This is a design. I have no sign-up numbers or user tests to show, and I won&apos;t pretend to.
+                        I&apos;m happiest with the shader controls. I think I designed much more intuitive, bespoke controls that show what is being changed and invite you to try changing it.
                     </p>
                 </section>
 
