@@ -523,12 +523,15 @@ export default function BrightfieldRedesignPage() {
 
                 <section>
                     <SectionHeading id="reflection">Reflection</SectionHeading>
-                    {/* TODO(Eric): add what the project taught you and what you'd improve next. */}
+                    {/* TODO(Eric): add what you'd improve next. */}
                     <p className={`${P} mb-4`}>
                         This is a design, not a shipped site. The redesign isn&apos;t live yet, so I have no sign-up numbers or user tests to show, and I won&apos;t pretend to.
                     </p>
+                    <p className={`${P} mb-4`}>
+                        The biggest surprise was how much clearer the shader controls became once I designed them instead of using default sliders. The difference was obvious even to an advanced user like me.
+                    </p>
                     <p className={P}>
-                        I&apos;m happiest with the shader controls. I think I designed much more intuitive, bespoke controls that show what is being changed and invite you to try changing it.
+                        That&apos;s also the part I&apos;m happiest with. I think I designed much more intuitive, bespoke controls that show what is being changed and invite you to try changing it.
                     </p>
                 </section>
 
