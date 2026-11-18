@@ -185,7 +185,7 @@ export default function BrightfieldRedesignPage() {
                         I wanted the order reversed. Brightfield should read first as an art and design studio with a person behind it, not as a print-on-demand store or a tech demo. The code is still the reason the art exists, but it should come in after the art has earned your attention.
                     </p>
                     <p className={P}>
-                        So the brief I wrote for myself came down to one question: how can Brightfield present generative art as something you&apos;d want to wear, while making it simple to create your own? That meant three things: a clearer identity, a homepage that gives equal weight to buying a design and making one, and shader controls that work for someone who has never heard of a shader.
+                        I wrote myself a brief built around one question: how do you make generative art something people want to wear, and make designing your own feel easy? Three goals came out of it. Give Brightfield a clear identity. Give buying a design and making one equal weight on the homepage. And make the shader controls work for someone who has never heard of a shader.
                     </p>
                 </section>
 
