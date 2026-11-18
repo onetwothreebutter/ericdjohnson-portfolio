@@ -192,7 +192,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="before-and-after">Before and After</SectionHeading>
                     <p className={P}>
-                        Here is the homepage I started from, next to the redesign. The old one isn&apos;t bad. It has a clear grid, a working customizer, and a look of its own. It just talks about code before it talks about art.
+                        Here is the homepage I started from, next to the redesign. The old one isn&apos;t bad. It has a clear grid, a working customizer, and a look of its own. But it talks about code before it talks about art.
                     </p>
                     <Figure caption="The old homepage and the redesign, both at desktop width.">
                         <div className="grid grid-cols-2 gap-4 items-start">
