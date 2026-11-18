@@ -271,11 +271,8 @@ export default function BrightfieldRedesignPage() {
                             ))}
                         </div>
                     </Figure>
-                    <p className={`${P} mt-6 mb-4`}>
+                    <p className={`${P} mt-6`}>
                         The first line I wrote was &ldquo;Art crafted with code (by a human)&rdquo;. It became &ldquo;Art for your body&rdquo; with &ldquo;Sculpted with code by a human&rdquo; beneath it, so the code moves to the second line and the wearing moves to the first.
-                    </p>
-                    <p className={P}>
-                        The final hero shows no garment. The shirt appears once you click through.
                     </p>
                 </section>
 
