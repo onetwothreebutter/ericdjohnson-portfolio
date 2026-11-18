@@ -424,11 +424,8 @@ export default function BrightfieldRedesignPage() {
                     <p className={`${P} mt-6 mb-4`}>
                         Each drawer holds one row and no more. Colors is a strip of named palettes you swipe through. Code has two settings, Line Width and Line Spacing, and you switch between them with a toggle so only one slider shows at a time. Finish is three effects.
                     </p>
-                    <p className={`${P} mb-4`}>
-                        The sliders have no numbers. The old customizer had sliders named Lines, Power, and Center Circle, with numeric values beside them. The new slider for line width is drawn as a row of bars getting wider, and the one for spacing as lines moving apart, so the control shows you what it does before you touch it.
-                    </p>
                     <p className={P}>
-                        The cost is reach. The old page had an All Settings panel, and the new one exposes a palette, two sliders, and three effects. One small thing: the panel called Effects on desktop is called Finish on mobile.
+                        The sliders have no numbers. The old customizer had sliders named Lines, Power, and Center Circle, with numeric values beside them. The new slider for line width is drawn as a row of bars getting wider, and the one for spacing as lines moving apart, so the control shows you what it does before you touch it.
                     </p>
                 </section>
 
@@ -524,7 +521,7 @@ export default function BrightfieldRedesignPage() {
                         This redesign isn&apos;t live yet, so there are no numbers to show.
                     </p>
                     <p className={P}>
-                        The biggest surprise was how much clearer the shader controls became once I designed them instead of using default sliders. The difference was obvious even to me, and I wrote the shaders. It&apos;s the part I&apos;m happiest with: controls that show what they change and invite you to try them.
+                        The biggest surprise was how much clearer the shader controls became once I designed them instead of using default sliders. The difference was obvious even to me, and I wrote the shaders. It&apos;s the part I&apos;m happiest with: controls that show what they change and make it easy for you to try them.
                     </p>
                 </section>
 
