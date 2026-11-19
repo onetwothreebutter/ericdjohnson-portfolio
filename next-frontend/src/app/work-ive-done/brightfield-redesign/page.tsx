@@ -65,7 +65,7 @@ const stayedTheSame = [
 
 const whatChanged = [
     "The headline went from “Source Code for Your Shirt” to “Art for your body”.",
-    "The hero went from a model photo with a shader laid over it to the art by itself, edge to edge.",
+    "The hero went from a model photo with a shader laid over it to the art edge to edge, with a model wearing one of the designs in front of it.",
     "Neon cyan and magenta with monospace labels became warm neutrals, one pink accent, and Poppins.",
     "A new section introduces the person making the art.",
     "Product cards went from a model photo with two buttons to the art, a name, and a price.",
@@ -200,20 +200,22 @@ export default function BrightfieldRedesignPage() {
                                 {
                                     label: "Before",
                                     src: `${IMG}/before-full.webp`,
+                                    width: 844,
                                     height: 2617,
                                     alt: "Old Brightfield homepage: a photo of a model in a stone alley under the headline Source Code for Your Shirt, a grid of nine shirts on models with cyan buttons, a customizer with sliders, and an email sign-up.",
                                 },
                                 {
                                     label: "After",
                                     src: `${IMG}/after-full.webp`,
+                                    width: 845,
                                     height: 4096,
-                                    alt: "Redesigned Brightfield homepage: a full-width orange shader render under the headline Art for your body, a portrait and bio of Eric, a grid of nine designs, shader controls, and an email sign-up.",
+                                    alt: "Redesigned Brightfield homepage: an orange shader render under the headline Art for your body, with a model wearing a shirt printed with a Brightfield design, a black and white portrait and bio of Eric, a grid of nine designs, shader controls, an email sign-up, and a light footer.",
                                 },
-                            ].map(({ label, src, height, alt }) => (
+                            ].map(({ label, src, width, height, alt }) => (
                                 <div key={label}>
                                     <p className="mb-2 text-sm text-gray-500">{label}</p>
                                     <div className="rounded-lg overflow-hidden bg-[#121111]">
-                                        <Image src={src} alt={alt} width={844} height={height} sizes="(min-width: 1024px) 500px, 50vw" className="w-full h-auto" />
+                                        <Image src={src} alt={alt} width={width} height={height} sizes="(min-width: 1024px) 500px, 50vw" className="w-full h-auto" />
                                     </div>
                                 </div>
                             ))}
@@ -254,9 +256,9 @@ export default function BrightfieldRedesignPage() {
                         I tried the headline three ways before the image changed at all: light lowercase, light uppercase, and bold uppercase with a quieter line under it.
                     </p>
                     <p className={`${P} mb-4`}>
-                        Then the image. The obvious choice for a shirt store is a photo of someone wearing the shirt, and I mocked that up. The old homepage did the same thing. I also tried a plain gradient before settling on the orange render.
+                        Then the image. I mocked up a photo of a man in a shop, like the photo-led hero on the old homepage, and a plain gradient, before settling on the orange render. The final design puts a model wearing one of the printed shirts in front of that render, so the art and the shirt arrive together.
                     </p>
-                    <Figure caption="Six hero directions. The last one is the final.">
+                    <Figure caption="Six hero directions. The last one became the final, with a model added.">
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                             {heroExplorations.map((alt, i) => (
                                 <Image
@@ -285,7 +287,7 @@ export default function BrightfieldRedesignPage() {
                         <HumanMockup />
                     </Figure>
                     <p className={`${P} mt-6 mb-4`}>
-                        I laid this section out four ways with the same words. The first three set the bio as a quote, with a heading, a large quotation mark, and a small round avatar. The fourth gives a portrait half the section. It is the only photograph on the page, and it&apos;s black and white. In the final version the avatar is gone, and the Brightfield lettermark sits in its place next to my name.
+                        I laid this section out four ways with the same words. The first three set the bio as a quote, with a heading, a large quotation mark, and a small round avatar. The fourth gives a black and white portrait half the section. The final version keeps that portrait, moves it to the left, and puts the large quotation mark back behind the bio. The avatar is gone, and the Brightfield lettermark sits in its place next to my name.
                     </p>
                     <Figure caption="Four layouts for the same words. The portrait made it into the final.">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
