@@ -26,8 +26,52 @@ const merriweather = Merriweather({
 export const metadata: Metadata = {
     title: "Brightfield Redesign",
     description:
-        "A redesign of the Brightfield Studio homepage: generative art made with code, and a tool for making your own.",
+        "Why and how I redesigned the Brightfield Studio homepage: the old page, the new one, and the decisions between them.",
 };
+
+const IMG = "/images/work-ive-done/brightfield-redesign";
+const P = "text-gray-700 leading-relaxed";
+
+const heroExplorations = [
+    "Light lowercase type, art for your body, sculpted with code by a human, over a soft teal and pink wave render.",
+    "Light uppercase type, ART FOR YOUR BODY, SCULPTED WITH CODE, BY A HUMAN, over the same wave render.",
+    "A bold uppercase headline with a sentence-case line under it, over the same wave render.",
+    "The bold headline over a photo of a man in a black tee in a shop.",
+    "The bold headline over a grainy yellow and orange gradient.",
+    "The bold headline over the orange glass-block render, the direction used in the final design.",
+];
+
+const humanExplorations = [
+    "Centered heading, a very large quotation mark behind the bio, and a round avatar with a pink ring.",
+    "Centered heading, a smaller quotation mark, and a plain round avatar.",
+    "Everything left aligned, with the quotation mark behind the text.",
+    "Left-aligned text beside a large black and white portrait.",
+];
+
+const mobileControls = [
+    { name: "closed", label: "Closed", width: 372, height: 99, alt: "A bar with three tabs: Colors, Code, and Finish." },
+    { name: "colors", label: "Colors", width: 372, height: 186, alt: "The Colors tab open, with a row of palette chips named Coastal and Fiery above the tab bar." },
+    { name: "code", label: "Code", width: 372, height: 263, alt: "The Code tab open, with Line Width and Line Spacing toggles above a slider drawn as bars that grow wider from left to right." },
+    { name: "finish", label: "Finish", width: 372, height: 186, alt: "The Finish tab open, with chips for Distress, Crosshatch and Halftone dots." },
+];
+
+const stayedTheSame = [
+    "The dark page.",
+    "The order: shop first, then make your own, then sign up.",
+    "Nine designs in a three-by-three grid.",
+    "The canvas on the left with controls on the right, ending in Preview on shirt.",
+    "Two buttons in the hero, one for each thing you can do.",
+];
+
+const whatChanged = [
+    "The headline went from “Source Code for Your Shirt” to “Art for your body”.",
+    "The hero went from a model photo with a shader laid over it to the art edge to edge, with a model wearing one of the designs in front of it.",
+    "Neon cyan and magenta with monospace labels became warm neutrals, one pink accent, and Poppins.",
+    "A new section introduces the person making the art.",
+    "Product cards went from a model photo with two buttons to the art, a name, and a price.",
+    "The customizer went from a dropdown and numbered sliders (Lines, Power, Center Circle) to a palette, two visual sliders, and three effects.",
+    "The navigation dropped Community Designs and went from four links to three.",
+];
 
 const colors = [
     ["color-bg-page", "#121111"],
@@ -117,10 +161,10 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="the-project">The Project</SectionHeading>
                     <p className="text-gray-700 leading-relaxed mb-4">
-                        <a href="https://brightfield.studio/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Brightfield</a> is my generative art studio, where WebGL shaders become shirts you can wear. In September 2026 I redesigned its homepage in Figma around three things: the art, the person making it, and a tool that lets visitors make their own.
+                        <a href="https://brightfield.studio/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Brightfield</a> is my generative art studio, where WebGL shaders become shirts you can wear. In fall 2026 I redesigned its homepage in Figma around three things: the art, the person making it, and a tool that lets visitors make their own.
                     </p>
                     <p className="text-gray-700 leading-relaxed">
-                        I own the brand, the design, and the build. Below is the page from top to bottom, how it adapts to tablet and mobile, and the variables it&apos;s built from. For the story of the studio itself, see <Link href="/work-ive-done#brightfield" className="text-brand-red hover:underline">Work I&apos;ve Done</Link>.
+                        I own the brand, the design, and the build. Below is why I redesigned it, the old page next to the new one, the decisions behind three parts of it, and the variables it&apos;s built from. For the story of the studio itself, see <Link href="/work-ive-done#brightfield" className="text-brand-red hover:underline">Work I&apos;ve Done</Link>.
                     </p>
                     <a
                         href={FIGMA_URL}
@@ -130,6 +174,67 @@ export default function BrightfieldRedesignPage() {
                     >
                         View in Figma
                     </a>
+                </section>
+
+                <section>
+                    <SectionHeading id="why-redesign">Why Redesign?</SectionHeading>
+                    <p className={`${P} mb-4`}>
+                        The old Brightfield worked. You could pick a design, change it, and buy a shirt. But the homepage led with how the shirts are made. The headline was &ldquo;Source Code for Your Shirt&rdquo;, and a visitor had to decipher the technology before they understood the product.
+                    </p>
+                    <p className={`${P} mb-4`}>
+                        I wanted the order reversed. Brightfield should read first as an art and design studio with a person behind it, not as a print-on-demand store or a tech demo. The code is still the reason the art exists, but it should come in after the art has earned your attention.
+                    </p>
+                    <p className={P}>
+                        I wrote myself a brief built around one question: how do you make generative art something people want to wear, and make designing your own feel easy? Three goals came out of it. Give Brightfield a clear identity. Give buying a design and making one equal weight on the homepage. And make the shader controls work for someone who has never heard of a shader.
+                    </p>
+                </section>
+
+                <section>
+                    <SectionHeading id="before-and-after">Before and After</SectionHeading>
+                    <p className={P}>
+                        Here is the homepage I started from, next to the redesign. The old one isn&apos;t bad. It has a clear grid, a working customizer, and a look of its own. But it talks about code before it talks about art.
+                    </p>
+                    <Figure caption="The old homepage and the redesign, both at desktop width.">
+                        <div className="grid grid-cols-2 gap-4 items-start">
+                            {[
+                                {
+                                    label: "Before",
+                                    src: `${IMG}/before-full.webp`,
+                                    width: 844,
+                                    height: 2617,
+                                    alt: "Old Brightfield homepage: a photo of a model in a stone alley under the headline Source Code for Your Shirt, a grid of nine shirts on models with cyan buttons, a customizer with sliders, and an email sign-up.",
+                                },
+                                {
+                                    label: "After",
+                                    src: `${IMG}/after-full.webp`,
+                                    width: 845,
+                                    height: 4096,
+                                    alt: "Redesigned Brightfield homepage: an orange shader render under the headline Art for your body, with a model wearing a shirt printed with a Brightfield design, a black and white portrait and bio of Eric, a grid of nine designs, shader controls, an email sign-up, and a light footer.",
+                                },
+                            ].map(({ label, src, width, height, alt }) => (
+                                <div key={label}>
+                                    <p className="mb-2 text-sm text-gray-500">{label}</p>
+                                    <div className="rounded-lg overflow-hidden bg-[#121111]">
+                                        <Image src={src} alt={alt} width={width} height={height} sizes="(min-width: 1024px) 500px, 50vw" className="w-full h-auto" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Figure>
+                    <div className="grid md:grid-cols-2 gap-10 mt-10">
+                        <div>
+                            <h3 className="mb-4 text-2xl font-brandon">What&apos;s the same</h3>
+                            <ul className={`${P} list-disc pl-5 space-y-2`}>
+                                {stayedTheSame.map((item) => <li key={item}>{item}</li>)}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="mb-4 text-2xl font-brandon">What changed</h3>
+                            <ul className={`${P} list-disc pl-5 space-y-2`}>
+                                {whatChanged.map((item) => <li key={item}>{item}</li>)}
+                            </ul>
+                        </div>
+                    </div>
                 </section>
 
                 <section>
@@ -147,6 +252,30 @@ export default function BrightfieldRedesignPage() {
                             className="w-full h-auto rounded-lg"
                         />
                     </Figure>
+                    <p className={`${P} mt-6 mb-4`}>
+                        I tried the headline three ways before the image changed at all: light lowercase, light uppercase, and bold uppercase with a quieter line under it.
+                    </p>
+                    <p className={`${P} mb-4`}>
+                        Then the image. I mocked up a photo of a man in a shop, like the photo-led hero on the old homepage, and a plain gradient, before settling on the orange render. The final design puts a model wearing one of the printed shirts in front of that render, so the art and the shirt arrive together.
+                    </p>
+                    <Figure caption="Six hero directions. The last one became the final, with a model added.">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {heroExplorations.map((alt, i) => (
+                                <Image
+                                    key={alt}
+                                    src={`${IMG}/hero-explore-${i + 1}.webp`}
+                                    alt={`Hero direction ${i + 1}: ${alt}`}
+                                    width={960}
+                                    height={683}
+                                    sizes="(min-width: 1024px) 340px, 50vw"
+                                    className="w-full h-auto rounded-lg"
+                                />
+                            ))}
+                        </div>
+                    </Figure>
+                    <p className={`${P} mt-6`}>
+                        The first line I wrote was &ldquo;Art crafted with code (by a human)&rdquo;. It became &ldquo;Art for your body&rdquo; with &ldquo;Sculpted with code by a human&rdquo; beneath it, so the code moves to the second line and the wearing moves to the first.
+                    </p>
                 </section>
 
                 <section>
@@ -157,6 +286,27 @@ export default function BrightfieldRedesignPage() {
                     <Figure caption="The human behind the designs.">
                         <HumanMockup />
                     </Figure>
+                    <p className={`${P} mt-6 mb-4`}>
+                        I laid this section out four ways with the same words. The first three set the bio as a quote, with a heading, a large quotation mark, and a small round avatar. The fourth gives a black and white portrait half the section. The final version keeps that portrait, moves it to the left, and puts the large quotation mark back behind the bio. The avatar is gone, and the Brightfield lettermark sits in its place next to my name.
+                    </p>
+                    <Figure caption="Four layouts for the same words. The portrait made it into the final.">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {humanExplorations.map((alt, i) => (
+                                <Image
+                                    key={alt}
+                                    src={`${IMG}/human-explore-${i + 1}.webp`}
+                                    alt={`Layout ${i + 1}: ${alt}`}
+                                    width={720}
+                                    height={544}
+                                    sizes="(min-width: 1024px) 250px, 50vw"
+                                    className="w-full h-auto rounded-lg"
+                                />
+                            ))}
+                        </div>
+                    </Figure>
+                    <p className={`${P} mt-6`}>
+                        The words changed too. My outline called this &ldquo;The human behind the code&rdquo;. It became &ldquo;The human behind the designs&rdquo;. The bio also got shorter: &ldquo;turning math, color, and motion into original designs&rdquo; became &ldquo;turning math into original designs&rdquo;.
+                    </p>
                 </section>
 
                 <section>
@@ -222,7 +372,7 @@ export default function BrightfieldRedesignPage() {
                         </div>
                     </Figure>
                     <p className="text-gray-700 leading-relaxed mt-6">
-                        The shader controls change the most. On tablet the canvas stays in view beside the controls as you scroll through them. On mobile there isn&apos;t room for both, so the three panels fold into a bar under the canvas with Colors, Code, and Finish tabs.
+                        The shader controls change the most. On tablet the canvas stays in view beside the controls as you scroll through them.
                     </p>
                     <Figure caption="Craft your own on tablet and mobile.">
                         <div className="flex items-start gap-4">
@@ -244,6 +394,41 @@ export default function BrightfieldRedesignPage() {
                             />
                         </div>
                     </Figure>
+                </section>
+
+                <section>
+                    <SectionHeading id="mobile-shader-controls">Mobile Shader Controls</SectionHeading>
+                    <p className={`${P} mb-4`}>
+                        On desktop the canvas and the three control panels sit side by side. On a phone there isn&apos;t room, and stacking them would mean scrolling away from the art to change it, then scrolling back to see what happened. My brief had a line for this: keep the artwork visible while the shopper experiments.
+                    </p>
+                    <p className={P}>
+                        So on mobile the controls are a bar over the bottom of the canvas, with three tabs: Colors, Code, and Finish. Tap one and a single row opens above it. The canvas never leaves the screen.
+                    </p>
+                    <Figure caption="The mobile control bar closed, and with each of its three drawers open.">
+                        <div className="rounded-lg bg-[#121111] p-6 md:p-8">
+                            <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                                {mobileControls.map(({ name, label, width, height, alt }) => (
+                                    <li key={name} className="text-center">
+                                        <Image
+                                            src={`${IMG}/mobile-controls-${name}.webp`}
+                                            alt={alt}
+                                            width={width}
+                                            height={height}
+                                            sizes="(min-width: 1024px) 240px, 45vw"
+                                            className="w-full h-auto"
+                                        />
+                                        <span className="mt-3 block text-sm text-gray-400">{label}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </Figure>
+                    <p className={`${P} mt-6 mb-4`}>
+                        Each drawer holds one row and no more. Colors is a strip of named palettes you swipe through. Code has two settings, Line Width and Line Spacing, and you switch between them with a toggle so only one slider shows at a time. Finish is three effects.
+                    </p>
+                    <p className={P}>
+                        The sliders have no numbers. The old customizer had sliders named Lines, Power, and Center Circle, with numeric values beside them. The new slider for line width is drawn as a row of bars getting wider, and the one for spacing as lines moving apart, so the control shows you what it does before you touch it.
+                    </p>
                 </section>
 
                 <section>
@@ -330,6 +515,16 @@ export default function BrightfieldRedesignPage() {
                     <Figure caption="The Figma file: desktop, tablet, and mobile frames.">
                         <FigmaEmbed src={FIGMA_EMBED_URL} title="Brightfield homepage redesign in Figma" />
                     </Figure>
+                </section>
+
+                <section>
+                    <SectionHeading id="reflection">Reflection</SectionHeading>
+                    <p className={`${P} mb-4`}>
+                        This redesign isn&apos;t live yet, so there are no numbers to show.
+                    </p>
+                    <p className={P}>
+                        The biggest surprise was how much clearer the shader controls became once I designed them instead of using default sliders. The difference was obvious even to me, and I wrote the shaders. It&apos;s the part I&apos;m happiest with: controls that show what they change and make it easy for you to try them.
+                    </p>
                 </section>
 
                 <section>
