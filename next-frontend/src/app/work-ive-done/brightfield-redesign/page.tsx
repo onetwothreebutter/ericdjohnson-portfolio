@@ -172,7 +172,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="tool">The Tool</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        After the shop comes the invitation to make your own. The controls are the parameters of the code itself: a palette, line width, line spacing, and three print effects.
+                        After the in-house designs comes the invitation to make your own. The controls are the parameters of the code itself: a palette, line width, line spacing, and three print effects.
                     </p>
                     <Figure caption="Craft your own.">
                         <Image
