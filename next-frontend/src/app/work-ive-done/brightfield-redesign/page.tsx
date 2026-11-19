@@ -152,7 +152,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="human">The Human</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        I wanted visitors to feel that every design is crafted by hand, not churned out, so the second section introduces the person making them, with a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
+                        I want people to know each design is made by a person, so the second section shows that person: a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
                     </p>
                     <Figure caption="The human behind the designs.">
                         <HumanMockup />
@@ -162,7 +162,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="designs">The Designs</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        I wanted the shop to feel minimal, like walking through an art museum, so each design hangs on its own. Nine designs share one card component. Each card gives the art the whole frame and keeps the name and price to a single bar along the bottom, like a label on a gallery wall.
+                        I wanted the shop to feel spare, more like an art museum than a store. All nine designs use the same card. The art fills it, and the name and price sit in one thin bar at the bottom.
                     </p>
                     <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card.">
                         <DesignsMockup />
