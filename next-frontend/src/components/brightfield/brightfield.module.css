@@ -57,53 +57,68 @@
 
 /* ---------- human ---------- */
 .human {
-    aspect-ratio: 1440 / 900;
+    aspect-ratio: 1440 / 842;
 }
 .humanPhoto {
     position: absolute;
-    left: calc(var(--u) * 68);
-    right: 0;
+    left: 0;
     top: 0;
     bottom: 0;
+    width: calc(var(--u) * 650);
 }
 .humanPhoto img {
     object-fit: cover;
-    object-position: top;
+    object-position: top left;
 }
 .humanCopy {
     position: absolute;
-    left: calc(var(--u) * 107);
-    top: calc(var(--u) * 150);
+    left: calc(var(--u) * 660);
+    top: calc(var(--u) * 60);
     width: calc(var(--u) * 660);
+}
+.humanCopy > * {
+    position: relative;
+}
+.quoteMark {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    font-family: var(--font-merriweather), Georgia, serif;
+    font-size: calc(var(--u) * 1182);
+    line-height: normal;
+    color: var(--bf-n10);
+    pointer-events: none;
 }
 .humanCopy h3 {
     margin: 0;
     font-weight: 700;
     font-size: calc(var(--u) * 72);
-    line-height: 1.03;
+    line-height: calc(74 / 72);
     letter-spacing: -0.04em;
 }
 .humanCopy p {
     font-family: var(--font-merriweather), Georgia, serif;
     font-size: calc(var(--u) * 32);
-    line-height: 1.25;
-    margin: calc(var(--u) * 44) 0 0;
+    line-height: calc(40 / 32);
+    max-width: calc(var(--u) * 639);
+    margin: calc(var(--u) * 80) 0 0;
 }
 .humanCopy p + p {
-    margin-top: calc(var(--u) * 36);
+    margin-top: calc(var(--u) * 40);
 }
 .who {
     display: flex;
     gap: calc(var(--u) * 16);
     align-items: center;
-    margin-top: calc(var(--u) * 48);
+    margin-top: calc(var(--u) * 88);
     font-size: calc(var(--u) * 25);
-    line-height: 1.2;
+    line-height: calc(30 / 25);
     letter-spacing: -0.04em;
 }
 .who strong {
     display: block;
     font-weight: 600;
+    margin-bottom: calc(var(--u) * 2);
 }
 .lettermark {
     width: calc(var(--u) * 58);
@@ -240,37 +255,38 @@
     text-transform: uppercase;
 }
 .footer {
-    margin-top: calc(var(--u) * 250);
-    height: calc(var(--u) * 312);
+    margin-top: calc(var(--u) * 163);
+    height: calc(var(--u) * 369);
+    box-sizing: border-box;
+    padding: calc(var(--u) * 93) calc(var(--u) * 120) 0;
+    background: #fbfafa;
+    color: #372e2e;
+}
+.footerTop {
     display: flex;
-    border-top: 1px solid var(--bf-n10);
-}
-.footerBrand {
-    width: calc(var(--u) * 450);
-    background: var(--bf-n10);
-    padding: calc(var(--u) * 80) calc(var(--u) * 120) 0;
-}
-.footerBrand small {
-    display: block;
-    margin-top: calc(var(--u) * 28);
-    font-size: calc(var(--u) * 13);
-    line-height: 1.5;
-    color: var(--bf-text2);
+    justify-content: space-between;
+    align-items: center;
 }
 .footerLinks {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: calc(var(--u) * 96) calc(var(--u) * 120) calc(var(--u) * 40) 0;
-    font-size: calc(var(--u) * 20);
-}
-.footerLinks div {
     display: flex;
     gap: calc(var(--u) * 64);
+    font-size: calc(var(--u) * 20);
+    line-height: calc(24 / 20);
+    letter-spacing: -0.04em;
 }
-.footerLinks div + div {
-    font-size: calc(var(--u) * 14);
-    color: var(--bf-text2);
+.footerBottom {
+    margin-top: calc(var(--u) * 111);
+    padding: calc(var(--u) * 30) 0;
+    border-top: 1px solid var(--bf-text2);
+    display: flex;
+    justify-content: space-between;
+    padding-left: calc(100% - var(--u) * 692);
+    font-size: calc(var(--u) * 16);
+    line-height: calc(20 / 16);
+    letter-spacing: -0.04em;
+    color: var(--bf-n50);
+}
+.footerLegal {
+    display: flex;
+    gap: calc(var(--u) * 28);
 }

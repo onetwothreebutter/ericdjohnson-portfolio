@@ -7,23 +7,24 @@ import s from "./brightfield.module.css";
  * Each one is presented as a single image to assistive tech (role="img" + inert).
  */
 
-function Wordmark() {
-    return <Image src="/images/work-ive-done/brightfield-redesign/wordmark.svg" alt="" width={176} height={76} className={s.wordmark} />;
-}
-
 export function HumanMockup() {
     return (
         <div
             className={s.frame}
             role="img"
-            aria-label="About section: the heading The human behind the designs, a two-paragraph bio in a serif face, and Eric Johnson's name and title beside a portrait."
+            aria-label="About section: a black and white portrait of Eric Johnson on the left, and on the right the heading The human behind the designs, a two-paragraph bio in a serif face, and his name and title beside the lettermark."
         >
             <div className={clsx(s.stage, s.human)} inert>
                 <div className={s.humanPhoto}>
-                    <Image src="/images/work-ive-done/brightfield-redesign/human.jpg" alt="" fill sizes="(min-width: 1024px) 1024px, 100vw" />
+                    <Image src="/images/work-ive-done/brightfield-redesign/human.webp" alt="" fill sizes="(min-width: 1024px) 470px, 45vw" />
                 </div>
                 <div className={s.humanCopy}>
-                    <h3>The human behind the designs</h3>
+                    <span className={s.quoteMark} aria-hidden>
+                        &ldquo;
+                    </span>
+                    <h3>
+                        The human behind the designs<span className={s.dot}>.</span>
+                    </h3>
                     <p>I&rsquo;m Eric, an Iowa-based artist and creative coder.</p>
                     <p>
                         After two decades of making things for the web, I created Brightfield as a place to explore code as an artistic medium&mdash;turning math into original designs you can wear.
@@ -93,7 +94,7 @@ export function EndingMockup() {
         <div
             className={s.frame}
             role="img"
-            aria-label="Closing sections: a glowing panel headed Get notified about new designs with an email field and Sign up button, above a footer with the Brightfield wordmark and links."
+            aria-label="Closing sections: a glowing panel headed Get notified about new designs with an email field and Sign up button, above a light footer with the Brightfield wordmark, page links, and a row of legal links."
         >
             <div className={s.stage} inert>
                 <div className={s.notifyGlow}>
@@ -112,26 +113,21 @@ export function EndingMockup() {
                     </div>
                 </div>
                 <div className={s.footer}>
-                    <div className={s.footerBrand}>
-                        <Wordmark />
-                        <small>
-                            Brightfield Studio
-                            <br />
-                            Iowa, USA
-                        </small>
-                    </div>
-                    <div className={s.footerLinks}>
-                        <div>
+                    <div className={s.footerTop}>
+                        <Image src="/images/work-ive-done/brightfield-redesign/wordmark-dark.svg" alt="" width={176} height={76} className={s.wordmark} />
+                        <div className={s.footerLinks}>
                             <span>About</span>
                             <span>Contact</span>
                             <span>FAQ</span>
                             <span>Returns</span>
                         </div>
-                        <div>
+                    </div>
+                    <div className={s.footerBottom}>
+                        <div className={s.footerLegal}>
                             <span>Privacy</span>
                             <span>Terms of Service</span>
-                            <span>&copy; 2026 Brightfield Studio</span>
                         </div>
+                        <span>&copy; 2026 Brightfield Studio</span>
                     </div>
                 </div>
             </div>

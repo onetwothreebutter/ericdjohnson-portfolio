@@ -7,7 +7,7 @@ import AnimatedHeading from "@/components/ui/AnimatedHeading";
 import FigmaEmbed from "@/components/brightfield/FigmaEmbed";
 import { DesignsMockup, EndingMockup, HumanMockup } from "@/components/brightfield/Mockups";
 
-const FIGMA_FILE = "kD4AhFhs5ZlpsJfsTUuok6/Brightfield-web-redesign-Sept-2026?node-id=0-1";
+const FIGMA_FILE = "g1xZl2Yb6dmDzGv7zwKyvK/Brightfield-web-redesign-Nov-2026---Portfolio?node-id=0-1";
 const FIGMA_URL = `https://www.figma.com/design/${FIGMA_FILE}`;
 const FIGMA_EMBED_URL = `https://embed.figma.com/design/${FIGMA_FILE}&embed-host=share`;
 
@@ -135,12 +135,12 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="hero">The Hero</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        The art fills the first screen, edge to edge, before anything is said about it. The headline is three words, and the two buttons name the two things you can do at Brightfield: shop a design, or create one.
+                        The art fills the first screen, edge to edge, and a model wears one of the designs, so the first thing you see is the art as a shirt. The headline is three words, and the two buttons name the two things you can do at Brightfield: shop a design, or create one.
                     </p>
                     <Figure caption="Hero, 1440 × 1024.">
                         <Image
                             src="/images/work-ive-done/brightfield-redesign/hero-section.webp"
-                            alt="Hero section: a full-bleed orange shader render with the Brightfield wordmark and navigation, the headline Art for your body, the line Sculpted with code by a human, and Shop and Create buttons."
+                            alt="Hero section: a full-bleed orange shader render with the Brightfield wordmark and navigation, the headline Art for your body, the line Sculpted with code by a human, and Shop and Create buttons, beside a model in a black shirt printed with a Brightfield line design."
                             width={1440}
                             height={1024}
                             sizes="(min-width: 1024px) 1024px, 100vw"
@@ -152,7 +152,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="human">The Human</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        &ldquo;By a human&rdquo; is a claim, so the second section backs it up with a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
+                        I want people to know each design is made by a person, so the second section shows that person: a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
                     </p>
                     <Figure caption="The human behind the designs.">
                         <HumanMockup />
@@ -162,7 +162,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="designs">The Designs</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        Nine designs on one card component. Each card gives the art the whole frame and keeps the name and price to a single bar along the bottom.
+                        I wanted the experience to feel spare, more like an art museum than a traditional online store. The art fills the card, and the name and price sit in one thin bar at the bottom.
                     </p>
                     <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card.">
                         <DesignsMockup />
@@ -172,7 +172,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="tool">The Tool</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        After the shop comes the invitation to make your own. The controls are the parameters of the code itself: a palette, line width, line spacing, and three print effects.
+                        After the in-house designs comes the invitation to make your own. The controls are the parameters of the code itself: a palette, line width, line spacing, and three print effects.
                     </p>
                     <Figure caption="Craft your own.">
                         <Image
@@ -205,19 +205,19 @@ export default function BrightfieldRedesignPage() {
                         <div className="flex items-start gap-4">
                             <Image
                                 src="/images/work-ive-done/brightfield-redesign/tablet-hero.webp"
-                                alt="Tablet hero: the orange shader render with the headline Art for your body and Shop and Create buttons side by side."
+                                alt="Tablet hero: the orange shader render with the headline Art for your body and Shop and Create buttons side by side, and the model in the printed shirt on the right."
                                 width={1024}
                                 height={875}
-                                sizes="(min-width: 1024px) 730px, 70vw"
-                                className="w-[71.8%] min-w-0 h-auto rounded-lg"
+                                sizes="(min-width: 1024px) 745px, 72vw"
+                                className="w-[73.3%] min-w-0 h-auto rounded-lg"
                             />
                             <Image
                                 src="/images/work-ive-done/brightfield-redesign/mobile-hero.webp"
-                                alt="Mobile hero: the same headline over the shader render, with search, bag and menu icons in the navigation and full-width Shop and Create buttons stacked."
+                                alt="Mobile hero: the same headline over the shader render, with search, bag and menu icons in the navigation, full-width Shop and Create buttons stacked, and the model in the printed shirt below them."
                                 width={402}
-                                height={875}
-                                sizes="(min-width: 1024px) 290px, 28vw"
-                                className="w-[28.2%] min-w-0 h-auto rounded-lg"
+                                height={945}
+                                sizes="(min-width: 1024px) 275px, 27vw"
+                                className="w-[26.7%] min-w-0 h-auto rounded-lg"
                             />
                         </div>
                     </Figure>
