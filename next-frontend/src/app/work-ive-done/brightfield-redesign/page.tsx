@@ -162,7 +162,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="designs">The Designs</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        I wanted the shop to feel spare, more like an art museum than a store. All nine designs use the same card. The art fills it, and the name and price sit in one thin bar at the bottom.
+                        I wanted the experience to feel spare, more like an art museum than a traditional online store. The art fills the card, and the name and price sit in one thin bar at the bottom.
                     </p>
                     <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card.">
                         <DesignsMockup />
