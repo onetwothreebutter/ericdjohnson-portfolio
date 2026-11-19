@@ -152,7 +152,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="human">The Human</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        &ldquo;By a human&rdquo; is a claim, so the second section backs it up with a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
+                        I wanted visitors to feel that every design is crafted by hand, not churned out, so the second section introduces the person making them, with a face and a short bio. It is the one place on the page set in Merriweather, so it reads like a person talking and not like interface.
                     </p>
                     <Figure caption="The human behind the designs.">
                         <HumanMockup />
