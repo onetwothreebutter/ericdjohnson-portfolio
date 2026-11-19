@@ -162,7 +162,7 @@ export default function BrightfieldRedesignPage() {
                 <section>
                     <SectionHeading id="designs">The Designs</SectionHeading>
                     <p className="text-gray-700 leading-relaxed">
-                        Nine designs on one card component. Each card gives the art the whole frame and keeps the name and price to a single bar along the bottom.
+                        I wanted the shop to feel minimal, like walking through an art museum, so each design hangs on its own. Nine designs share one card component. Each card gives the art the whole frame and keeps the name and price to a single bar along the bottom, like a label on a gallery wall.
                     </p>
                     <Figure caption="Product grid. The Figma file uses one piece, Square Dance, as the stand-in on every card.">
                         <DesignsMockup />
